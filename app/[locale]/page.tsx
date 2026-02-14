@@ -1,5 +1,6 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Users, GraduationCap, BookOpen, DollarSign } from 'lucide-react';
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
@@ -78,11 +79,15 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             {t('landing.hero.description')}
           </p>
 
-          <button className="glass px-10 py-4 rounded-3xl text-lg font-bold text-brand-deep
-                           transition-all duration-300 hover:scale-105 hover:shadow-2xl
-                           border-2 border-brand-sky/30 hover:border-brand-sky/60">
-            {t('landing.hero.cta')}
-          </button>
+          <Link
+            href={`/${locale}/auth/login`}
+            className="glass px-10 py-4 rounded-3xl text-lg font-bold text-brand-deep
+                     transition-all duration-300 hover:scale-105 hover:shadow-2xl
+                     border-2 border-brand-sky/30 hover:border-brand-sky/60
+                     inline-block"
+          >
+            {t('auth.signIn')}
+          </Link>
         </div>
       </section>
 
