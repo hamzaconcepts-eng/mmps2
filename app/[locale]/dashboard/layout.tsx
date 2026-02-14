@@ -1,4 +1,5 @@
 import Sidebar from '@/components/Sidebar';
+import { setRequestLocale } from 'next-intl/server';
 
 export default async function DashboardLayout({
   children,
@@ -8,6 +9,7 @@ export default async function DashboardLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  setRequestLocale(locale);
   const isRTL = locale === 'ar';
 
   return (
