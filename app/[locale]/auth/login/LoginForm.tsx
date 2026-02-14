@@ -2,41 +2,25 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { supabase } from '@/lib/supabase/client';
-import { usernameToEmail } from '@/lib/auth/helpers';
 import { User, Lock, AlertCircle, Loader2, Eye, EyeOff } from 'lucide-react';
+import { login } from './actions';
 
 export default function LoginForm({ locale }: { locale: string }) {
   const t = useTranslations();
-  const router = useRouter();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (formData: FormData) => {
     setError('');
     setLoading(true);
 
     try {
-      // Convert username to email format for Supabase
-      const email = usernameToEmail(username);
-
-      const { data, error: signInError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (signInError) throw signInError;
-
-      if (data.user) {
-        router.push(`/${locale}/dashboard`);
-        router.refresh();
+      const result = await login(formData);
+      if (result?.error) {
+        setError(result.error);
       }
     } catch (err: any) {
       setError(err.message || t('auth.invalidCredentials'));
@@ -80,7 +64,7 @@ export default function LoginForm({ locale }: { locale: string }) {
 
         {/* Login Form */}
         <div className="glass p-8 rounded-3xl border border-white/20">
-          <form onSubmit={handleLogin} className="space-y-6">
+          <form action={handleSubmit} className="space-y-6">
             {/* Error Message */}
             {error && (
               <div className="flex items-center gap-3 p-4 rounded-2xl bg-red-50 border border-red-200">
@@ -88,6 +72,9 @@ export default function LoginForm({ locale }: { locale: string }) {
                 <p className="text-sm text-red-800">{error}</p>
               </div>
             )}
+
+            {/* Hidden locale field */}
+            <input type="hidden" name="locale" value={locale} />
 
             {/* Username Field */}
             <div className="space-y-2">
@@ -99,10 +86,9 @@ export default function LoginForm({ locale }: { locale: string }) {
                       style={{ [locale === 'ar' ? 'right' : 'left']: '1rem' }} />
                 <input
                   id="username"
+                  name="username"
                   type="text"
                   required
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
                   className={`w-full bg-white/50 border border-gray-200 rounded-2xl py-3
                             ${locale === 'ar' ? 'pr-12 pl-4' : 'pl-12 pr-4'}
                             focus:outline-none focus:ring-2 focus:ring-brand-sky focus:border-transparent
@@ -124,10 +110,9 @@ export default function LoginForm({ locale }: { locale: string }) {
                       style={{ [locale === 'ar' ? 'right' : 'left']: '1rem' }} />
                 <input
                   id="password"
+                  name="password"
                   type={showPassword ? 'text' : 'password'}
                   required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
                   className={`w-full bg-white/50 border border-gray-200 rounded-2xl py-3
                             ${locale === 'ar' ? 'pr-12 pl-12' : 'pl-12 pr-12'}
                             focus:outline-none focus:ring-2 focus:ring-brand-sky focus:border-transparent
