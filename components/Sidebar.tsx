@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import Image from 'next/image';
+import SignOutButton from './SignOutButton';
 import {
   Home,
   Users,
@@ -246,7 +247,7 @@ export default function Sidebar({ locale, userRole = 'admin' }: SidebarProps) {
         </nav>
 
         {/* User Profile Section */}
-        <div className="p-4 border-t border-white/10">
+        <div className="p-4 border-t border-white/10 space-y-2">
           <Link
             href={`/${locale}/profile`}
             className={`flex items-center gap-3 px-4 py-3 rounded-2xl
@@ -269,6 +270,10 @@ export default function Sidebar({ locale, userRole = 'admin' }: SidebarProps) {
               </div>
             )}
           </Link>
+
+          {!isCollapsed && (
+            <SignOutButton locale={locale} />
+          )}
         </div>
       </aside>
     </>
