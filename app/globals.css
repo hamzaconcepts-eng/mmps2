@@ -72,6 +72,19 @@
   ::-webkit-scrollbar-thumb:hover {
     background: rgba(27, 94, 107, 0.5);
   }
+
+  /* Thin scrollbar for sidebar */
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: rgba(27, 94, 107, 0.2);
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: rgba(27, 94, 107, 0.4);
+  }
 }
 
 @layer components {
