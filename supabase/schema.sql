@@ -1,5 +1,6 @@
 -- Mashaail School Management System - Database Schema
 -- Complete schema with RLS policies, indexes, and triggers
+-- Tables ordered by dependencies (referenced tables created first)
 
 -- ================================================
 -- ENUMS
@@ -41,7 +42,7 @@ CREATE TYPE gender AS ENUM (
 );
 
 -- ================================================
--- CORE TABLES
+-- CORE TABLES (in dependency order)
 -- ================================================
 
 -- Profiles (extends Supabase auth.users)
@@ -58,7 +59,46 @@ CREATE TABLE profiles (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Students
+-- Teachers (must be created before classes)
+CREATE TABLE teachers (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  profile_id UUID REFERENCES profiles(id) ON DELETE SET NULL,
+  employee_id TEXT UNIQUE NOT NULL,
+  first_name TEXT NOT NULL,
+  first_name_ar TEXT NOT NULL,
+  last_name TEXT NOT NULL,
+  last_name_ar TEXT NOT NULL,
+  gender gender NOT NULL,
+  date_of_birth DATE,
+  phone TEXT,
+  email TEXT UNIQUE NOT NULL,
+  hire_date DATE NOT NULL,
+  specialization TEXT,
+  qualifications TEXT,
+  photo_url TEXT,
+  is_active BOOLEAN DEFAULT true,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Classes (must be created before students)
+CREATE TABLE classes (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  name_ar TEXT NOT NULL,
+  grade_level INTEGER NOT NULL,
+  section TEXT NOT NULL,
+  academic_year TEXT NOT NULL,
+  class_supervisor_id UUID REFERENCES teachers(id) ON DELETE SET NULL,
+  room_number TEXT,
+  capacity INTEGER,
+  is_active BOOLEAN DEFAULT true,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(grade_level, section, academic_year)
+);
+
+-- Students (now classes exists)
 CREATE TABLE students (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   profile_id UUID REFERENCES profiles(id) ON DELETE SET NULL,
@@ -88,7 +128,7 @@ CREATE TABLE guardians (
   first_name_ar TEXT NOT NULL,
   last_name TEXT NOT NULL,
   last_name_ar TEXT NOT NULL,
-  relationship TEXT NOT NULL, -- father, mother, guardian
+  relationship TEXT NOT NULL,
   email TEXT,
   phone TEXT NOT NULL,
   work_phone TEXT,
@@ -108,45 +148,6 @@ CREATE TABLE student_guardians (
   UNIQUE(student_id, guardian_id)
 );
 
--- Teachers
-CREATE TABLE teachers (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  profile_id UUID REFERENCES profiles(id) ON DELETE SET NULL,
-  employee_id TEXT UNIQUE NOT NULL,
-  first_name TEXT NOT NULL,
-  first_name_ar TEXT NOT NULL,
-  last_name TEXT NOT NULL,
-  last_name_ar TEXT NOT NULL,
-  gender gender NOT NULL,
-  date_of_birth DATE,
-  phone TEXT,
-  email TEXT UNIQUE NOT NULL,
-  hire_date DATE NOT NULL,
-  specialization TEXT,
-  qualifications TEXT,
-  photo_url TEXT,
-  is_active BOOLEAN DEFAULT true,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
-);
-
--- Classes
-CREATE TABLE classes (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  name TEXT NOT NULL,
-  name_ar TEXT NOT NULL,
-  grade_level INTEGER NOT NULL, -- 1-12
-  section TEXT NOT NULL, -- A, B, C, etc.
-  academic_year TEXT NOT NULL,
-  class_supervisor_id UUID REFERENCES teachers(id) ON DELETE SET NULL,
-  room_number TEXT,
-  capacity INTEGER,
-  is_active BOOLEAN DEFAULT true,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW(),
-  UNIQUE(grade_level, section, academic_year)
-);
-
 -- Subjects
 CREATE TABLE subjects (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -154,13 +155,13 @@ CREATE TABLE subjects (
   name TEXT NOT NULL,
   name_ar TEXT NOT NULL,
   description TEXT,
-  grade_levels INTEGER[], -- Array of grade levels this subject is for
+  grade_levels INTEGER[],
   is_active BOOLEAN DEFAULT true,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Class Subjects (which subjects are taught in which class)
+-- Class Subjects
 CREATE TABLE class_subjects (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   class_id UUID NOT NULL REFERENCES classes(id) ON DELETE CASCADE,
@@ -197,7 +198,7 @@ CREATE TABLE exams (
   term_id UUID REFERENCES terms(id) ON DELETE SET NULL,
   exam_date DATE,
   max_score DECIMAL(5,2) NOT NULL,
-  weight DECIMAL(5,2) DEFAULT 1.0, -- Weight in final grade calculation
+  weight DECIMAL(5,2) DEFAULT 1.0,
   is_published BOOLEAN DEFAULT false,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
@@ -219,7 +220,7 @@ CREATE TABLE grades (
   UNIQUE(student_id, exam_id)
 );
 
--- Grade Revisions (Audit trail for grade changes)
+-- Grade Revisions
 CREATE TABLE grade_revisions (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   grade_id UUID NOT NULL REFERENCES grades(id) ON DELETE CASCADE,
@@ -237,7 +238,7 @@ CREATE TABLE attendance_sessions (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   class_id UUID NOT NULL REFERENCES classes(id) ON DELETE CASCADE,
   date DATE NOT NULL,
-  period INTEGER, -- Which period of the day
+  period INTEGER,
   teacher_id UUID REFERENCES teachers(id),
   created_at TIMESTAMPTZ DEFAULT NOW(),
   UNIQUE(class_id, date, period)
@@ -259,7 +260,7 @@ CREATE TABLE attendance_records (
 CREATE TABLE timetable_slots (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   class_subject_id UUID NOT NULL REFERENCES class_subjects(id) ON DELETE CASCADE,
-  day_of_week INTEGER NOT NULL, -- 0-6 (Sunday-Saturday)
+  day_of_week INTEGER NOT NULL,
   period INTEGER NOT NULL,
   start_time TIME NOT NULL,
   end_time TIME NOT NULL,
@@ -273,7 +274,7 @@ CREATE TABLE timetable_slots (
 -- FINANCE TABLES
 -- ================================================
 
--- Fee Items (Fee structure)
+-- Fee Items
 CREATE TABLE fee_items (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT NOT NULL,
@@ -281,7 +282,7 @@ CREATE TABLE fee_items (
   description TEXT,
   amount DECIMAL(10,2) NOT NULL,
   academic_year TEXT NOT NULL,
-  grade_levels INTEGER[], -- Which grades this fee applies to
+  grade_levels INTEGER[],
   is_mandatory BOOLEAN DEFAULT true,
   is_active BOOLEAN DEFAULT true,
   created_at TIMESTAMPTZ DEFAULT NOW(),
@@ -321,7 +322,7 @@ CREATE TABLE payments (
   invoice_id UUID NOT NULL REFERENCES invoices(id) ON DELETE CASCADE,
   amount DECIMAL(10,2) NOT NULL,
   payment_date DATE DEFAULT CURRENT_DATE,
-  payment_method TEXT NOT NULL, -- cash, card, bank_transfer, etc.
+  payment_method TEXT NOT NULL,
   reference_number TEXT,
   notes TEXT,
   received_by UUID REFERENCES profiles(id),
@@ -341,7 +342,7 @@ CREATE TABLE messages (
   body TEXT NOT NULL,
   is_read BOOLEAN DEFAULT false,
   read_at TIMESTAMPTZ,
-  parent_message_id UUID REFERENCES messages(id), -- For threading
+  parent_message_id UUID REFERENCES messages(id),
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -353,8 +354,8 @@ CREATE TABLE announcements (
   content TEXT NOT NULL,
   content_ar TEXT NOT NULL,
   author_id UUID NOT NULL REFERENCES profiles(id),
-  target_roles user_role[], -- Which roles can see this announcement
-  target_classes UUID[], -- Specific classes (optional)
+  target_roles user_role[],
+  target_classes UUID[],
   is_published BOOLEAN DEFAULT false,
   published_at TIMESTAMPTZ,
   expires_at TIMESTAMPTZ,
@@ -381,48 +382,33 @@ CREATE TABLE audit_logs (
 );
 
 -- ================================================
--- INDEXES FOR PERFORMANCE
+-- INDEXES
 -- ================================================
 
--- Profiles indexes
 CREATE INDEX idx_profiles_role ON profiles(role);
 CREATE INDEX idx_profiles_email ON profiles(email);
-
--- Students indexes
 CREATE INDEX idx_students_class ON students(class_id);
 CREATE INDEX idx_students_active ON students(is_active);
 CREATE INDEX idx_students_student_id ON students(student_id);
-
--- Teachers indexes
 CREATE INDEX idx_teachers_active ON teachers(is_active);
 CREATE INDEX idx_teachers_employee_id ON teachers(employee_id);
-
--- Classes indexes
 CREATE INDEX idx_classes_year ON classes(academic_year);
 CREATE INDEX idx_classes_supervisor ON classes(class_supervisor_id);
-
--- Grades indexes
 CREATE INDEX idx_grades_student ON grades(student_id);
 CREATE INDEX idx_grades_exam ON grades(exam_id);
 CREATE INDEX idx_grades_status ON grades(status);
-
--- Attendance indexes
 CREATE INDEX idx_attendance_session ON attendance_records(session_id);
 CREATE INDEX idx_attendance_student ON attendance_records(student_id);
 CREATE INDEX idx_attendance_status ON attendance_records(status);
-
--- Finance indexes
 CREATE INDEX idx_invoices_student ON invoices(student_id);
 CREATE INDEX idx_invoices_status ON invoices(status);
 CREATE INDEX idx_payments_invoice ON payments(invoice_id);
-
--- Messages indexes
 CREATE INDEX idx_messages_sender ON messages(sender_id);
 CREATE INDEX idx_messages_recipient ON messages(recipient_id);
 CREATE INDEX idx_messages_unread ON messages(recipient_id, is_read);
 
 -- ================================================
--- TRIGGERS FOR UPDATED_AT
+-- TRIGGERS
 -- ================================================
 
 CREATE OR REPLACE FUNCTION update_updated_at_column()
@@ -433,7 +419,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Apply updated_at trigger to all relevant tables
 CREATE TRIGGER update_profiles_updated_at BEFORE UPDATE ON profiles
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
@@ -459,10 +444,9 @@ CREATE TRIGGER update_invoices_updated_at BEFORE UPDATE ON invoices
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 -- ================================================
--- ROW LEVEL SECURITY (RLS) POLICIES
+-- RLS POLICIES
 -- ================================================
 
--- Enable RLS on all tables
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE students ENABLE ROW LEVEL SECURITY;
 ALTER TABLE guardians ENABLE ROW LEVEL SECURITY;
@@ -489,11 +473,9 @@ CREATE POLICY "Owners and admins can view all profiles" ON profiles
     )
   );
 
--- Students policies (simplified - will be expanded)
+-- Students policies
 CREATE POLICY "Students can view their own record" ON students
-  FOR SELECT USING (
-    profile_id = auth.uid()
-  );
+  FOR SELECT USING (profile_id = auth.uid());
 
 CREATE POLICY "Staff can view all students" ON students
   FOR SELECT USING (
@@ -528,22 +510,10 @@ CREATE POLICY "Users can view their own messages" ON messages
   );
 
 CREATE POLICY "Users can send messages" ON messages
-  FOR INSERT WITH CHECK (
-    sender_id = auth.uid()
-  );
+  FOR INSERT WITH CHECK (sender_id = auth.uid());
 
 -- ================================================
--- INITIAL DATA / SEED
--- ================================================
-
--- Insert default academic year
-INSERT INTO terms (name, name_ar, academic_year, start_date, end_date, is_current)
-VALUES
-  ('First Term 2025-2026', 'الفصل الأول 2025-2026', '2025-2026', '2025-09-01', '2025-12-31', true),
-  ('Second Term 2025-2026', 'الفصل الثاني 2025-2026', '2025-2026', '2026-01-01', '2026-06-30', false);
-
--- ================================================
--- FUNCTIONS FOR GRADE REVISION TRACKING
+-- GRADE REVISION TRACKING
 -- ================================================
 
 CREATE OR REPLACE FUNCTION log_grade_revision()
@@ -574,3 +544,12 @@ CREATE TRIGGER track_grade_revisions
   BEFORE UPDATE ON grades
   FOR EACH ROW
   EXECUTE FUNCTION log_grade_revision();
+
+-- ================================================
+-- INITIAL DATA
+-- ================================================
+
+INSERT INTO terms (name, name_ar, academic_year, start_date, end_date, is_current)
+VALUES
+  ('First Term 2025-2026', 'الفصل الأول 2025-2026', '2025-2026', '2025-09-01', '2025-12-31', true),
+  ('Second Term 2025-2026', 'الفصل الثاني 2025-2026', '2025-2026', '2026-01-01', '2026-06-30', false);
