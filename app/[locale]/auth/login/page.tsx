@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
@@ -15,6 +13,7 @@ export default async function LoginPage({ params }: { params: Promise<{ locale: 
   return <LoginPageClient locale={locale} />;
 }
 
+'use client';
 function LoginPageClient({ locale }: { locale: string }) {
   const t = useTranslations();
   const router = useRouter();
