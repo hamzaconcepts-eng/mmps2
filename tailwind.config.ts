@@ -60,11 +60,15 @@ const config: Config = {
         'gradient-cool': 'linear-gradient(135deg, #D8EEF8, #D5F0E8, #E8DFF5)',
       },
       boxShadow: {
-        glass: '0 8px 32px rgba(27, 94, 107, 0.08)',
-        'glass-hover': '0 12px 40px rgba(27, 94, 107, 0.12)',
+        glass: '0 10px 40px rgba(27, 94, 107, 0.1), 0 2px 8px rgba(27, 94, 107, 0.06)',
+        'glass-hover': '0 20px 60px rgba(27, 94, 107, 0.15), 0 4px 12px rgba(27, 94, 107, 0.08)',
+        '3xl': '0 35px 60px -15px rgba(0, 0, 0, 0.3)',
       },
       backdropBlur: {
-        glass: '20px',
+        glass: '24px',
+      },
+      transitionTimingFunction: {
+        smooth: 'cubic-bezier(0.4, 0, 0.2, 1)',
       },
     },
   },
