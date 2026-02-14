@@ -44,8 +44,7 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ['var(--font-cairo)', 'system-ui', 'sans-serif'],
-        cairo: ['var(--font-cairo)', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-system)'],
       },
       borderRadius: {
         sm: '12px',

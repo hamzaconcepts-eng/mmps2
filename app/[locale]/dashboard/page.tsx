@@ -1,5 +1,5 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { Users, GraduationCap, DollarSign, TrendingUp } from 'lucide-react';
+import { Users, GraduationCap, DollarSign, TrendingUp, Calendar, BookOpen, AlertCircle } from 'lucide-react';
 
 export default async function DashboardPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -8,135 +8,126 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
   const t = await getTranslations();
 
   const stats = [
-    {
-      key: 'students',
-      icon: Users,
-      value: '1,234',
-      label: t('navigation.students'),
-      color: 'from-dream-pink to-dream-lavender',
-      change: '+12%',
-    },
-    {
-      key: 'teachers',
-      icon: GraduationCap,
-      value: '89',
-      label: t('navigation.teachers'),
-      color: 'from-dream-lavender to-dream-sky',
-      change: '+5%',
-    },
-    {
-      key: 'revenue',
-      icon: DollarSign,
-      value: 'OMR 125K',
-      label: t('navigation.finance'),
-      color: 'from-dream-sky to-dream-mint',
-      change: '+18%',
-    },
-    {
-      key: 'attendance',
-      icon: TrendingUp,
-      value: '94.5%',
-      label: t('navigation.attendance'),
-      color: 'from-dream-peach to-dream-yellow',
-      change: '+2.3%',
-    },
+    { key: 'students', icon: Users, value: '1,234', label: t('navigation.students'), change: '+12%' },
+    { key: 'teachers', icon: GraduationCap, value: '89', label: t('navigation.teachers'), change: '+5%' },
+    { key: 'revenue', icon: DollarSign, value: 'OMR 125K', label: t('navigation.finance'), change: '+18%' },
+    { key: 'attendance', icon: TrendingUp, value: '94.5%', label: t('navigation.attendance'), change: '+2.3%' },
+  ];
+
+  const recentActivity = [
+    { type: 'success', message: 'New student enrolled: Ahmed Al-Balushi', time: '10 mins ago' },
+    { type: 'warning', message: 'Payment pending: Invoice #2891', time: '25 mins ago' },
+    { type: 'success', message: 'Class schedule updated: Grade 10-A', time: '1 hour ago' },
+    { type: 'info', message: 'New announcement published', time: '2 hours ago' },
+    { type: 'success', message: 'Exam results published: Grade 9', time: '3 hours ago' },
+  ];
+
+  const upcomingEvents = [
+    { title: 'Parent-Teacher Meeting', date: 'Tomorrow, 10:00 AM', class: 'All Grades' },
+    { title: 'Math Exam', date: 'Feb 18, 2026', class: 'Grade 11' },
+    { title: 'Sports Day', date: 'Feb 20, 2026', class: 'All Grades' },
+    { title: 'Science Fair', date: 'Feb 22, 2026', class: 'Grades 8-12' },
+  ];
+
+  const quickStats = [
+    { label: 'Classes Today', value: '42' },
+    { label: 'Present', value: '1,145' },
+    { label: 'Absent', value: '89' },
+    { label: 'Pending Fees', value: 'OMR 45K' },
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="h-[calc(100vh-4rem)] overflow-hidden flex flex-col gap-3">
       {/* Header */}
-      <div className="glass p-8 rounded-3xl border border-white/20">
-        <h1 className="text-4xl font-black text-brand-deep mb-2">
-          {t('common.dashboard')}
-        </h1>
-        <p className="text-gray-600 text-lg">
-          {t('common.welcome')} 👋
-        </p>
+      <div className="glass p-3 rounded-2xl border border-white/20">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-xl font-bold text-brand-deep">{t('common.dashboard')}</h1>
+            <p className="text-xs text-gray-600">{t('common.welcome')}</p>
+          </div>
+          <div className="text-right">
+            <p className="text-sm font-semibold text-brand-deep">Saturday, Feb 15, 2026</p>
+            <p className="text-xs text-gray-600">Academic Year 2025-2026</p>
+          </div>
+        </div>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-4 gap-3">
         {stats.map((stat) => {
           const Icon = stat.icon;
           return (
-            <div
-              key={stat.key}
-              className="glass p-6 rounded-3xl border border-white/20
-                         hover:scale-105 transition-all duration-300
-                         hover:shadow-xl group cursor-pointer"
-            >
-              <div className="flex items-start justify-between mb-4">
-                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${stat.color}
-                               flex items-center justify-center
-                               group-hover:scale-110 transition-transform duration-300
-                               shadow-lg`}>
-                  <Icon size={28} className="text-white" />
+            <div key={stat.key} className="glass p-3 rounded-2xl border border-white/20 hover:scale-105 transition-transform">
+              <div className="flex items-center justify-between mb-2">
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-sky to-brand-deep flex items-center justify-center">
+                  <Icon size={18} className="text-white" />
                 </div>
-                <span className="text-sm font-semibold text-green-600 bg-green-50 px-3 py-1 rounded-full">
-                  {stat.change}
-                </span>
+                <span className="text-xs font-semibold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">{stat.change}</span>
               </div>
-              <h3 className="text-3xl font-black text-brand-deep mb-1">
-                {stat.value}
-              </h3>
-              <p className="text-gray-600 font-medium">
-                {stat.label}
-              </p>
+              <h3 className="text-xl font-bold text-brand-deep">{stat.value}</h3>
+              <p className="text-xs text-gray-600">{stat.label}</p>
             </div>
           );
         })}
       </div>
 
-      {/* Quick Actions */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* Main Content Grid */}
+      <div className="grid grid-cols-12 gap-3 flex-1 min-h-0">
         {/* Recent Activity */}
-        <div className="glass p-8 rounded-3xl border border-white/20">
-          <h2 className="text-2xl font-bold text-brand-deep mb-6">
-            {t('navigation.announcements')}
+        <div className="col-span-5 glass p-3 rounded-2xl border border-white/20 overflow-hidden flex flex-col">
+          <h2 className="text-sm font-bold text-brand-deep mb-2 flex items-center gap-2">
+            <AlertCircle size={16} />
+            Recent Activity
           </h2>
-          <div className="space-y-4">
-            {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="p-4 rounded-2xl bg-white/30 hover:bg-white/50
-                           transition-colors cursor-pointer border border-white/10"
-              >
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="font-semibold text-brand-deep">
-                    Sample Announcement {i}
-                  </h3>
-                  <span className="text-xs text-gray-500">2h ago</span>
+          <div className="space-y-2 overflow-y-auto flex-1 scrollbar-thin pr-1">
+            {recentActivity.map((activity, i) => (
+              <div key={i} className="p-2 rounded-xl bg-white/40 hover:bg-white/60 transition-colors border border-white/10 flex items-start gap-2">
+                <div className={`w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0 ${
+                  activity.type === 'success' ? 'bg-green-500' : activity.type === 'warning' ? 'bg-yellow-500' : 'bg-blue-500'
+                }`} />
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-medium text-gray-800 line-clamp-1">{activity.message}</p>
+                  <p className="text-xs text-gray-500">{activity.time}</p>
                 </div>
-                <p className="text-sm text-gray-600">
-                  This is a sample announcement description...
-                </p>
               </div>
             ))}
           </div>
         </div>
 
         {/* Quick Stats */}
-        <div className="glass p-8 rounded-3xl border border-white/20">
-          <h2 className="text-2xl font-bold text-brand-deep mb-6">
-            {t('navigation.reports')}
+        <div className="col-span-3 glass p-3 rounded-2xl border border-white/20">
+          <h2 className="text-sm font-bold text-brand-deep mb-2">Quick Stats</h2>
+          <div className="space-y-2">
+            {quickStats.map((stat, i) => (
+              <div key={i} className="flex justify-between items-center p-2 rounded-xl bg-white/40">
+                <span className="text-xs font-medium text-gray-700">{stat.label}</span>
+                <span className="text-sm font-bold text-brand-deep">{stat.value}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Upcoming Events */}
+        <div className="col-span-4 glass p-3 rounded-2xl border border-white/20 overflow-hidden flex flex-col">
+          <h2 className="text-sm font-bold text-brand-deep mb-2 flex items-center gap-2">
+            <Calendar size={16} />
+            Upcoming Events
           </h2>
-          <div className="space-y-4">
-            <div className="flex justify-between items-center p-4 rounded-2xl bg-white/30">
-              <span className="font-medium text-gray-700">Today's Attendance</span>
-              <span className="font-bold text-brand-deep">92%</span>
-            </div>
-            <div className="flex justify-between items-center p-4 rounded-2xl bg-white/30">
-              <span className="font-medium text-gray-700">Pending Invoices</span>
-              <span className="font-bold text-brand-deep">23</span>
-            </div>
-            <div className="flex justify-between items-center p-4 rounded-2xl bg-white/30">
-              <span className="font-medium text-gray-700">Unread Messages</span>
-              <span className="font-bold text-brand-deep">7</span>
-            </div>
-            <div className="flex justify-between items-center p-4 rounded-2xl bg-white/30">
-              <span className="font-medium text-gray-700">Active Classes</span>
-              <span className="font-bold text-brand-deep">42</span>
-            </div>
+          <div className="space-y-2 overflow-y-auto flex-1 scrollbar-thin pr-1">
+            {upcomingEvents.map((event, i) => (
+              <div key={i} className="p-2 rounded-xl bg-white/40 hover:bg-white/60 transition-colors border border-white/10">
+                <div className="flex items-start gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-dream-pink to-dream-lavender flex items-center justify-center flex-shrink-0">
+                    <BookOpen size={14} className="text-brand-deep" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-xs font-semibold text-brand-deep">{event.title}</h3>
+                    <p className="text-xs text-gray-600">{event.date}</p>
+                    <p className="text-xs text-gray-500">{event.class}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>

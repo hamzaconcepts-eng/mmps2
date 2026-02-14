@@ -2,23 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap');
-
 @layer base {
   :root {
-    --font-cairo: 'Cairo', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-system: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   }
 
   body {
     @apply bg-gradient-dreamy text-text-primary;
-    font-family: var(--font-cairo);
+    font-family: var(--font-system);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   /* RTL Support */
   [dir='rtl'] {
-    font-family: var(--font-cairo);
+    font-family: var(--font-system);
   }
 
   /* Glass morphism utilities */
@@ -88,86 +86,12 @@
 }
 
 @layer components {
-  /* Animated background orbs */
+  /* Static background orbs - no animation for better performance */
   .dream-orb {
     position: absolute;
     border-radius: 50%;
-    filter: blur(100px);
-    opacity: 0.4;
-    pointer-events: none;
-  }
-
-  @keyframes driftA {
-    0% {
-      transform: translate(0, 0) scale(1);
-    }
-    100% {
-      transform: translate(30px, -20px) scale(1.05);
-    }
-  }
-
-  @keyframes driftB {
-    0% {
-      transform: translate(0, 0);
-    }
-    100% {
-      transform: translate(-25px, 15px) scale(1.08);
-    }
-  }
-
-  @keyframes driftC {
-    0% {
-      transform: translate(0, 0) scale(1);
-    }
-    100% {
-      transform: translate(20px, 20px) scale(0.95);
-    }
-  }
-
-  .orb-1 {
-    width: 500px;
-    height: 500px;
-    background: #F5D5E0;
-    top: -10%;
-    left: 10%;
-    animation: driftA 20s ease-in-out infinite alternate;
-  }
-
-  .orb-2 {
-    width: 450px;
-    height: 450px;
-    background: #D2ECF2;
-    bottom: 5%;
-    right: -5%;
-    animation: driftB 25s ease-in-out infinite alternate;
-  }
-
-  .orb-3 {
-    width: 350px;
-    height: 350px;
-    background: #E8DFF5;
-    top: 40%;
-    left: 50%;
-    animation: driftC 18s ease-in-out infinite alternate;
-  }
-
-  .orb-4 {
-    width: 300px;
-    height: 300px;
-    background: #FDE8D8;
-    bottom: 20%;
-    left: 15%;
-    animation: driftA 22s ease-in-out infinite alternate;
+    filter: blur(80px);
     opacity: 0.3;
-  }
-
-  .orb-5 {
-    width: 250px;
-    height: 250px;
-    background: #D5F0E8;
-    top: 15%;
-    right: 20%;
-    animation: driftB 16s ease-in-out infinite alternate;
-    opacity: 0.35;
+    pointer-events: none;
   }
 }
