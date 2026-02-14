@@ -48,10 +48,10 @@ CREATE TYPE gender AS ENUM (
 -- Profiles (extends Supabase auth.users)
 CREATE TABLE profiles (
   id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+  username TEXT UNIQUE NOT NULL,
   role user_role NOT NULL,
   full_name TEXT NOT NULL,
   full_name_ar TEXT NOT NULL,
-  email TEXT UNIQUE NOT NULL,
   phone TEXT,
   avatar_url TEXT,
   is_active BOOLEAN DEFAULT true,
@@ -386,7 +386,7 @@ CREATE TABLE audit_logs (
 -- ================================================
 
 CREATE INDEX idx_profiles_role ON profiles(role);
-CREATE INDEX idx_profiles_email ON profiles(email);
+CREATE INDEX idx_profiles_username ON profiles(username);
 CREATE INDEX idx_students_class ON students(class_id);
 CREATE INDEX idx_students_active ON students(is_active);
 CREATE INDEX idx_students_student_id ON students(student_id);

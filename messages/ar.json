@@ -82,14 +82,14 @@
   "auth": {
     "signIn": "تسجيل الدخول",
     "signOut": "تسجيل الخروج",
-    "email": "البريد الإلكتروني",
+    "username": "اسم المستخدم",
     "password": "كلمة المرور",
     "forgotPassword": "نسيت كلمة المرور؟",
     "rememberMe": "تذكرني",
     "noAccount": "ليس لديك حساب؟",
     "hasAccount": "لديك حساب بالفعل؟",
     "signUp": "إنشاء حساب",
-    "invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة",
+    "invalidCredentials": "اسم المستخدم أو كلمة المرور غير صحيحة",
     "sessionExpired": "انتهت صلاحية جلستك. يرجى تسجيل الدخول مرة أخرى."
   },
   "student": {

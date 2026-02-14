@@ -15,10 +15,10 @@ export interface Database {
       profiles: {
         Row: {
           id: string
+          username: string
           role: Database['public']['Enums']['user_role']
           full_name: string
           full_name_ar: string
-          email: string
           phone: string | null
           avatar_url: string | null
           is_active: boolean
@@ -27,10 +27,10 @@ export interface Database {
         }
         Insert: {
           id: string
+          username: string
           role: Database['public']['Enums']['user_role']
           full_name: string
           full_name_ar: string
-          email: string
           phone?: string | null
           avatar_url?: string | null
           is_active?: boolean
@@ -39,10 +39,10 @@ export interface Database {
         }
         Update: {
           id?: string
+          username?: string
           role?: Database['public']['Enums']['user_role']
           full_name?: string
           full_name_ar?: string
-          email?: string
           phone?: string | null
           avatar_url?: string | null
           is_active?: boolean

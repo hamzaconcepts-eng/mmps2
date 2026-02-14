@@ -6,12 +6,13 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase/client';
-import { Mail, Lock, AlertCircle, Loader2 } from 'lucide-react';
+import { usernameToEmail } from '@/lib/auth/helpers';
+import { User, Lock, AlertCircle, Loader2 } from 'lucide-react';
 
 export default function LoginPage({ params: { locale } }: { params: { locale: string } }) {
   const t = useTranslations();
   const router = useRouter();
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -22,6 +23,9 @@ export default function LoginPage({ params: { locale } }: { params: { locale: st
     setLoading(true);
 
     try {
+      // Convert username to email format for Supabase
+      const email = usernameToEmail(username);
+
       const { data, error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -84,26 +88,27 @@ export default function LoginPage({ params: { locale } }: { params: { locale: st
               </div>
             )}
 
-            {/* Email Field */}
+            {/* Username Field */}
             <div className="space-y-2">
-              <label htmlFor="email" className="block text-sm font-semibold text-gray-700">
-                {t('auth.email')}
+              <label htmlFor="username" className="block text-sm font-semibold text-gray-700">
+                {t('auth.username')}
               </label>
               <div className="relative">
-                <Mail size={20} className="absolute top-1/2 -translate-y-1/2 text-gray-400"
+                <User size={20} className="absolute top-1/2 -translate-y-1/2 text-gray-400"
                       style={{ [locale === 'ar' ? 'right' : 'left']: '1rem' }} />
                 <input
-                  id="email"
-                  type="email"
+                  id="username"
+                  type="text"
                   required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   className={`w-full bg-white/50 border border-gray-200 rounded-2xl py-3
                             ${locale === 'ar' ? 'pr-12 pl-4' : 'pl-12 pr-4'}
                             focus:outline-none focus:ring-2 focus:ring-brand-sky focus:border-transparent
                             transition-all duration-200`}
-                  placeholder={t('auth.email')}
+                  placeholder={t('auth.username')}
                   disabled={loading}
+                  autoComplete="username"
                 />
               </div>
             </div>
@@ -128,6 +133,7 @@ export default function LoginPage({ params: { locale } }: { params: { locale: st
                             transition-all duration-200`}
                   placeholder={t('auth.password')}
                   disabled={loading}
+                  autoComplete="current-password"
                 />
               </div>
             </div>
