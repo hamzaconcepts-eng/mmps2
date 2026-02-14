@@ -1,12 +1,13 @@
 import Sidebar from '@/components/Sidebar';
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
-  params: { locale },
+  params,
 }: {
   children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }) {
+  const { locale } = await params;
   const isRTL = locale === 'ar';
 
   return (
