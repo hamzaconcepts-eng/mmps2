@@ -1,0 +1,177 @@
+{
+  "common": {
+    "appName": "Mashaail School Management System",
+    "schoolName": "Mashaail Muscat Private School",
+    "welcome": "Welcome",
+    "login": "Login",
+    "logout": "Logout",
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "settings": "Settings",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "filter": "Filter",
+    "export": "Export",
+    "print": "Print",
+    "loading": "Loading...",
+    "noData": "No data available",
+    "error": "An error occurred",
+    "success": "Operation completed successfully"
+  },
+  "navigation": {
+    "home": "Home",
+    "students": "Students",
+    "teachers": "Teachers",
+    "classes": "Classes",
+    "subjects": "Subjects",
+    "attendance": "Attendance",
+    "grades": "Grades",
+    "exams": "Exams",
+    "timetable": "Timetable",
+    "finance": "Finance",
+    "invoices": "Invoices",
+    "payments": "Payments",
+    "messages": "Messages",
+    "announcements": "Announcements",
+    "reports": "Reports",
+    "administration": "Administration"
+  },
+  "roles": {
+    "owner": "Owner",
+    "admin": "Administrator",
+    "teacher": "Teacher",
+    "class_supervisor": "Class Supervisor",
+    "student": "Student",
+    "parent": "Parent",
+    "accountant": "Accountant"
+  },
+  "landing": {
+    "hero": {
+      "title": "Mashaail School Management System",
+      "subtitle": "Comprehensive school management solution for the digital age",
+      "description": "A complete platform for managing students, teachers, academics, and finance in one unified system.",
+      "cta": "Get Started"
+    },
+    "features": {
+      "students": {
+        "title": "Student Management",
+        "description": "Complete student records, enrollment tracking, and family connections"
+      },
+      "teachers": {
+        "title": "Teacher Portal",
+        "description": "Manage staff, assignments, and professional development"
+      },
+      "academics": {
+        "title": "Academic Excellence",
+        "description": "Grades, attendance, exams, and comprehensive reporting"
+      },
+      "finance": {
+        "title": "Financial Management",
+        "description": "Invoices, payments, and complete financial tracking"
+      }
+    },
+    "tech": {
+      "title": "Built with Modern Technology",
+      "stack": "Next.js 15 • React 19 • TypeScript • Supabase • Tailwind CSS"
+    }
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "email": "Email Address",
+    "password": "Password",
+    "forgotPassword": "Forgot Password?",
+    "rememberMe": "Remember Me",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "signUp": "Sign Up",
+    "invalidCredentials": "Invalid email or password",
+    "sessionExpired": "Your session has expired. Please sign in again."
+  },
+  "student": {
+    "studentId": "Student ID",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "dateOfBirth": "Date of Birth",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
+    "nationality": "Nationality",
+    "class": "Class",
+    "enrollmentDate": "Enrollment Date",
+    "guardian": "Guardian",
+    "medicalNotes": "Medical Notes",
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "teacher": {
+    "employeeId": "Employee ID",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "specialization": "Specialization",
+    "qualifications": "Qualifications",
+    "hireDate": "Hire Date",
+    "subjects": "Subjects",
+    "classes": "Classes"
+  },
+  "class": {
+    "className": "Class Name",
+    "gradeLevel": "Grade Level",
+    "section": "Section",
+    "academicYear": "Academic Year",
+    "supervisor": "Class Supervisor",
+    "roomNumber": "Room Number",
+    "capacity": "Capacity",
+    "students": "Students",
+    "subjects": "Subjects"
+  },
+  "attendance": {
+    "date": "Date",
+    "period": "Period",
+    "status": "Status",
+    "present": "Present",
+    "absent": "Absent",
+    "late": "Late",
+    "excused": "Excused",
+    "notes": "Notes",
+    "takeAttendance": "Take Attendance",
+    "viewHistory": "View History"
+  },
+  "grades": {
+    "exam": "Exam",
+    "score": "Score",
+    "maxScore": "Max Score",
+    "percentage": "Percentage",
+    "status": "Status",
+    "draft": "Draft",
+    "submitted": "Submitted",
+    "locked": "Locked",
+    "remarks": "Remarks",
+    "submitGrades": "Submit Grades",
+    "lockGrades": "Lock Grades"
+  },
+  "finance": {
+    "invoice": "Invoice",
+    "invoiceNumber": "Invoice Number",
+    "totalAmount": "Total Amount",
+    "paidAmount": "Paid Amount",
+    "dueAmount": "Due Amount",
+    "dueDate": "Due Date",
+    "status": "Status",
+    "pending": "Pending",
+    "paid": "Paid",
+    "overdue": "Overdue",
+    "cancelled": "Cancelled",
+    "payment": "Payment",
+    "paymentNumber": "Payment Number",
+    "paymentDate": "Payment Date",
+    "paymentMethod": "Payment Method",
+    "cash": "Cash",
+    "card": "Card",
+    "bankTransfer": "Bank Transfer"
+  }
+}

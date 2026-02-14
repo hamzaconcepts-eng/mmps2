@@ -1,0 +1,177 @@
+{
+  "common": {
+    "appName": "نظام إدارة مدرسة مشاعل",
+    "schoolName": "مدرسة مشاعل مسقط الخاصة",
+    "welcome": "مرحباً",
+    "login": "تسجيل الدخول",
+    "logout": "تسجيل الخروج",
+    "dashboard": "لوحة التحكم",
+    "profile": "الملف الشخصي",
+    "settings": "الإعدادات",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "add": "إضافة",
+    "search": "بحث",
+    "filter": "تصفية",
+    "export": "تصدير",
+    "print": "طباعة",
+    "loading": "جاري التحميل...",
+    "noData": "لا توجد بيانات",
+    "error": "حدث خطأ",
+    "success": "تمت العملية بنجاح"
+  },
+  "navigation": {
+    "home": "الرئيسية",
+    "students": "الطلاب",
+    "teachers": "المعلمون",
+    "classes": "الفصول",
+    "subjects": "المواد",
+    "attendance": "الحضور",
+    "grades": "الدرجات",
+    "exams": "الامتحانات",
+    "timetable": "الجدول الدراسي",
+    "finance": "المالية",
+    "invoices": "الفواتير",
+    "payments": "المدفوعات",
+    "messages": "الرسائل",
+    "announcements": "الإعلانات",
+    "reports": "التقارير",
+    "administration": "الإدارة"
+  },
+  "roles": {
+    "owner": "المالك",
+    "admin": "المدير",
+    "teacher": "معلم",
+    "class_supervisor": "مشرف الفصل",
+    "student": "طالب",
+    "parent": "ولي أمر",
+    "accountant": "محاسب"
+  },
+  "landing": {
+    "hero": {
+      "title": "نظام إدارة مدرسة مشاعل",
+      "subtitle": "حل شامل لإدارة المدارس للعصر الرقمي",
+      "description": "منصة متكاملة لإدارة الطلاب والمعلمين والشؤون الأكاديمية والمالية في نظام موحد.",
+      "cta": "ابدأ الآن"
+    },
+    "features": {
+      "students": {
+        "title": "إدارة الطلاب",
+        "description": "سجلات الطلاب الكاملة وتتبع القيد والروابط العائلية"
+      },
+      "teachers": {
+        "title": "بوابة المعلمين",
+        "description": "إدارة الموظفين والمهام والتطوير المهني"
+      },
+      "academics": {
+        "title": "التميز الأكاديمي",
+        "description": "الدرجات والحضور والامتحانات والتقارير الشاملة"
+      },
+      "finance": {
+        "title": "الإدارة المالية",
+        "description": "الفواتير والمدفوعات والتتبع المالي الكامل"
+      }
+    },
+    "tech": {
+      "title": "مبني بتقنيات حديثة",
+      "stack": "Next.js 15 • React 19 • TypeScript • Supabase • Tailwind CSS"
+    }
+  },
+  "auth": {
+    "signIn": "تسجيل الدخول",
+    "signOut": "تسجيل الخروج",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "rememberMe": "تذكرني",
+    "noAccount": "ليس لديك حساب؟",
+    "hasAccount": "لديك حساب بالفعل؟",
+    "signUp": "إنشاء حساب",
+    "invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة",
+    "sessionExpired": "انتهت صلاحية جلستك. يرجى تسجيل الدخول مرة أخرى."
+  },
+  "student": {
+    "studentId": "رقم الطالب",
+    "firstName": "الاسم الأول",
+    "lastName": "اسم العائلة",
+    "dateOfBirth": "تاريخ الميلاد",
+    "gender": "الجنس",
+    "male": "ذكر",
+    "female": "أنثى",
+    "nationality": "الجنسية",
+    "class": "الفصل",
+    "enrollmentDate": "تاريخ القيد",
+    "guardian": "ولي الأمر",
+    "medicalNotes": "ملاحظات طبية",
+    "active": "نشط",
+    "inactive": "غير نشط"
+  },
+  "teacher": {
+    "employeeId": "رقم الموظف",
+    "firstName": "الاسم الأول",
+    "lastName": "اسم العائلة",
+    "specialization": "التخصص",
+    "qualifications": "المؤهلات",
+    "hireDate": "تاريخ التعيين",
+    "subjects": "المواد",
+    "classes": "الفصول"
+  },
+  "class": {
+    "className": "اسم الفصل",
+    "gradeLevel": "المستوى الدراسي",
+    "section": "الشعبة",
+    "academicYear": "السنة الدراسية",
+    "supervisor": "مشرف الفصل",
+    "roomNumber": "رقم الغرفة",
+    "capacity": "السعة",
+    "students": "الطلاب",
+    "subjects": "المواد"
+  },
+  "attendance": {
+    "date": "التاريخ",
+    "period": "الحصة",
+    "status": "الحالة",
+    "present": "حاضر",
+    "absent": "غائب",
+    "late": "متأخر",
+    "excused": "غياب بعذر",
+    "notes": "ملاحظات",
+    "takeAttendance": "تسجيل الحضور",
+    "viewHistory": "عرض السجل"
+  },
+  "grades": {
+    "exam": "الامتحان",
+    "score": "الدرجة",
+    "maxScore": "الدرجة الكاملة",
+    "percentage": "النسبة المئوية",
+    "status": "الحالة",
+    "draft": "مسودة",
+    "submitted": "مقدم",
+    "locked": "مقفل",
+    "remarks": "ملاحظات",
+    "submitGrades": "تقديم الدرجات",
+    "lockGrades": "قفل الدرجات"
+  },
+  "finance": {
+    "invoice": "الفاتورة",
+    "invoiceNumber": "رقم الفاتورة",
+    "totalAmount": "المبلغ الإجمالي",
+    "paidAmount": "المبلغ المدفوع",
+    "dueAmount": "المبلغ المستحق",
+    "dueDate": "تاريخ الاستحقاق",
+    "status": "الحالة",
+    "pending": "معلق",
+    "paid": "مدفوع",
+    "overdue": "متأخر",
+    "cancelled": "ملغى",
+    "payment": "الدفع",
+    "paymentNumber": "رقم الدفع",
+    "paymentDate": "تاريخ الدفع",
+    "paymentMethod": "طريقة الدفع",
+    "cash": "نقدي",
+    "card": "بطاقة",
+    "bankTransfer": "تحويل بنكي"
+  }
+}
