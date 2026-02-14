@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mashaail SMS — Dreamy Brand Style Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900&family=Noto+Kufi+Arabic:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* === MMPS BRAND — DREAMY SHIFT === */
+    --brand-deep: #1B5E6B;
+    --brand-deep-soft: #2A7A8A;
+    --brand-sky: #6FBDD1;
+    --brand-sky-soft: #8ECEE0;
+    --brand-ice: #AEDAE5;
+    --brand-ice-light: #D2ECF2;
+    --brand-silver: #C8CDD0;
+    --brand-orange: #E8941A;
+    --brand-orange-warm: #F0A63E;
+
+    /* === DREAMY PALETTE === */
+    --dream-pink: #F5D5E0;
+    --dream-pink-soft: #FAEAF0;
+    --dream-lavender: #E8DFF5;
+    --dream-lavender-soft: #F3EEFA;
+    --dream-peach: #FDE8D8;
+    --dream-peach-soft: #FFF4EC;
+    --dream-mint: #D5F0E8;
+    --dream-mint-soft: #EAFAF5;
+    --dream-sky: #D8EEF8;
+    --dream-sky-soft: #EDF7FC;
+    --dream-yellow: #FFF3D6;
+    --dream-yellow-soft: #FFFAED;
+
+    /* === GRADIENT BG === */
+    --gradient-dreamy: linear-gradient(135deg, #FAEAF0 0%, #EDF7FC 30%, #F3EEFA 60%, #FFF4EC 100%);
+    --gradient-card: linear-gradient(145deg, rgba(255,255,255,0.85), rgba(255,255,255,0.55));
+    --gradient-card-hover: linear-gradient(145deg, rgba(255,255,255,0.95), rgba(255,255,255,0.7));
+    --gradient-warm: linear-gradient(135deg, #FDE8D8, #F5D5E0, #E8DFF5);
+    --gradient-cool: linear-gradient(135deg, #D8EEF8, #D5F0E8, #E8DFF5);
+    --gradient-brand: linear-gradient(135deg, var(--brand-ice-light), var(--dream-lavender-soft), var(--dream-peach-soft));
+
+    /* === TEXT === */
+    --text-primary: #2D3748;
+    --text-secondary: rgba(45,55,72,0.6);
+    --text-tertiary: rgba(45,55,72,0.35);
+    --text-brand: var(--brand-deep);
+
+    /* === GLASS === */
+    --glass-bg: rgba(255,255,255,0.6);
+    --glass-bg-strong: rgba(255,255,255,0.8);
+    --glass-border: rgba(255,255,255,0.7);
+    --glass-border-hover: rgba(255,255,255,0.9);
+    --glass-shadow: 0 8px 32px rgba(27,94,107,0.08);
+    --glass-shadow-hover: 0 12px 40px rgba(27,94,107,0.12);
+
+    /* === SEMANTIC === */
+    --success: #4ADE80;
+    --success-soft: #D5F5E3;
+    --warning: #FBBF24;
+    --warning-soft: #FEF3C7;
+    --danger: #F87171;
+    --danger-soft: #FEE2E2;
+
+    /* === SIZING === */
+    --radius-sm: 12px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-xl: 32px;
+    --radius-full: 999px;
+
+    --font-latin: 'Nunito', -apple-system, sans-serif;
+    --font-arabic: 'Noto Kufi Arabic', 'Nunito', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    color: var(--text-primary);
+    min-height: 100vh;
+  }
+
+  body.lang-en { font-family: var(--font-latin); direction: ltr; }
+  body.lang-ar { font-family: var(--font-arabic); direction: rtl; }
+
+  .en-i { display: inline; } .ar-i { display: none; }
+  body.lang-ar .en-i { display: none; } body.lang-ar .ar-i { display: inline; }
+
+  /* === ANIMATED DREAMY BG === */
+  .dream-bg {
+    position: fixed; inset: 0; z-index: 0;
+    background: var(--gradient-dreamy);
+    overflow: hidden;
+  }
+
+  .dream-orb {
+    position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.4;
+  }
+
+  .dream-orb.o1 { width: 500px; height: 500px; background: var(--dream-pink); top: -10%; left: 10%; animation: driftA 20s ease-in-out infinite alternate; }
+  .dream-orb.o2 { width: 450px; height: 450px; background: var(--brand-ice-light); bottom: 5%; right: -5%; animation: driftB 25s ease-in-out infinite alternate; }
+  .dream-orb.o3 { width: 350px; height: 350px; background: var(--dream-lavender); top: 40%; left: 50%; animation: driftC 18s ease-in-out infinite alternate; }
+  .dream-orb.o4 { width: 300px; height: 300px; background: var(--dream-peach); bottom: 20%; left: 15%; animation: driftA 22s ease-in-out infinite alternate; opacity: 0.3; }
+  .dream-orb.o5 { width: 250px; height: 250px; background: var(--dream-mint); top: 15%; right: 20%; animation: driftB 16s ease-in-out infinite alternate; opacity: 0.35; }
+
+  @keyframes driftA { 0% { transform: translate(0,0) scale(1); } 100% { transform: translate(30px,-20px) scale(1.05); } }
+  @keyframes driftB { 0% { transform: translate(0,0); } 100% { transform: translate(-25px,15px) scale(1.08); } }
+  @keyframes driftC { 0% { transform: translate(0,0) scale(1); } 100% { transform: translate(20px,20px) scale(0.95); } }
+
+  /* === STICKY LANG BAR === */
+  .lang-bar {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(255,255,255,0.65);
+    backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+    border-bottom: 1px solid rgba(255,255,255,0.5);
+    box-shadow: 0 4px 20px rgba(27,94,107,0.06);
+  }
+
+  .lang-bar-inner { display: flex; align-items: center; justify-content: space-between; max-width: 1000px; margin: 0 auto; padding: 0 28px; }
+  .lang-bar-brand { display: flex; align-items: center; gap: 10px; padding: 12px 0; }
+  .lang-bar-brand .li { width: 32px; height: 32px; background: linear-gradient(135deg, var(--brand-orange-warm), var(--brand-orange)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 15px; box-shadow: 0 3px 12px rgba(232,148,26,0.25); }
+  .lang-bar-brand span { font-family: var(--font-latin); font-size: 15px; font-weight: 800; color: var(--brand-deep); }
+  .lang-tabs { display: flex; background: rgba(27,94,107,0.06); border-radius: var(--radius-full); padding: 3px; }
+  .lang-tab { font-size: 13px; font-weight: 700; padding: 8px 24px; border-radius: var(--radius-full); border: none; cursor: pointer; transition: all 0.25s; color: var(--text-secondary); background: none; }
+  .lang-tab.en { font-family: var(--font-latin); } .lang-tab.ar { font-family: var(--font-arabic); }
+  .lang-tab.active { background: white; color: var(--brand-deep); box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+  .lang-tab:hover:not(.active) { color: var(--text-primary); }
+
+  /* === PAGE === */
+  .page { max-width: 1000px; margin: 0 auto; padding: 44px 28px 120px; position: relative; z-index: 1; }
+
+  .page-header { text-align: center; margin-bottom: 8px; }
+  .page-logo { width: 72px; height: 72px; background: linear-gradient(135deg, var(--brand-orange-warm), var(--brand-orange)); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 16px; box-shadow: 0 8px 28px rgba(232,148,26,0.2); }
+  .page-title { font-size: 32px; font-weight: 900; color: var(--brand-deep); }
+  .page-subtitle { font-size: 14px; color: var(--text-secondary); margin-bottom: 16px; text-align: center; }
+
+  .tech-stack { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 48px; }
+  .tech-badge { font-family: var(--font-latin); font-size: 11px; font-weight: 700; padding: 5px 14px; border-radius: var(--radius-full); background: rgba(255,255,255,0.7); color: var(--brand-deep); border: 1px solid rgba(255,255,255,0.8); backdrop-filter: blur(8px); }
+
+  .section { margin-bottom: 56px; }
+
+  .section-title {
+    font-size: 11px; font-weight: 800; letter-spacing: 2.5px;
+    text-transform: uppercase; color: var(--brand-deep-soft); opacity: 0.6;
+    margin-bottom: 20px; padding-bottom: 10px;
+    border-bottom: 2px solid rgba(27,94,107,0.08);
+  }
+
+  body.lang-ar .section-title { text-align: right; letter-spacing: 0.5px; font-size: 13px; }
+
+  /* === GLASS CARD === */
+  .glass { background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); box-shadow: var(--glass-shadow); transition: all 0.3s; }
+  .glass:hover { background: var(--glass-bg-strong); box-shadow: var(--glass-shadow-hover); }
+  .glass-strong { background: var(--glass-bg-strong); }
+
+  /* ================================= */
+  /* DASHBOARD PREVIEW                 */
+  /* ================================= */
+  .dash-preview {
+    border-radius: var(--radius-xl); overflow: hidden;
+    display: grid; grid-template-columns: 190px 1fr;
+    min-height: 660px;
+    background: rgba(255,255,255,0.3);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.6);
+    box-shadow: 0 12px 48px rgba(27,94,107,0.08);
+  }
+
+  body.lang-ar .dash-preview { grid-template-columns: 1fr 190px; direction: ltr; }
+
+  .sidebar {
+    background: linear-gradient(180deg, var(--brand-deep), #174E5A);
+    padding: 20px 0; display: flex; flex-direction: column;
+    border-radius: var(--radius-xl) 0 0 var(--radius-xl);
+  }
+
+  body.lang-ar .sidebar { order: 2; border-radius: 0 var(--radius-xl) var(--radius-xl) 0; }
+  body.lang-ar .dash-main { order: 1; }
+
+  .sb-logo { display: flex; align-items: center; gap: 10px; padding: 0 18px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 14px; }
+  .sb-logo-icon { width: 34px; height: 34px; background: linear-gradient(135deg, var(--brand-orange-warm), var(--brand-orange)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 15px; box-shadow: 0 3px 10px rgba(232,148,26,0.3); }
+  .sb-logo span { font-family: var(--font-latin); font-size: 13px; font-weight: 800; color: white; }
+
+  .sb-label { font-size: 9px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.25); padding: 14px 20px 6px; font-family: var(--font-latin); }
+  .sb-nav { display: flex; flex-direction: column; gap: 2px; padding: 0 10px; }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 14px; border-radius: var(--radius-sm);
+    font-size: 12px; font-weight: 600;
+    color: rgba(255,255,255,0.5); cursor: pointer;
+    transition: all 0.2s; border: none; background: none;
+    font-family: var(--font-latin); width: 100%; text-align: left;
+  }
+
+  .nav-item:hover { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.06); }
+  .nav-item.active { color: var(--brand-deep); background: rgba(255,255,255,0.9); font-weight: 700; border-radius: var(--radius-sm); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .nav-icon { font-size: 14px; width: 20px; text-align: center; }
+  .sb-div { height: 1px; background: rgba(255,255,255,0.06); margin: 8px 18px; }
+
+  .dash-main { padding: 20px; display: flex; flex-direction: column; gap: 14px; background: transparent; }
+
+  .top-bar { display: flex; align-items: center; justify-content: space-between; }
+  .greeting { font-size: 15px; font-weight: 700; color: var(--brand-deep); }
+  .greeting span { color: var(--text-secondary); font-weight: 500; }
+  .top-right { display: flex; align-items: center; gap: 8px; }
+  .role-badge { font-family: var(--font-latin); font-size: 10px; font-weight: 800; padding: 5px 12px; border-radius: var(--radius-full); background: linear-gradient(135deg, var(--dream-peach), var(--dream-pink)); color: var(--brand-deep); }
+  .avatar-sm { width: 32px; height: 32px; border-radius: 12px; background: linear-gradient(135deg, var(--brand-deep), var(--brand-deep-soft)); color: var(--brand-ice); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; font-family: var(--font-latin); }
+
+  .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+
+  .stat-box {
+    padding: 16px 14px; display: flex; align-items: center; gap: 12px;
+    cursor: pointer; transition: all 0.25s;
+    background: rgba(255,255,255,0.65);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.7);
+    border-radius: var(--radius-md);
+    box-shadow: 0 4px 16px rgba(27,94,107,0.04);
+  }
+
+  .stat-box:hover { transform: translateY(-3px); background: rgba(255,255,255,0.85); box-shadow: 0 8px 24px rgba(27,94,107,0.08); }
+
+  .stat-icon {
+    width: 40px; height: 40px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; flex-shrink: 0;
+  }
+
+  .stat-icon.ic1 { background: linear-gradient(135deg, var(--dream-sky), var(--dream-mint)); }
+  .stat-icon.ic2 { background: linear-gradient(135deg, var(--dream-lavender), var(--dream-pink)); }
+  .stat-icon.ic3 { background: linear-gradient(135deg, var(--dream-mint), var(--dream-sky)); }
+  .stat-icon.ic4 { background: linear-gradient(135deg, var(--dream-peach), var(--dream-yellow)); }
+
+  .stat-info .stat-label { font-size: 10px; color: var(--text-secondary); font-weight: 600; }
+  .stat-info .stat-number { font-size: 20px; font-weight: 900; color: var(--brand-deep); line-height: 1.1; font-family: var(--font-latin); }
+
+  .content-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 12px; flex: 1; }
+
+  .card {
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.7);
+    border-radius: var(--radius-md); padding: 16px;
+    box-shadow: 0 4px 16px rgba(27,94,107,0.04);
+  }
+
+  .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .card-title { font-size: 13px; font-weight: 800; color: var(--brand-deep); }
+
+  .card-action {
+    font-size: 10px; font-weight: 700; color: var(--brand-deep-soft);
+    background: rgba(27,94,107,0.06); border: none;
+    border-radius: var(--radius-full); padding: 4px 12px;
+    cursor: pointer; font-family: var(--font-latin); transition: all 0.15s;
+  }
+
+  .card-action:hover { background: rgba(27,94,107,0.12); }
+
+  /* Mini table */
+  .mini-table { width: 100%; border-collapse: collapse; }
+  .mini-table th { font-size: 9px; font-weight: 800; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 1px; text-align: left; padding: 6px 8px; border-bottom: 1px solid rgba(27,94,107,0.06); font-family: var(--font-latin); }
+  .mini-table td { font-size: 11px; padding: 8px 8px; border-bottom: 1px solid rgba(27,94,107,0.03); font-family: var(--font-latin); color: var(--text-primary); }
+  .mini-table tr:last-child td { border-bottom: none; }
+
+  .pill-badge { font-size: 9px; font-weight: 800; padding: 3px 10px; border-radius: var(--radius-full); display: inline-block; }
+  .pill-badge.present { background: var(--success-soft); color: #166534; }
+  .pill-badge.absent { background: var(--danger-soft); color: #991b1b; }
+  .pill-badge.late { background: var(--warning-soft); color: #92400e; }
+
+  /* Quick actions */
+  .quick-actions { display: flex; flex-direction: column; gap: 6px; }
+  .quick-btn {
+    display: flex; align-items: center; gap: 10px;
+    padding: 11px 14px; border-radius: var(--radius-sm);
+    background: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.6);
+    font-size: 12px; font-weight: 700; color: var(--brand-deep);
+    cursor: pointer; transition: all 0.2s;
+    font-family: var(--font-latin); text-align: left; width: 100%;
+  }
+  .quick-btn:hover { background: rgba(255,255,255,0.8); transform: translateX(4px); }
+  .quick-btn .qicon { font-size: 16px; }
+
+  /* ================================= */
+  /* BRAND SWATCHES — BIG HERO         */
+  /* ================================= */
+  .brand-hero { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+
+  .brand-card {
+    border-radius: var(--radius-lg); overflow: hidden;
+    background: rgba(255,255,255,0.5);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.6);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+    transition: all 0.25s; cursor: pointer;
+  }
+
+  .brand-card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(0,0,0,0.08); }
+
+  .brand-block { height: 90px; display: flex; align-items: flex-end; padding: 12px; }
+  .brand-block .swatch-name { font-size: 12px; font-weight: 800; }
+  .brand-block.dk { color: white; } .brand-block.lt { color: var(--brand-deep); }
+
+  .brand-meta { padding: 12px; }
+  .brand-meta .hex { font-size: 13px; font-weight: 800; color: var(--text-primary); font-family: var(--font-latin); }
+  .brand-meta .desc { font-size: 10px; color: var(--text-secondary); margin-top: 2px; }
+
+  /* ================================= */
+  /* FONT CARDS                        */
+  /* ================================= */
+  .font-showcase { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+
+  .font-card {
+    background: rgba(255,255,255,0.65);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.7);
+    border-radius: var(--radius-lg); padding: 32px 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    text-align: center;
+  }
+
+  .font-card .preview { font-size: 28px; font-weight: 800; color: var(--brand-deep); margin-bottom: 16px; line-height: 1.3; }
+  .font-card.arabic .preview { font-family: var(--font-arabic); direction: rtl; }
+  .font-card.latin .preview { font-family: var(--font-latin); }
+  .font-card .font-name { font-size: 12px; font-weight: 800; color: var(--brand-sky); }
+  .font-card .font-sub { font-size: 11px; color: var(--text-tertiary); }
+
+  /* Weight scale */
+  .weight-scale { background: rgba(255,255,255,0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.7); border-radius: var(--radius-lg); overflow: hidden; }
+  .weight-row { display: flex; align-items: center; gap: 20px; padding: 12px 20px; border-bottom: 1px solid rgba(27,94,107,0.04); }
+  .weight-row:last-child { border-bottom: none; }
+  .weight-meta { min-width: 85px; }
+  .weight-meta .w-name { font-size: 11px; font-weight: 700; color: var(--text-primary); }
+  .weight-meta .w-val { font-size: 10px; color: var(--text-tertiary); font-family: var(--font-latin); }
+  .weight-sample { flex: 1; display: flex; gap: 20px; align-items: baseline; flex-wrap: wrap; }
+  .weight-sample .latin { font-family: var(--font-latin); color: var(--brand-deep); font-size: 15px; }
+  .weight-sample .arabic { font-family: var(--font-arabic); color: var(--brand-deep); direction: rtl; font-size: 15px; }
+
+  /* ================================= */
+  /* TYPOGRAPHY                        */
+  /* ================================= */
+  .type-samples { display: flex; flex-direction: column; gap: 4px; }
+  .type-row { display: flex; align-items: baseline; gap: 16px; padding: 10px 0; border-bottom: 1px solid rgba(27,94,107,0.04); }
+  body.lang-ar .type-row { flex-direction: row-reverse; }
+  .type-label { color: var(--text-tertiary); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; min-width: 75px; font-family: var(--font-latin); }
+  .type-dual { display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; }
+  .type-dual .latin { font-family: var(--font-latin); }
+  .type-dual .arabic { font-family: var(--font-arabic); direction: rtl; }
+
+  .t-display { font-size: 30px; font-weight: 900; color: var(--brand-deep); }
+  .t-display-ar { font-size: 26px; font-weight: 900; color: var(--brand-deep); }
+  .t-heading { font-size: 18px; font-weight: 800; color: var(--brand-deep); }
+  .t-heading-ar { font-size: 16px; font-weight: 700; color: var(--brand-deep); }
+  .t-sub { font-size: 14px; font-weight: 600; color: var(--text-secondary); }
+  .t-body { font-size: 13px; font-weight: 500; color: var(--text-secondary); }
+  .t-stat { font-size: 32px; font-weight: 900; color: var(--brand-deep); font-family: var(--font-latin); }
+  .t-stat span { font-size: 13px; color: var(--text-tertiary); font-weight: 600; }
+  .t-accent { font-size: 13px; font-weight: 800; color: var(--brand-sky); }
+  .t-warn { font-size: 13px; font-weight: 800; color: var(--brand-orange); }
+
+  /* ================================= */
+  /* BUTTONS                           */
+  /* ================================= */
+  .button-group { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+  body.lang-ar .button-group { flex-direction: row-reverse; }
+
+  .btn {
+    font-weight: 700; font-size: 13px; border: none; cursor: pointer;
+    transition: all 0.25s; display: inline-flex; align-items: center;
+    gap: 6px; border-radius: var(--radius-full); padding: 11px 24px;
+  }
+
+  body.lang-en .btn { font-family: var(--font-latin); }
+  body.lang-ar .btn { font-family: var(--font-arabic); font-size: 12px; }
+  .btn:hover { transform: translateY(-2px); }
+  .btn:active { transform: scale(0.97); }
+
+  .btn-brand { background: linear-gradient(135deg, var(--brand-deep), var(--brand-deep-soft)); color: white; box-shadow: 0 4px 16px rgba(27,94,107,0.2); }
+  .btn-brand:hover { box-shadow: 0 8px 24px rgba(27,94,107,0.3); }
+  .btn-sky { background: linear-gradient(135deg, var(--brand-sky), var(--brand-sky-soft)); color: var(--brand-deep); font-weight: 800; }
+  .btn-orange { background: linear-gradient(135deg, var(--brand-orange), var(--brand-orange-warm)); color: white; box-shadow: 0 4px 16px rgba(232,148,26,0.2); }
+  .btn-success { background: linear-gradient(135deg, #4ADE80, #86EFAC); color: #166534; }
+  .btn-danger { background: linear-gradient(135deg, #F87171, #FCA5A5); color: #991b1b; }
+  .btn-glass { background: rgba(255,255,255,0.5); backdrop-filter: blur(8px); color: var(--brand-deep); border: 1px solid rgba(255,255,255,0.6); }
+  .btn-glass:hover { background: rgba(255,255,255,0.75); }
+  .btn-ghost { background: transparent; color: var(--text-secondary); }
+  .btn-ghost:hover { color: var(--brand-deep); background: rgba(255,255,255,0.3); }
+
+  /* Badges */
+  .badges-group { display: flex; flex-wrap: wrap; gap: 8px; }
+  .badge { padding: 5px 16px; border-radius: var(--radius-full); font-size: 11px; font-weight: 800; }
+  .badge-brand { background: var(--dream-sky); color: var(--brand-deep); }
+  .badge-orange { background: var(--dream-peach); color: var(--brand-orange); }
+  .badge-success { background: var(--success-soft); color: #166534; }
+  .badge-warning { background: var(--warning-soft); color: #92400e; }
+  .badge-danger { background: var(--danger-soft); color: #991b1b; }
+  .badge-dark { background: var(--brand-deep); color: var(--brand-ice); }
+  .badge-lavender { background: var(--dream-lavender); color: #5B21B6; }
+  .badge-pink { background: var(--dream-pink); color: #9D174D; }
+
+  /* Chips */
+  .chips-group { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { padding: 7px 18px; border-radius: var(--radius-full); font-size: 12px; font-weight: 700; cursor: pointer; border: 1px solid rgba(255,255,255,0.6); background: rgba(255,255,255,0.5); color: var(--text-secondary); transition: all 0.2s; backdrop-filter: blur(8px); }
+  body.lang-en .chip { font-family: var(--font-latin); }
+  body.lang-ar .chip { font-family: var(--font-arabic); }
+  .chip:hover { background: rgba(255,255,255,0.8); color: var(--brand-deep); }
+  .chip.active { background: var(--brand-deep); color: white; border-color: var(--brand-deep); }
+  .chip.active-orange { background: var(--brand-orange); color: white; border-color: var(--brand-orange); }
+
+  /* Tabs */
+  .comp-tabs { display: inline-flex; background: rgba(255,255,255,0.5); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.6); border-radius: var(--radius-full); padding: 4px; }
+  .comp-tab { font-size: 12px; font-weight: 700; padding: 8px 22px; border-radius: var(--radius-full); background: none; color: var(--text-tertiary); border: none; cursor: pointer; transition: all 0.2s; }
+  body.lang-en .comp-tab { font-family: var(--font-latin); }
+  body.lang-ar .comp-tab { font-family: var(--font-arabic); }
+  .comp-tab.active { background: white; color: var(--brand-deep); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+
+  /* Inputs */
+  .input-group { display: flex; flex-direction: column; gap: 14px; max-width: 420px; }
+  .input-wrapper label { display: block; font-size: 11px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px; }
+  .form-input { width: 100%; background: rgba(255,255,255,0.6); backdrop-filter: blur(8px); border: 1.5px solid rgba(255,255,255,0.7); border-radius: var(--radius-sm); padding: 12px 16px; font-size: 13px; color: var(--text-primary); outline: none; transition: all 0.2s; }
+  body.lang-en .form-input { font-family: var(--font-latin); }
+  body.lang-ar .form-input { font-family: var(--font-arabic); direction: rtl; text-align: right; }
+  .form-input::placeholder { color: var(--text-tertiary); }
+  .form-input:focus { border-color: var(--brand-sky); background: rgba(255,255,255,0.85); box-shadow: 0 0 0 4px rgba(111,189,209,0.15); }
+
+  /* Toggles */
+  .toggles-section { max-width: 420px; }
+  .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(27,94,107,0.04); }
+  .toggle-row span { font-size: 13px; font-weight: 600; }
+  .toggle { width: 48px; height: 26px; background: var(--brand-silver); border-radius: var(--radius-full); position: relative; cursor: pointer; transition: all 0.25s; border: none; padding: 0; }
+  .toggle.active { background: linear-gradient(135deg, var(--brand-sky), var(--brand-ice)); }
+  .toggle::after { content: ''; width: 22px; height: 22px; background: white; border-radius: 50%; position: absolute; top: 2px; left: 2px; transition: all 0.25s; box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
+  .toggle.active::after { transform: translateX(22px); }
+
+  /* Progress */
+  .progress-bars { display: flex; flex-direction: column; gap: 16px; max-width: 420px; }
+  .progress-item label { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; margin-bottom: 6px; }
+  .progress-item label span:last-child { color: var(--brand-deep); font-family: var(--font-latin); }
+  .progress-track { width: 100%; height: 10px; background: rgba(255,255,255,0.5); border-radius: var(--radius-full); overflow: hidden; border: 1px solid rgba(255,255,255,0.6); }
+  .progress-fill { height: 100%; border-radius: var(--radius-full); }
+
+  /* Radius & Spacing */
+  .radius-demo { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
+  .radius-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .radius-box { width: 52px; height: 52px; background: rgba(255,255,255,0.6); backdrop-filter: blur(8px); border: 1.5px solid rgba(255,255,255,0.7); }
+  .radius-item .label { font-size: 10px; color: var(--text-tertiary); font-weight: 600; font-family: var(--font-latin); }
+  .spacing-demo { display: flex; gap: 12px; align-items: flex-end; }
+  .spacing-block { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .spacing-block .block { background: rgba(111,189,209,0.15); border-radius: 6px; border: 1px solid rgba(111,189,209,0.2); }
+  .spacing-block .label { font-size: 10px; color: var(--text-tertiary); font-weight: 600; font-family: var(--font-latin); }
+
+  .copied-toast { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%) translateY(20px); padding: 10px 24px; border-radius: var(--radius-full); font-size: 13px; font-weight: 700; opacity: 0; transition: all 0.3s; pointer-events: none; z-index: 999; background: var(--brand-deep); color: white; font-family: var(--font-latin); box-shadow: 0 4px 16px rgba(27,94,107,0.25); }
+  .copied-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 800px) {
+    .page { padding: 24px 16px 80px; }
+    .page-title { font-size: 24px; }
+    .dash-preview { grid-template-columns: 1fr !important; }
+    .sidebar { display: none; }
+    .stat-row { grid-template-columns: repeat(2, 1fr); }
+    .content-grid { grid-template-columns: 1fr; }
+    .font-showcase { grid-template-columns: 1fr; }
+    .brand-hero { grid-template-columns: repeat(2, 1fr); }
+    .type-row { flex-direction: column !important; gap: 3px; }
+    .type-label { min-width: auto; }
+    .lang-bar-inner { padding: 0 16px; }
+  }
+  .icon { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; display: inline-block; vertical-align: middle; }
+  .icon-sm { width: 15px; height: 15px; }
+  .icon-lg { width: 22px; height: 22px; }
+  .icon-xl { width: 28px; height: 28px; }
+  .nav-item .icon { stroke-width: 1.6; }
+  .nav-item.active .icon { stroke-width: 2; }
+  .quick-btn .icon { color: var(--brand-sky); }
+  .badge .icon { width: 12px; height: 12px; stroke-width: 2.2; }
+  .btn .icon { width: 16px; height: 16px; }
+  .toggle-row .label-area { display: flex; align-items: center; gap: 8px; }
+  .toggle-row .label-area .icon { color: var(--brand-sky); }
+  .progress-item .progress-label { display: flex; align-items: center; gap: 6px; }
+  .progress-item .progress-label .icon { color: var(--brand-sky); width: 14px; height: 14px; }
+</style>
+</head>
+<body class="lang-en">
+
+<div class="dream-bg">
+  <div class="dream-orb o1"></div>
+  <div class="dream-orb o2"></div>
+  <div class="dream-orb o3"></div>
+  <div class="dream-orb o4"></div>
+  <div class="dream-orb o5"></div>
+</div>
+
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg"><defs>
+<symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 2c.5 3-1.5 5-3 7 2 1 3 3 3 5.5 0 2.5-2 4.5-4.5 4.5S3 17 3 14.5c0-4 3-7 5-9 .5 2 2 3 4 3z" fill="currentColor" opacity="0.15"/><path d="M12 2c.5 3-1.5 5-3 7 2 1 3 3 3 5.5 0 2.5-2 4.5-4.5 4.5S3 17 3 14.5c0-4 3-7 5-9 .5 2 2 3 4 3z"/><path d="M17 10c.3 1.8-.8 3-1.6 4.2 1 .5 1.6 1.5 1.6 2.8 0 1.5-1.2 3-3 3s-3-1.3-3-3c0-2.5 2-4.2 3-5.5.3 1.2 1.2 1.8 3 1.5z"/></symbol>
+<symbol id="i-layout" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></symbol>
+<symbol id="i-grad" viewBox="0 0 24 24"><path d="M22 10l-10-5L2 10l10 5 10-5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/><line x1="22" y1="10" x2="22" y2="16"/></symbol>
+<symbol id="i-book" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+<symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></symbol>
+<symbol id="i-clip" viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></symbol>
+<symbol id="i-dollar" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></symbol>
+<symbol id="i-bus" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="14" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="7.5" cy="20.5" r="1.5"/><circle cx="16.5" cy="20.5" r="1.5"/></symbol>
+<symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0-.33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+<symbol id="i-uplus" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-dl" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
+</defs></svg>
+
+<div class="lang-bar"><div class="lang-bar-inner"><div class="lang-bar-brand"><div class="logo-box"><svg class="icon icon-sm"><use href="#i-flame"/></svg></div><span>Mashaail SMS</span></div><div class="lang-tabs"><button class="lang-tab en active" onclick="setLang('en')">English</button><button class="lang-tab ar" onclick="setLang('ar')">العربية</button></div></div></div>
+
+<div class="page">
+  <div class="page-header">
+    <div class="page-logo"><svg class="icon icon-xl"><use href="#i-flame"/></svg></div>
+    <h1 class="page-title"><span class="en-i">Mashaail School</span><span class="ar-i">مدرسة مشاعل</span></h1>
+  </div>
+  <p class="page-subtitle"><span class="en-i">مدرسة مشاعل مسقط الخاصة — Dreamy Bilingual Design System</span><span class="ar-i">مدرسة مشاعل مسقط الخاصة — نظام تصميم حالم ثنائي اللغة</span></p>
+  <div class="tech-stack"><span class="tech-badge">Next.js</span><span class="tech-badge">Supabase</span><span class="tech-badge">Vercel</span><span class="tech-badge">5 Roles</span><span class="tech-badge">47 Pages</span></div>
+
+  <!-- BRAND SWATCHES -->
+  <section class="section">
+    <h2 class="section-title"><span class="en-i">Brand Colors</span><span class="ar-i">ألوان العلامة</span></h2>
+    <div class="brand-hero">
+      <div class="brand-card" onclick="copySwatch('#1B5E6B')"><div class="brand-block dk" style="background:linear-gradient(135deg,#1B5E6B,#2A7A8A);"><div class="swatch-name">Deep Teal</div></div><div class="brand-meta"><div class="hex">#1B5E6B</div><div class="desc"><span class="en-i">Sidebar, headings</span><span class="ar-i">الشريط الجانبي</span></div></div></div>
+      <div class="brand-card" onclick="copySwatch('#6FBDD1')"><div class="brand-block dk" style="background:linear-gradient(135deg,#6FBDD1,#8ECEE0);"><div class="swatch-name">Sky Blue</div></div><div class="brand-meta"><div class="hex">#6FBDD1</div><div class="desc"><span class="en-i">Active, links</span><span class="ar-i">نشط ، روابط</span></div></div></div>
+      <div class="brand-card" onclick="copySwatch('#AEDAE5')"><div class="brand-block lt" style="background:linear-gradient(135deg,#AEDAE5,#D2ECF2);"><div class="swatch-name">Ice Blue</div></div><div class="brand-meta"><div class="hex">#AEDAE5</div><div class="desc"><span class="en-i">Soft fills</span><span class="ar-i">تعبئة خفيفة</span></div></div></div>
+      <div class="brand-card" onclick="copySwatch('#C8CDD0')"><div class="brand-block lt" style="background:linear-gradient(135deg,#C8CDD0,#DDE0E2);"><div class="swatch-name">Silver</div></div><div class="brand-meta"><div class="hex">#C8CDD0</div><div class="desc"><span class="en-i">Borders</span><span class="ar-i">حدود</span></div></div></div>
+      <div class="brand-card" onclick="copySwatch('#E8941A')"><div class="brand-block dk" style="background:linear-gradient(135deg,#E8941A,#F0A63E);"><div class="swatch-name">Orange</div></div><div class="brand-meta"><div class="hex">#E8941A</div><div class="desc"><span class="en-i">CTAs, accents</span><span class="ar-i">تمييز</span></div></div></div>
+    </div>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section class="section">
+    <h2 class="section-title"><span class="en-i">Admin Dashboard</span><span class="ar-i">لوحة المعلومات</span></h2>
+    <div class="dash-preview">
+      <div class="sidebar">
+        <div class="sb-logo"><div class="sb-logo-icon"><svg class="icon icon-sm"><use href="#i-flame"/></svg></div><span>Mashaail</span></div>
+        <div class="sb-label">Main</div>
+        <nav class="sb-nav">
+          <button class="nav-item active"><svg class="icon"><use href="#i-layout"/></svg> Dashboard</button>
+          <button class="nav-item"><svg class="icon"><use href="#i-grad"/></svg> Students</button>
+          <button class="nav-item"><svg class="icon"><use href="#i-book"/></svg> Teachers</button>
+          <button class="nav-item"><svg class="icon"><use href="#i-users"/></svg> Parents</button>
+        </nav>
+        <div class="sb-label">Academics</div>
+        <nav class="sb-nav">
+          <button class="nav-item"><svg class="icon"><use href="#i-cal"/></svg> Timetable</button>
+          <button class="nav-item"><svg class="icon"><use href="#i-check"/></svg> Attendance</button>
+          <button class="nav-item"><svg class="icon"><use href="#i-clip"/></svg> Assessments</button>
+          <button class="nav-item"><svg class="icon"><use href="#i-file"/></svg> Homework</button>
+        </nav>
+        <div class="sb-label">Operations</div>
+        <nav class="sb-nav">
+          <button class="nav-item"><svg class="icon"><use href="#i-dollar"/></svg> Fees</button>
+          <button class="nav-item"><svg class="icon"><use href="#i-bus"/></svg> Transport</button>
+        </nav>
+        <div class="sb-div"></div>
+        <nav class="sb-nav"><button class="nav-item"><svg class="icon"><use href="#i-gear"/></svg> Settings</button></nav>
+      </div>
+      <div class="dash-main">
+        <div class="top-bar"><div class="greeting"><span class="en-i"><svg class="icon" style="color:var(--brand-orange);"><use href="#i-sun"/></svg> Good morning!</span><span class="ar-i"><svg class="icon" style="color:var(--brand-orange);"><use href="#i-sun"/></svg> صباح الخير!</span></div><div class="top-right"><div class="role-badge">Admin</div><div class="avatar-sm">SA</div></div></div>
+        <div class="stat-row">
+          <div class="stat-box"><div class="stat-icon ic1"><svg class="icon"><use href="#i-grad"/></svg></div><div class="stat-info"><div class="stat-label"><span class="en-i">Students</span><span class="ar-i">الطلاب</span></div><div class="stat-number">1,240</div></div></div>
+          <div class="stat-box"><div class="stat-icon ic2"><svg class="icon"><use href="#i-book"/></svg></div><div class="stat-info"><div class="stat-label"><span class="en-i">Teachers</span><span class="ar-i">المعلمون</span></div><div class="stat-number">86</div></div></div>
+          <div class="stat-box"><div class="stat-icon ic3"><svg class="icon"><use href="#i-check"/></svg></div><div class="stat-info"><div class="stat-label"><span class="en-i">Attendance</span><span class="ar-i">الحضور</span></div><div class="stat-number">94.2%</div></div></div>
+          <div class="stat-box"><div class="stat-icon ic4"><svg class="icon"><use href="#i-dollar"/></svg></div><div class="stat-info"><div class="stat-label"><span class="en-i">Fees</span><span class="ar-i">الرسوم</span></div><div class="stat-number">72%</div></div></div>
+        </div>
+        <div class="content-grid">
+          <div class="card">
+            <div class="card-header"><div class="card-title"><span class="en-i">Today's Attendance</span><span class="ar-i">حضور اليوم</span></div><button class="card-action">View All</button></div>
+            <table class="mini-table"><thead><tr><th>Student</th><th>Grade</th><th>Status</th></tr></thead><tbody>
+              <tr><td>Ahmed Ali</td><td>5-A</td><td><span class="pill-badge present">Present</span></td></tr>
+              <tr><td>Sara Khalid</td><td>3-B</td><td><span class="pill-badge present">Present</span></td></tr>
+              <tr><td>Omar Salim</td><td>5-A</td><td><span class="pill-badge late">Late</span></td></tr>
+              <tr><td>Fatima Nasser</td><td>4-C</td><td><span class="pill-badge absent">Absent</span></td></tr>
+            </tbody></table>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div class="card">
+              <div class="card-header"><div class="card-title"><span class="en-i">Quick Actions</span><span class="ar-i">إجراءات سريعة</span></div></div>
+              <div class="quick-actions">
+                <button class="quick-btn"><svg class="icon"><use href="#i-uplus"/></svg><span class="en-i">Add Student</span><span class="ar-i">إضافة طالب</span></button>
+                <button class="quick-btn"><svg class="icon"><use href="#i-clip"/></svg><span class="en-i">New Assessment</span><span class="ar-i">تقييم جديد</span></button>
+                <button class="quick-btn"><svg class="icon"><use href="#i-dollar"/></svg><span class="en-i">Record Payment</span><span class="ar-i">تسجيل دفعة</span></button>
+                <button class="quick-btn"><svg class="icon"><use href="#i-file"/></svg><span class="en-i">Assign Homework</span><span class="ar-i">تعيين واجب</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FONTS -->
+  <section class="section">
+    <h2 class="section-title"><span class="en-i">Font Pairing</span><span class="ar-i">إقران الخطوط</span></h2>
+    <div class="font-showcase">
+      <div class="font-card latin"><div class="preview">Student Portal</div><div class="font-name">Nunito</div><div class="font-sub">Rounded, friendly, Latin</div></div>
+      <div class="font-card arabic"><div class="preview">بوابة الطلاب</div><div class="font-name">Noto Kufi Arabic</div><div class="font-sub">عناوين ونصوص عربية</div></div>
+    </div>
+    <div class="weight-scale">
+      <div class="weight-row"><div class="weight-meta"><div class="w-name">Regular</div><div class="w-val">400</div></div><div class="weight-sample"><span class="latin" style="font-weight:400;">Student Management</span><span class="arabic" style="font-weight:400;">إدارة الطلاب</span></div></div>
+      <div class="weight-row"><div class="weight-meta"><div class="w-name">SemiBold</div><div class="w-val">600</div></div><div class="weight-sample"><span class="latin" style="font-weight:600;">Student Management</span><span class="arabic" style="font-weight:600;">إدارة الطلاب</span></div></div>
+      <div class="weight-row"><div class="weight-meta"><div class="w-name">Bold</div><div class="w-val">700</div></div><div class="weight-sample"><span class="latin" style="font-weight:700;">Student Management</span><span class="arabic" style="font-weight:700;">إدارة الطلاب</span></div></div>
+      <div class="weight-row"><div class="weight-meta"><div class="w-name">ExtraBold</div><div class="w-val">800</div></div><div class="weight-sample"><span class="latin" style="font-weight:800;">Student Management</span><span class="arabic" style="font-weight:800;">إدارة الطلاب</span></div></div>
+      <div class="weight-row"><div class="weight-meta"><div class="w-name">Black</div><div class="w-val">900</div></div><div class="weight-sample"><span class="latin" style="font-weight:900;">Student Management</span><span class="arabic" style="font-weight:900;">إدارة الطلاب</span></div></div>
+    </div>
+  </section>
+
+  <!-- TYPOGRAPHY -->
+  <section class="section">
+    <h2 class="section-title"><span class="en-i">Typography</span><span class="ar-i">الخطوط</span></h2>
+    <div class="type-samples">
+      <div class="type-row"><div class="type-label">Display</div><div class="type-dual"><span class="latin t-display">Dashboard</span><span class="arabic t-display-ar">لوحة المعلومات</span></div></div>
+      <div class="type-row"><div class="type-label">Heading</div><div class="type-dual"><span class="latin t-heading">Student Management</span><span class="arabic t-heading-ar">إدارة الطلاب</span></div></div>
+      <div class="type-row"><div class="type-label">Sub</div><div class="type-dual"><span class="latin t-sub">Academic Year 2025–2026</span><span class="arabic" style="font-family:var(--font-arabic);direction:rtl;font-size:13px;font-weight:600;color:var(--text-secondary);">العام الدراسي ٢٠٢٥–٢٠٢٦</span></div></div>
+      <div class="type-row"><div class="type-label">Body</div><div class="type-dual"><span class="latin t-body">Homework assigned for Grade 5.</span><span class="arabic" style="font-family:var(--font-arabic);direction:rtl;font-size:13px;font-weight:500;color:var(--text-secondary);">تم تعيين واجب للصف الخامس.</span></div></div>
+      <div class="type-row"><div class="type-label">Stat</div><div class="t-stat">1,240 <span>Students</span></div></div>
+      <div class="type-row"><div class="type-label">Accent</div><div class="type-dual"><span class="latin t-accent">View All · Submit</span><span class="arabic t-accent" style="font-family:var(--font-arabic);direction:rtl;">عرض الكل · إرسال</span></div></div>
+      <div class="type-row"><div class="type-label">Alert</div><div class="type-dual"><span class="latin t-warn">Overdue · Absent</span><span class="arabic t-warn" style="font-family:var(--font-arabic);direction:rtl;">متأخر · غائب</span></div></div>
+    </div>
+  </section>
+
+  <!-- BUTTONS -->
+  <section class="section">
+    <h2 class="section-title"><span class="en-i">Buttons</span><span class="ar-i">الأزرار</span></h2>
+    <div class="button-group">
+      <button class="btn btn-brand"><span class="en-i">Add Student</span><span class="ar-i">إضافة طالب</span></button>
+      <button class="btn btn-sky"><span class="en-i">View Profile</span><span class="ar-i">عرض الملف</span></button>
+      <button class="btn btn-orange"><span class="en-i">Fee Alert</span><span class="ar-i">تنبيه الرسوم</span></button>
+    </div>
+    <div class="button-group">
+      <button class="btn btn-success"><span class="en-i">Present</span><span class="ar-i">حاضر</span></button>
+      <button class="btn btn-danger"><span class="en-i">Absent</span><span class="ar-i">غائب</span></button>
+      <button class="btn btn-glass"><span class="en-i">Glass Button</span><span class="ar-i">زر زجاجي</span></button>
+      <button class="btn btn-ghost"><span class="en-i">Ghost</span><span class="ar-i">شبح</span></button>
+    </div>
+  </section>
+
+  <!-- BADGES -->
+  <section class="section">
+    <h2 class="section-title"><span class="en-i">Status Badges</span><span class="ar-i">شارات الحالة</span></h2>
+    <div class="badges-group">
+      <span class="badge badge-success"><span class="en-i">Present</span><span class="ar-i">حاضر</span></span>
+      <span class="badge badge-danger"><span class="en-i">Absent</span><span class="ar-i">غائب</span></span>
+      <span class="badge badge-warning"><span class="en-i">Late</span><span class="ar-i">متأخر</span></span>
+      <span class="badge badge-brand"><span class="en-i">Paid</span><span class="ar-i">مدفوع</span></span>
+      <span class="badge badge-orange"><span class="en-i">Pending</span><span class="ar-i">معلق</span></span>
+      <span class="badge badge-dark"><span class="en-i">Admin</span><span class="ar-i">مدير</span></span>
+      <span class="badge badge-lavender"><span class="en-i">Submitted</span><span class="ar-i">مسلّم</span></span>
+      <span class="badge badge-pink"><span class="en-i">Overdue</span><span class="ar-i">متأخر</span></span>
+    </div>
+  </section>
+
+  <!-- CHIPS & TABS -->
+  <section class="section">
+    <h2 class="section-title"><span class="en-i">Filters & Tabs</span><span class="ar-i">الفلاتر والتبويبات</span></h2>
+    <div class="chips-group" style="margin-bottom:20px;">
+      <button class="chip active" onclick="toggleChip(this)"><span class="en-i">All</span><span class="ar-i">الكل</span></button>
+      <button class="chip" onclick="toggleChip(this)"><span class="en-i">Grade 1</span><span class="ar-i">الصف ١</span></button>
+      <button class="chip" onclick="toggleChip(this)"><span class="en-i">Grade 2</span><span class="ar-i">الصف ٢</span></button>
+      <button class="chip active-orange" onclick="toggleChip(this)"><span class="en-i">Grade 3</span><span class="ar-i">الصف ٣</span></button>
+      <button class="chip" onclick="toggleChip(this)"><span class="en-i">Grade 4</span><span class="ar-i">الصف ٤</span></button>
+    </div>
+    <div class="comp-tabs"><button class="comp-tab active" onclick="switchCompTab(this)"><span class="en-i">Attendance</span><span class="ar-i">الحضور</span></button><button class="comp-tab" onclick="switchCompTab(this)"><span class="en-i">Grades</span><span class="ar-i">الدرجات</span></button><button class="comp-tab" onclick="switchCompTab(this)"><span class="en-i">Homework</span><span class="ar-i">الواجبات</span></button><button class="comp-tab" onclick="switchCompTab(this)"><span class="en-i">Fees</span><span class="ar-i">الرسوم</span></button></div>
+  </section>
+
+  <!-- INPUTS -->
+  <section class="section">
+    <h2 class="section-title"><span class="en-i">Inputs</span><span class="ar-i">المدخلات</span></h2>
+    <div class="input-group">
+      <div class="input-wrapper"><label><span class="en-i">Student Name</span><span class="ar-i">اسم الطالب</span></label><input type="text" class="form-input" id="inp1"></div>
+      <div class="input-wrapper"><label><span class="en-i">Grade / Section</span><span class="ar-i">الصف / الشعبة</span></label><input type="text" class="form-input" id="inp2"></div>
+    </div>
+  </section>
+
+  <!-- TOGGLES -->
+  <section class="section">
+    <h2 class="section-title"><span class="en-i">Toggles</span><span class="ar-i">التبديل</span></h2>
+    <div class="toggles-section">
+      <div class="toggle-row"><span><span class="en-i">Daily Attendance</span><span class="ar-i">الحضور اليومي</span></span><button class="toggle active" onclick="this.classList.toggle('active')"></button></div>
+      <div class="toggle-row"><span><span class="en-i">Parent Alerts</span><span class="ar-i">تنبيهات الأهل</span></span><button class="toggle active" onclick="this.classList.toggle('active')"></button></div>
+      <div class="toggle-row"><span><span class="en-i">Bus Tracking</span><span class="ar-i">تتبع الحافلات</span></span><button class="toggle" onclick="this.classList.toggle('active')"></button></div>
+    </div>
+  </section>
+
+  <!-- PROGRESS -->
+  <section class="section">
+    <h2 class="section-title"><span class="en-i">Progress</span><span class="ar-i">التقدم</span></h2>
+    <div class="progress-bars">
+      <div class="progress-item"><label><span><span class="en-i">Attendance</span><span class="ar-i">الحضور</span></span><span>94%</span></label><div class="progress-track"><div class="progress-fill" style="width:94%;background:linear-gradient(90deg,var(--brand-deep),var(--brand-sky));"></div></div></div>
+      <div class="progress-item"><label><span><span class="en-i">Fees</span><span class="ar-i">الرسوم</span></span><span>72%</span></label><div class="progress-track"><div class="progress-fill" style="width:72%;background:linear-gradient(90deg,var(--brand-orange),var(--brand-orange-warm));"></div></div></div>
+      <div class="progress-item"><label><span><span class="en-i">Homework</span><span class="ar-i">الواجبات</span></span><span>88%</span></label><div class="progress-track"><div class="progress-fill" style="width:88%;background:linear-gradient(90deg,var(--dream-lavender),var(--dream-pink));"></div></div></div>
+    </div>
+  </section>
+
+  <!-- RADIUS -->
+  <section class="section">
+    <h2 class="section-title"><span class="en-i">Border Radius</span><span class="ar-i">نصف القطر</span></h2>
+    <div class="radius-demo">
+      <div class="radius-item"><div class="radius-box" style="border-radius:var(--radius-sm);"></div><div class="label">12px</div></div>
+      <div class="radius-item"><div class="radius-box" style="border-radius:var(--radius-md);"></div><div class="label">16px</div></div>
+      <div class="radius-item"><div class="radius-box" style="border-radius:var(--radius-lg);"></div><div class="label">24px</div></div>
+      <div class="radius-item"><div class="radius-box" style="border-radius:var(--radius-xl);"></div><div class="label">32px</div></div>
+      <div class="radius-item"><div class="radius-box" style="border-radius:var(--radius-full);"></div><div class="label">pill</div></div>
+    </div>
+  </section>
+
+  <!-- SPACING -->
+  <section class="section">
+    <h2 class="section-title"><span class="en-i">Spacing</span><span class="ar-i">التباعد</span></h2>
+    <div class="spacing-demo">
+      <div class="spacing-block"><div class="block" style="width:16px;height:16px;"></div><div class="label">4</div></div>
+      <div class="spacing-block"><div class="block" style="width:24px;height:24px;"></div><div class="label">8</div></div>
+      <div class="spacing-block"><div class="block" style="width:36px;height:36px;"></div><div class="label">12</div></div>
+      <div class="spacing-block"><div class="block" style="width:48px;height:48px;"></div><div class="label">16</div></div>
+      <div class="spacing-block"><div class="block" style="width:64px;height:64px;"></div><div class="label">24</div></div>
+      <div class="spacing-block"><div class="block" style="width:80px;height:80px;"></div><div class="label">32</div></div>
+    </div>
+  </section>
+</div>
+
+<div class="copied-toast" id="toast">Copied!</div>
+
+<script>
+  function setLang(l) {
+    document.body.className = 'lang-' + l;
+    document.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+    document.querySelector('.lang-tab.' + l).classList.add('active');
+    const p = { en: ['e.g. Ahmed Al-Balushi','e.g. Grade 5 - Section B'], ar: ['مثال: أحمد البلوشي','مثال: الصف ٥ - شعبة ب'] };
+    document.getElementById('inp1').placeholder = p[l][0];
+    document.getElementById('inp2').placeholder = p[l][1];
+  }
+  setLang('en');
+  function copySwatch(v) { navigator.clipboard?.writeText(v); const t=document.getElementById('toast'); t.textContent='Copied '+v; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1500); }
+  function toggleChip(e) { ['active','active-orange'].forEach(c=>{if(e.classList.contains(c)){e.classList.remove(c);return;}}); if(!e.classList.contains('active')&&!e.classList.contains('active-orange'))e.classList.add('active'); }
+  function switchCompTab(e) { e.parentElement.querySelectorAll('.comp-tab').forEach(t=>t.classList.remove('active')); e.classList.add('active'); }
+  document.querySelectorAll('.nav-item').forEach(i=>{i.addEventListener('click',()=>{document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));i.classList.add('active');});});
+</script>
+</body>
+</html>
