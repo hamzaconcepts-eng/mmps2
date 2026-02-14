@@ -3,9 +3,10 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Mashaail SMS - مدرسة مشاعل مسقط الخاصة',
-  description: 'School Management System for Mashaail Muscat Private School',
+  description: 'School Management System for Mashaail Muscat Private School - نظام إدارة مدرسية متكامل وحديث',
   icons: {
-    icon: '/favicon.ico',
+    icon: '/logo.svg',
+    apple: '/logo.svg',
   },
 };
 

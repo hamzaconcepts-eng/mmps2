@@ -1,4 +1,5 @@
-import { Flame, GraduationCap, Users, BookOpen, Calculator } from 'lucide-react';
+import Image from 'next/image';
+import { GraduationCap, Users, BookOpen, Calculator } from 'lucide-react';
 
 export default function Home() {
   return (
@@ -10,8 +11,15 @@ export default function Home() {
           <div className="flex justify-center mb-8">
             <div className="relative group">
               <div className="absolute inset-0 bg-gradient-to-br from-brand-orange to-brand-orange-warm rounded-3xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-500"></div>
-              <div className="relative w-24 h-24 bg-gradient-to-br from-brand-orange-warm to-brand-orange rounded-3xl flex items-center justify-center shadow-2xl transform group-hover:scale-105 transition-transform duration-300">
-                <Flame className="w-12 h-12 text-white" strokeWidth={2.5} />
+              <div className="relative w-28 h-28 bg-white rounded-3xl flex items-center justify-center shadow-2xl transform group-hover:scale-105 transition-transform duration-300 p-4">
+                <Image
+                  src="/logo.svg"
+                  alt="Mashaail School Logo"
+                  width={96}
+                  height={96}
+                  className="w-full h-full object-contain"
+                  priority
+                />
               </div>
             </div>
           </div>
