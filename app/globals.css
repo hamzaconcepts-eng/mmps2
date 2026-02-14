@@ -10,10 +10,6 @@
     --font-noto-kufi: 'Noto Kufi Arabic', 'Nunito', sans-serif;
   }
 
-  * {
-    @apply border-border;
-  }
-
   body {
     @apply bg-gradient-dreamy text-text-primary;
     font-family: var(--font-nunito);
