@@ -9,7 +9,13 @@ import { supabase } from '@/lib/supabase/client';
 import { usernameToEmail } from '@/lib/auth/helpers';
 import { User, Lock, AlertCircle, Loader2 } from 'lucide-react';
 
-export default function LoginPage({ params: { locale } }: { params: { locale: string } }) {
+export default async function LoginPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+
+  return <LoginPageClient locale={locale} />;
+}
+
+function LoginPageClient({ locale }: { locale: string }) {
   const t = useTranslations();
   const router = useRouter();
   const [username, setUsername] = useState('');
