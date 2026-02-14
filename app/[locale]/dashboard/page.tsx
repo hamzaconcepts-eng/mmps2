@@ -8,10 +8,10 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
   const t = await getTranslations();
 
   const stats = [
-    { key: 'students', icon: Users, value: '1,234', label: t('navigation.students'), change: '+12%' },
-    { key: 'teachers', icon: GraduationCap, value: '89', label: t('navigation.teachers'), change: '+5%' },
-    { key: 'revenue', icon: DollarSign, value: 'OMR 125K', label: t('navigation.finance'), change: '+18%' },
-    { key: 'attendance', icon: TrendingUp, value: '94.5%', label: t('navigation.attendance'), change: '+2.3%' },
+    { key: 'students', icon: Users, value: '1,234', label: t('navigation.students'), change: '+12%', gradient: 'from-brand-teal to-brand-teal-light' },
+    { key: 'teachers', icon: GraduationCap, value: '89', label: t('navigation.teachers'), change: '+5%', gradient: 'from-brand-cyan to-brand-ice-light' },
+    { key: 'revenue', icon: DollarSign, value: 'OMR 125K', label: t('navigation.finance'), change: '+18%', gradient: 'from-brand-orange to-brand-orange-soft' },
+    { key: 'attendance', icon: TrendingUp, value: '94.5%', label: t('navigation.attendance'), change: '+2.3%', gradient: 'from-brand-deep-teal to-brand-cyan' },
   ];
 
   const recentActivity = [
@@ -59,13 +59,13 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
           return (
             <div key={stat.key} className="glass p-3 rounded-2xl border border-white/20 hover:scale-105 transition-transform">
               <div className="flex items-center justify-between mb-2">
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-sky to-brand-deep flex items-center justify-center">
+                <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${stat.gradient} flex items-center justify-center shadow-lg`}>
                   <Icon size={18} className="text-white" />
                 </div>
                 <span className="text-xs font-semibold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">{stat.change}</span>
               </div>
               <h3 className="text-xl font-bold text-brand-deep">{stat.value}</h3>
-              <p className="text-xs text-gray-600">{stat.label}</p>
+              <p className="text-xs text-gray-600 font-medium">{stat.label}</p>
             </div>
           );
         })}
@@ -117,8 +117,8 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
             {upcomingEvents.map((event, i) => (
               <div key={i} className="p-2 rounded-xl bg-white/40 hover:bg-white/60 transition-colors border border-white/10">
                 <div className="flex items-start gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-dream-pink to-dream-lavender flex items-center justify-center flex-shrink-0">
-                    <BookOpen size={14} className="text-brand-deep" />
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-orange to-brand-orange-soft flex items-center justify-center flex-shrink-0 shadow-md">
+                    <BookOpen size={14} className="text-white" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <h3 className="text-xs font-semibold text-brand-deep">{event.title}</h3>
