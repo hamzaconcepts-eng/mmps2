@@ -7,7 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase/client';
 import { usernameToEmail } from '@/lib/auth/helpers';
-import { User, Lock, AlertCircle, Loader2 } from 'lucide-react';
+import { User, Lock, AlertCircle, Loader2, Eye, EyeOff } from 'lucide-react';
 
 export default function LoginForm({ locale }: { locale: string }) {
   const t = useTranslations();
@@ -16,6 +16,7 @@ export default function LoginForm({ locale }: { locale: string }) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -123,18 +124,27 @@ export default function LoginForm({ locale }: { locale: string }) {
                       style={{ [locale === 'ar' ? 'right' : 'left']: '1rem' }} />
                 <input
                   id="password"
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className={`w-full bg-white/50 border border-gray-200 rounded-2xl py-3
-                            ${locale === 'ar' ? 'pr-12 pl-4' : 'pl-12 pr-4'}
+                            ${locale === 'ar' ? 'pr-12 pl-12' : 'pl-12 pr-12'}
                             focus:outline-none focus:ring-2 focus:ring-brand-sky focus:border-transparent
                             transition-all duration-200`}
                   placeholder={t('auth.password')}
                   disabled={loading}
                   autoComplete="current-password"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute top-1/2 -translate-y-1/2 text-gray-400 hover:text-brand-sky transition-colors"
+                  style={{ [locale === 'ar' ? 'left' : 'right']: '1rem' }}
+                  tabIndex={-1}
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
               </div>
             </div>
 

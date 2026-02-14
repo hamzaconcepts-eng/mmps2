@@ -3,12 +3,13 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { createUser, CreateUserData } from './actions';
-import { UserPlus, Loader2, CheckCircle, XCircle } from 'lucide-react';
+import { UserPlus, Loader2, CheckCircle, XCircle, Eye, EyeOff } from 'lucide-react';
 
 export default function AdminUsersPage() {
   const t = useTranslations();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState<CreateUserData>({
     username: '',
@@ -122,19 +123,29 @@ export default function AdminUsersPage() {
               <label htmlFor="password" className="block text-sm font-semibold text-gray-700">
                 Password *
               </label>
-              <input
-                id="password"
-                type="password"
-                required
-                value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                className="w-full bg-white/50 border border-gray-200 rounded-2xl px-4 py-3
-                         focus:outline-none focus:ring-2 focus:ring-brand-sky focus:border-transparent
-                         transition-all duration-200"
-                placeholder="Secure password"
-                disabled={loading}
-                minLength={8}
-              />
+              <div className="relative">
+                <input
+                  id="password"
+                  type={showPassword ? 'text' : 'password'}
+                  required
+                  value={formData.password}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  className="w-full bg-white/50 border border-gray-200 rounded-2xl px-4 py-3 pr-12
+                           focus:outline-none focus:ring-2 focus:ring-brand-sky focus:border-transparent
+                           transition-all duration-200"
+                  placeholder="Secure password"
+                  disabled={loading}
+                  minLength={8}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute top-1/2 -translate-y-1/2 right-4 text-gray-400 hover:text-brand-sky transition-colors"
+                  tabIndex={-1}
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
               <p className="text-xs text-gray-500">
                 Minimum 8 characters
               </p>
