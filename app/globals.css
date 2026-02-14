@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Kufi+Arabic:wght@300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,39 +6,33 @@
 
 @layer base {
   :root {
-    --font-poppins: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-arabic: 'Noto Kufi Arabic', 'Inter', sans-serif;
   }
 
   body {
-    @apply bg-gradient-dreamy text-text-primary;
-    font-family: var(--font-poppins);
+    @apply bg-gray-50 text-text-primary;
+    font-family: var(--font-inter);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   /* RTL Support */
   [dir='rtl'] {
-    font-family: var(--font-poppins);
+    font-family: var(--font-arabic);
   }
 
-  /* Glass morphism utilities */
+  /* Card utilities - clean and simple */
   .glass {
-    background: rgba(255, 255, 255, 0.65);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.8);
-    box-shadow: 0 10px 40px rgba(27, 94, 107, 0.1), 0 2px 8px rgba(27, 94, 107, 0.06);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .glass-strong {
-    background: rgba(255, 255, 255, 0.85);
+    background: white;
+    border: 1px solid #E2E7EB;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    transition: all 0.2s ease;
   }
 
   .glass:hover {
-    background: rgba(255, 255, 255, 0.85);
-    box-shadow: 0 20px 60px rgba(27, 94, 107, 0.15), 0 4px 12px rgba(27, 94, 107, 0.08);
-    border-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    border-color: #CDD4DA;
   }
 
   /* Smooth transitions for interactive elements */
@@ -88,12 +82,5 @@
 }
 
 @layer components {
-  /* Static background orbs - no animation for better performance */
-  .dream-orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.3;
-    pointer-events: none;
-  }
+  /* Remove all decorative elements */
 }

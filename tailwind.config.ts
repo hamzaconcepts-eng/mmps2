@@ -9,58 +9,82 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // MMPS Brand — Isometric Gradient Style
+        // Teal - Primary Brand (from brand guide + gradients)
+        teal: {
+          900: '#0C3B3B',
+          800: '#0E4D4D',
+          700: '#147272',
+          600: '#1A8A8A',
+          500: '#1FA5A5',
+          400: '#3CC0C0',
+          300: '#67D4D4',
+          200: '#9AE6E6',
+          100: '#D0F5F5',
+          50: '#EEFBFB',
+        },
+        // Dark Shades
+        dark: {
+          900: '#111318',
+          800: '#1A1D25',
+          700: '#262A35',
+          600: '#343846',
+          500: '#4A4F60',
+        },
+        // Orange - Accent
+        orange: {
+          600: '#C46A1A',
+          500: '#E07C20',
+          400: '#F0922E',
+          300: '#F5AD5C',
+          200: '#FAD0A0',
+          100: '#FEF0DC',
+        },
+        // Grays (from brand guide)
+        gray: {
+          50: '#F8FAFB',
+          100: '#F1F4F6',
+          200: '#E2E7EB',
+          300: '#CDD4DA',
+          400: '#9BA5B0',
+          500: '#6B7785',
+          600: '#4A5462',
+          700: '#333C48',
+        },
+        // Legacy aliases for compatibility
         brand: {
-          deep: '#0D3B52',      // Deep navy (darker than original)
-          'deep-teal': '#254E58', // Navy teal
-          teal: '#4A8A99',      // Medium teal
-          'teal-light': '#73C0CF', // Light teal
-          cyan: '#96C7D3',      // Cyan
-          ice: '#AEDAE5',       // Ice blue
-          'ice-light': '#D2ECF2', // Very light ice
-          silver: '#C8CDD0',    // Silver gray
-          white: '#E4E4E4',     // Off-white
-          orange: '#F09021',    // Vibrant orange
-          'orange-soft': '#FFB366', // Soft orange
+          deep: '#0C3B3B',
+          'deep-teal': '#147272',
+          teal: '#1A8A8A',
+          'teal-light': '#1FA5A5',
+          cyan: '#3CC0C0',
+          orange: '#E07C20',
+          'orange-soft': '#F0922E',
         },
-        // Dreamy Palette - Updated with new scheme
-        dream: {
-          navy: '#0A2532',      // Dark navy background
-          'navy-light': '#173A4D',
-          teal: '#254E58',      // Teal from gradient
-          'teal-soft': '#73C0CF',
-          cyan: '#96C7D3',      // Cyan
-          'cyan-soft': '#B8DCE5',
-          orange: '#F09021',    // Orange from gradient
-          'orange-soft': '#FFB366',
-          peach: '#FDE8D8',
-          cream: '#E4E4E4',     // Cream white
-        },
-        // Text Colors
         text: {
-          primary: '#0D3B52',   // Deep navy for text
-          secondary: 'rgba(13, 59, 82, 0.7)',
-          tertiary: 'rgba(13, 59, 82, 0.4)',
-          light: '#E4E4E4',     // Light text for dark backgrounds
+          primary: '#1A1D25',
+          secondary: '#6B7785',
+          tertiary: '#9BA5B0',
         },
       },
       fontFamily: {
-        sans: ['var(--font-poppins)'],
-        poppins: ['var(--font-poppins)'],
+        sans: ['var(--font-inter)'],
+        inter: ['var(--font-inter)'],
+        arabic: ['var(--font-arabic)'],
       },
       borderRadius: {
-        sm: '12px',
-        md: '16px',
-        lg: '24px',
-        xl: '32px',
+        xs: '6px',
+        sm: '8px',
+        md: '12px',
+        lg: '16px',
+        xl: '20px',
+        full: '999px',
       },
       backgroundImage: {
-        'gradient-dreamy': 'linear-gradient(135deg, #D2ECF2 0%, #B8DCE5 30%, #E4E4E4 60%, #FFE8D8 100%)',
-        'gradient-card': 'linear-gradient(145deg, rgba(255,255,255,0.9), rgba(255,255,255,0.6))',
-        'gradient-teal': 'linear-gradient(135deg, #254E58 0%, #73C0CF 100%)',
-        'gradient-cyan': 'linear-gradient(135deg, #96C7D3 0%, #E4E4E4 100%)',
-        'gradient-orange': 'linear-gradient(135deg, #E4E4E4 0%, #F09021 100%)',
-        'gradient-isometric': 'linear-gradient(135deg, #0A2532 0%, #173A4D 50%, #254E58 100%)',
+        'gradient-dreamy': 'linear-gradient(to bottom, #F8FAFB, #FFFFFF)',
+        'gradient-teal': 'linear-gradient(135deg, #147272 0%, #1FA5A5 100%)',
+        'gradient-cyan': 'linear-gradient(135deg, #3CC0C0 0%, #67D4D4 100%)',
+        'gradient-orange': 'linear-gradient(135deg, #E07C20 0%, #F0922E 100%)',
+        'gradient-isometric': 'linear-gradient(135deg, #0C3B3B 0%, #147272 50%, #1A8A8A 100%)',
       },
       boxShadow: {
         glass: '0 10px 40px rgba(27, 94, 107, 0.1), 0 2px 8px rgba(27, 94, 107, 0.06)',
