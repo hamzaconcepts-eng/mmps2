@@ -1,113 +1,174 @@
-# Username-Based Authentication Guide
+# Username-Based Authentication - No Emails Required
 
-This system uses **username and password** authentication instead of email-based auth.
+This system uses **username and password only** - no email interaction at any point.
 
-## How It Works
+## ✨ Key Features
 
-1. **User Login**: Users enter their username (e.g., `admin`, `teacher01`)
-2. **Backend Conversion**: Username is converted to email format (`admin@mashaail.school`)
-3. **Supabase Auth**: Uses email/password auth internally
-4. **User Experience**: Only usernames are shown throughout the app
+- ✅ **Create users**: Only username, password, and name required
+- ✅ **Login**: Username + password (no email field)
+- ✅ **Zero email exposure**: Users never see or enter emails
+- ✅ **Admin interface**: Create users through the web UI
+- ✅ **Backend magic**: Email conversion happens transparently
 
-## Creating New Users
-
-### Step 1: Create Auth User in Supabase
-
-Go to Supabase Dashboard → Authentication → Users → Add User
+## 🎯 How It Works
 
 ```
-Email: admin@mashaail.school  (username + @mashaail.school)
-Password: [secure password]
-Auto Confirm User: ✓ (checked)
+Admin Interface → Username: "admin" + Password
+                     ↓
+Server Action → Converts to "admin@mashaail.school" internally
+                     ↓
+Supabase Auth → Creates user with converted email
+                     ↓
+Profile Created → Stores username: "admin"
+                     ↓
+User Login → Enters username: "admin" (never sees email)
 ```
 
-### Step 2: Create Profile Record
+## 🚀 Creating Users (Admin Interface)
 
-After creating the auth user, run this SQL in the SQL Editor:
+### Option 1: Web UI (Recommended)
 
+1. Login as admin/owner
+2. Go to `/admin/users`
+3. Fill in the form:
+   - **Username**: `teacher01` (3-20 chars, alphanumeric + underscore)
+   - **Password**: Secure password (min 8 chars)
+   - **Full Name (EN)**: Ahmed Al-Said
+   - **Full Name (AR)**: أحمد السعيد
+   - **Role**: teacher
+   - **Phone**: +968 9123 4567 (optional)
+4. Click "Create User"
+5. ✅ Done! User can now login with `teacher01` + password
+
+### Option 2: Environment Setup (.env.local)
+
+Add this to your `.env.local` file:
+
+```env
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key_here
+```
+
+**To get your service role key:**
+1. Go to Supabase Dashboard
+2. Project Settings → API
+3. Copy the `service_role` key (under "Project API keys")
+4. ⚠️ **Never commit this key to Git!**
+
+## 📝 Example Users
+
+Create these through the admin interface at `/admin/users`:
+
+### System Owner
+- **Username**: `owner`
+- **Password**: `Owner123!`
+- **Full Name**: System Owner / مالك النظام
+- **Role**: owner
+
+### Admin
+- **Username**: `admin`
+- **Password**: `Admin123!`
+- **Full Name**: Administrator / المدير
+- **Role**: admin
+
+### Teacher
+- **Username**: `teacher01`
+- **Password**: `Teacher123!`
+- **Full Name**: Ahmed Al-Said / أحمد السعيد
+- **Role**: teacher
+
+### Student
+- **Username**: `student123`
+- **Password**: `Student123!`
+- **Full Name**: Sara Mohammed / سارة محمد
+- **Role**: student
+
+## 🔑 Login Process
+
+Users login with:
+- **Username field**: `admin` (visible to user)
+- **Password field**: Their password
+- **Backend**: Automatically converts `admin` → `admin@mashaail.school`
+- **User sees**: Only username, never the email
+
+## ⚙️ Technical Details
+
+### Username Rules
+- **Length**: 3-20 characters
+- **Start**: Must begin with a letter
+- **Characters**: Letters, numbers, underscore only
+- **Examples**: `admin`, `teacher01`, `ahmad_ali`, `s12345`
+- **Invalid**: `ab`, `123user`, `user@name`, `very-long-username`
+
+### Server Actions
+- `createUser()`: Creates auth user + profile in one transaction
+- `deleteUser()`: Removes both auth user and profile
+- `updateUserPassword()`: Changes user password
+- `toggleUserStatus()`: Enable/disable user account
+
+### Security
+- Service role key required for user creation
+- Only admin/owner roles can access user management
+- Passwords hashed by Supabase
+- RLS policies prevent unauthorized access
+- Email conversion happens server-side only
+
+## 🎨 Admin Interface Location
+
+- **URL**: `/en/admin/users` or `/ar/admin/users`
+- **Access**: Owner and Admin roles only
+- **Features**:
+  - Create new users
+  - View user list (coming soon)
+  - Reset passwords (coming soon)
+  - Toggle user status (coming soon)
+
+## 🔒 Important Notes
+
+1. **Never expose service role key**: Only use it server-side
+2. **Email is internal only**: Users never interact with emails
+3. **Login uses username**: Not email, even though Supabase uses email internally
+4. **Admin creates users**: No public registration (school system)
+5. **Unique usernames**: System enforces uniqueness
+
+## 🚨 First-Time Setup
+
+### 1. Add Service Role Key to .env.local
+```env
+SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+### 2. Create First Admin (Bootstrap)
+
+Since you need an admin to create users, create the first one manually:
+
+**A. In Supabase Dashboard → Authentication → Users:**
+```
+Email: owner@mashaail.school
+Password: Owner123!
+Auto Confirm: ✓
+```
+
+**B. In Supabase SQL Editor:**
 ```sql
--- Replace values with actual user data
+-- Get the user ID from auth.users table first, then:
 INSERT INTO profiles (id, username, role, full_name, full_name_ar)
 VALUES (
-  '[USER_ID_FROM_AUTH_USERS]',  -- Copy from auth.users table
-  'admin',                        -- The username (without @mashaail.school)
-  'admin',                        -- Role: owner, admin, teacher, etc.
-  'Admin User',                   -- Full name in English
-  'مستخدم المشرف'                 -- Full name in Arabic
+  'PASTE_USER_ID_HERE',
+  'owner',
+  'owner',
+  'System Owner',
+  'مالك النظام'
 );
 ```
 
-## Example Users to Create
+**C. Login:**
+- Username: `owner`
+- Password: `Owner123!`
 
-### Owner Account
-```sql
--- Auth: owner@mashaail.school / SecurePassword123!
-INSERT INTO profiles (id, username, role, full_name, full_name_ar)
-VALUES ('[UUID]', 'owner', 'owner', 'System Owner', 'مالك النظام');
-```
+**D. Create other users:**
+- Go to `/admin/users`
+- Use the web interface (no more manual SQL!)
 
-### Admin Account
-```sql
--- Auth: admin@mashaail.school / AdminPass123!
-INSERT INTO profiles (id, username, role, full_name, full_name_ar)
-VALUES ('[UUID]', 'admin', 'admin', 'Administrator', 'المدير');
-```
+## ✅ That's It!
 
-### Teacher Account
-```sql
--- Auth: teacher01@mashaail.school / TeacherPass123!
-INSERT INTO profiles (id, username, role, full_name, full_name_ar)
-VALUES ('[UUID]', 'teacher01', 'teacher', 'Ahmed Al-Said', 'أحمد السعيد');
-```
-
-### Student Account
-```sql
--- Auth: student123@mashaail.school / StudentPass123!
-INSERT INTO profiles (id, username, role, full_name, full_name_ar)
-VALUES ('[UUID]', 'student123', 'student', 'Sara Mohammed', 'سارة محمد');
-```
-
-## Login Examples
-
-Users log in with:
-- **Username**: `admin` (not `admin@mashaail.school`)
-- **Password**: Their password
-
-The system automatically converts:
-- `admin` → `admin@mashaail.school` (for Supabase)
-- Display shows: `admin` (never shows the email)
-
-## Username Rules
-
-- **Length**: 3-20 characters
-- **Format**: Letters, numbers, underscore
-- **Start**: Must start with a letter
-- **Examples**:
-  - ✓ `admin`, `teacher01`, `ahmad_ali`, `s12345`
-  - ✗ `ab`, `123user`, `user@name`, `very-long-username-here`
-
-## Security Notes
-
-- Users never see or know about the `@mashaail.school` email format
-- All authentication happens through Supabase's secure auth system
-- Passwords are hashed and stored securely by Supabase
-- The internal email format is transparent to users
-
-## Quick Setup Script
-
-Run this after applying the schema to create a test admin user:
-
-```sql
--- 1. First create auth user in Supabase UI:
---    Email: admin@mashaail.school
---    Password: Admin123!
---    Auto Confirm: ✓
-
--- 2. Then run this (replace [USER_ID] with the UUID from step 1):
-INSERT INTO profiles (id, username, role, full_name, full_name_ar)
-VALUES ('[USER_ID]', 'admin', 'admin', 'Test Admin', 'مدير تجريبي');
-
--- 3. Login with:
---    Username: admin
---    Password: Admin123!
-```
+No more dealing with emails. Everything is username-based from the user's perspective!
