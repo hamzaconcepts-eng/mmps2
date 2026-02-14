@@ -1,5 +1,4 @@
-import { useTranslations } from 'next-intl';
-import { setRequestLocale } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Image from 'next/image';
 import { Users, GraduationCap, BookOpen, DollarSign } from 'lucide-react';
 
@@ -7,7 +6,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const t = useTranslations();
+  const t = await getTranslations();
 
   const features = [
     {
