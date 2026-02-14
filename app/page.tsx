@@ -10,16 +10,16 @@ export default function Home() {
           </div>
         </div>
 
-        <h1 className="text-4xl font-black text-brand-deep">
-          Mashaail School
+        <h1 className="text-3xl font-black text-brand-deep" dir="rtl">
+          مدرسة مشاعل مسقط الخاصة
         </h1>
 
-        <h2 className="text-2xl font-bold text-brand-deep-soft font-arabic" dir="rtl">
-          مدرسة مشاعل مسقط الخاصة
+        <h2 className="text-2xl font-bold text-brand-deep-soft">
+          Mashaail Muscat Private School
         </h2>
 
-        <p className="text-text-secondary text-lg">
-          School Management System
+        <p className="text-text-secondary text-base">
+          نظام إدارة مدرسية متكامل • School Management System
         </p>
 
         <div className="flex gap-3 justify-center flex-wrap pt-4">
@@ -37,9 +37,9 @@ export default function Home() {
           </span>
         </div>
 
-        <div className="pt-6">
+        <div className="pt-6 space-y-2">
           <div className="inline-block px-6 py-3 bg-gradient-to-r from-brand-deep to-brand-deep-soft text-white font-bold rounded-full shadow-lg shadow-brand-deep/20 hover:shadow-xl hover:shadow-brand-deep/30 transition-all cursor-pointer">
-            Coming Soon
+            قريباً • Coming Soon
           </div>
         </div>
       </div>

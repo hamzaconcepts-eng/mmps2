@@ -3,7 +3,9 @@
     "allow": [
       "Bash(npx create-next-app@latest:*)",
       "Bash(npm install:*)",
-      "Bash(git remote add:*)"
+      "Bash(git remote add:*)",
+      "Bash(git commit:*)",
+      "Bash(git branch:*)"
     ]
   }
 }
