@@ -1,86 +1,103 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Kufi+Arabic:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Noto+Kufi+Arabic:wght@400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    --font-arabic: 'Noto Kufi Arabic', 'Inter', sans-serif;
+  html, body {
+    height: 100%;
+    overflow: hidden;
   }
 
   body {
-    @apply bg-gray-50 text-text-primary;
-    font-family: var(--font-inter);
+    background: linear-gradient(135deg, #1B4A54 0%, #1F5560 25%, #2A6E72 50%, #1D4F5A 75%, #1B4A54 100%);
+    background-attachment: fixed;
+    color: #FFFFFF;
+    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* RTL Support */
-  [dir='rtl'] {
-    font-family: var(--font-arabic);
+  /* Arabic: consistent font everywhere */
+  [dir='rtl'],
+  [dir='rtl'] * {
+    font-family: 'Noto Kufi Arabic', 'Roboto', sans-serif !important;
   }
 
-  /* Card utilities - clean and simple */
-  .glass {
-    background: white;
-    border: 1px solid #E2E7EB;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  /* Smooth transitions */
+  button, a, [role='button'] {
     transition: all 0.2s ease;
   }
 
-  .glass:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    border-color: #CDD4DA;
-  }
-
-  /* Smooth transitions for interactive elements */
-  button,
-  a,
-  [role='button'] {
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  /* Focus styles for accessibility */
+  /* Focus */
   *:focus-visible {
-    outline: 2px solid #6FBDD1;
+    outline: 2px solid rgba(115, 192, 207, 0.6);
     outline-offset: 2px;
   }
 
-  /* Scrollbar styling */
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.2);
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: rgba(27, 94, 107, 0.3);
-    border-radius: 4px;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: rgba(27, 94, 107, 0.5);
-  }
-
-  /* Thin scrollbar for sidebar */
-  .scrollbar-thin::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  .scrollbar-thin::-webkit-scrollbar-thumb {
-    background: rgba(27, 94, 107, 0.2);
-  }
-
-  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-    background: rgba(27, 94, 107, 0.4);
-  }
+  /* Scrollbar — subtle glass style */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
 }
 
 @layer components {
-  /* Remove all decorative elements */
+  /* ── Glass Card ── */
+  .glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  .glass-strong {
+    background: rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  .glass-subtle {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  /* ── Glass Input ── */
+  .glass-input {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    transition: all 0.2s ease;
+  }
+  .glass-input:focus {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(115, 192, 207, 0.5);
+    box-shadow: 0 0 20px rgba(115, 192, 207, 0.1);
+  }
+
+  /* ── Dreamy Orbs (background decorations) ── */
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .orb-teal {
+    background: radial-gradient(circle, #73C0CF, transparent 70%);
+  }
+  .orb-orange {
+    background: radial-gradient(circle, #F09021, transparent 70%);
+  }
+  .orb-ice {
+    background: radial-gradient(circle, #96C7D3, transparent 70%);
+  }
 }

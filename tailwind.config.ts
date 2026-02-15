@@ -9,93 +9,106 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Teal - Primary Brand (from brand guide + gradients)
-        teal: {
-          900: '#0C3B3B',
-          800: '#0E4D4D',
-          700: '#147272',
-          600: '#1A8A8A',
-          500: '#1FA5A5',
-          400: '#3CC0C0',
-          300: '#67D4D4',
-          200: '#9AE6E6',
-          100: '#D0F5F5',
-          50: '#EEFBFB',
+        // ── Surface (glass-friendly deep teal base) ──
+        surface: {
+          DEFAULT: '#1B4A54',
+          card: 'rgba(255,255,255,0.12)',
+          raised: 'rgba(255,255,255,0.18)',
+          hover: 'rgba(255,255,255,0.22)',
         },
-        // Dark Shades
-        dark: {
-          900: '#111318',
-          800: '#1A1D25',
-          700: '#262A35',
-          600: '#343846',
-          500: '#4A4F60',
-        },
-        // Orange - Accent
-        orange: {
-          600: '#C46A1A',
-          500: '#E07C20',
-          400: '#F0922E',
-          300: '#F5AD5C',
-          200: '#FAD0A0',
-          100: '#FEF0DC',
-        },
-        // Grays (from brand guide)
-        gray: {
-          50: '#F8FAFB',
-          100: '#F1F4F6',
-          200: '#E2E7EB',
-          300: '#CDD4DA',
-          400: '#9BA5B0',
-          500: '#6B7785',
-          600: '#4A5462',
-          700: '#333C48',
-        },
-        // Legacy aliases for compatibility
+        // ── Brand (isometric gradient palette) ──
         brand: {
-          deep: '#0C3B3B',
-          'deep-teal': '#147272',
-          teal: '#1A8A8A',
-          'teal-light': '#1FA5A5',
-          cyan: '#3CC0C0',
-          orange: '#E07C20',
-          'orange-soft': '#F0922E',
+          deep: '#254E58',
+          teal: '#73C0CF',
+          'teal-soft': '#A8D8E3',
+          ice: '#96C7D3',
+          light: '#E4E4E4',
+          orange: '#F09021',
+          'orange-warm': '#F5A946',
         },
+        // ── Accent cards (teal / ice / orange / light) ──
+        accent: {
+          teal: '#73C0CF',
+          'teal-soft': '#A8D8E3',
+          ice: '#96C7D3',
+          'ice-soft': '#C8E2EA',
+          orange: '#F09021',
+          'orange-soft': '#F5C882',
+          light: '#E4E4E4',
+          'light-soft': '#F0F0F0',
+        },
+        // ── Semantic ──
+        success: { DEFAULT: '#5DD99A', soft: '#1A3D2C' },
+        warning: { DEFAULT: '#F0C34E', soft: '#3D3520' },
+        danger:  { DEFAULT: '#F87171', soft: '#3D1E1E' },
+        // ── Text ──
         text: {
-          primary: '#1A1D25',
-          secondary: '#6B7785',
-          tertiary: '#9BA5B0',
+          primary: '#FFFFFF',
+          secondary: 'rgba(255,255,255,0.6)',
+          tertiary: 'rgba(255,255,255,0.35)',
+          dark: '#1E3A40',
+          'dark-secondary': 'rgba(30,58,64,0.7)',
         },
       },
       fontFamily: {
-        sans: ['var(--font-inter)'],
-        inter: ['var(--font-inter)'],
-        arabic: ['var(--font-arabic)'],
+        sans: ['Nunito', 'sans-serif'],
+        arabic: ['Noto Kufi Arabic', 'Nunito', 'sans-serif'],
       },
       borderRadius: {
-        xs: '6px',
-        sm: '8px',
-        md: '12px',
-        lg: '16px',
-        xl: '20px',
+        sm: '10px',
+        md: '14px',
+        lg: '20px',
+        xl: '28px',
+        '2xl': '32px',
         full: '999px',
       },
       backgroundImage: {
-        'gradient-dreamy': 'linear-gradient(to bottom, #F8FAFB, #FFFFFF)',
-        'gradient-teal': 'linear-gradient(135deg, #147272 0%, #1FA5A5 100%)',
-        'gradient-cyan': 'linear-gradient(135deg, #3CC0C0 0%, #67D4D4 100%)',
-        'gradient-orange': 'linear-gradient(135deg, #E07C20 0%, #F0922E 100%)',
-        'gradient-isometric': 'linear-gradient(135deg, #0C3B3B 0%, #147272 50%, #1A8A8A 100%)',
+        // Dreamy background gradient
+        'gradient-dreamy': 'linear-gradient(135deg, #1B4A54 0%, #254E58 30%, #2D6A6F 60%, #1B4A54 100%)',
+        'gradient-sidebar': 'linear-gradient(180deg, rgba(37,78,88,0.95), rgba(27,74,84,0.98))',
+        // Button gradients
+        'gradient-brand-btn': 'linear-gradient(135deg, #254E58, #35707C)',
+        'gradient-teal-btn':  'linear-gradient(135deg, #73C0CF, #96C7D3)',
+        'gradient-orange-btn':'linear-gradient(135deg, #F09021, #F5A946)',
       },
       boxShadow: {
-        glass: '0 10px 40px rgba(27, 94, 107, 0.1), 0 2px 8px rgba(27, 94, 107, 0.06)',
-        'glass-hover': '0 20px 60px rgba(27, 94, 107, 0.15), 0 4px 12px rgba(27, 94, 107, 0.08)',
-        '3xl': '0 35px 60px -15px rgba(0, 0, 0, 0.3)',
+        glass: '0 4px 30px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.1)',
+        'glass-hover': '0 8px 40px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.15)',
+        'glass-strong': '0 8px 32px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.12)',
+        glow: '0 0 50px rgba(115,192,207,0.2)',
+        'glow-orange': '0 0 50px rgba(240,144,33,0.2)',
+        'glow-soft': '0 0 80px rgba(115,192,207,0.1)',
+        card: '0 2px 12px rgba(0,0,0,0.15)',
+        'card-hover': '0 12px 40px rgba(0,0,0,0.2)',
       },
       backdropBlur: {
-        glass: '24px',
+        glass: '16px',
+        'glass-strong': '24px',
       },
-      transitionTimingFunction: {
-        smooth: 'cubic-bezier(0.4, 0, 0.2, 1)',
+      keyframes: {
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-8px)' },
+        },
+        'drift-slow': {
+          '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
+          '33%': { transform: 'translate(30px, -20px) scale(1.05)' },
+          '66%': { transform: 'translate(-20px, 15px) scale(0.95)' },
+        },
+        drift: {
+          '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
+          '50%': { transform: 'translate(-40px, 25px) scale(1.03)' },
+        },
+        shimmer: {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
+        },
+      },
+      animation: {
+        float: 'float 4s ease-in-out infinite',
+        'drift-slow': 'drift-slow 20s ease-in-out infinite',
+        drift: 'drift 15s ease-in-out infinite',
+        shimmer: 'shimmer 3s ease-in-out infinite',
       },
     },
   },

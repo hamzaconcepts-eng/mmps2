@@ -20,7 +20,26 @@
     "loading": "جاري التحميل...",
     "noData": "لا توجد بيانات",
     "error": "حدث خطأ",
-    "success": "تمت العملية بنجاح"
+    "success": "تمت العملية بنجاح",
+    "viewAll": "عرض الكل",
+    "backToHome": "العودة للصفحة الرئيسية",
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "total": "الإجمالي",
+    "of": "من",
+    "page": "صفحة",
+    "next": "التالي",
+    "previous": "السابق",
+    "showing": "عرض",
+    "results": "نتائج",
+    "noResults": "لا توجد نتائج",
+    "actions": "إجراءات",
+    "details": "التفاصيل",
+    "back": "رجوع",
+    "all": "الكل",
+    "status": "الحالة",
+    "comingSoon": "قريباً",
+    "comingSoonDesc": "هذه الميزة قيد التطوير"
   },
   "navigation": {
     "home": "الرئيسية",
@@ -38,7 +57,8 @@
     "messages": "الرسائل",
     "announcements": "الإعلانات",
     "reports": "التقارير",
-    "administration": "الإدارة"
+    "administration": "الإدارة",
+    "transport": "النقل"
   },
   "roles": {
     "owner": "المالك",
@@ -48,6 +68,59 @@
     "student": "طالب",
     "parent": "ولي أمر",
     "accountant": "محاسب"
+  },
+  "sidebar": {
+    "main": "الرئيسية",
+    "academics": "الأكاديمية",
+    "financeSection": "المالية",
+    "communication": "التواصل",
+    "system": "النظام",
+    "collapse": "طي الشريط الجانبي",
+    "expand": "توسيع الشريط الجانبي"
+  },
+  "dashboard": {
+    "title": "لوحة التحكم",
+    "greeting": "صباح الخير!",
+    "date": "السبت، ١٥ فبراير ٢٠٢٦",
+    "academicYear": "العام الدراسي",
+    "quickAction": "إجراء سريع",
+    "todaysAttendance": "حضور اليوم",
+    "recentActivity": "النشاط الأخير",
+    "recentStudents": "أحدث الطلاب",
+    "systemOverview": "نظرة عامة على النظام",
+    "quickStats": "إحصائيات سريعة",
+    "classesToday": "الحصص اليوم",
+    "presentCount": "حاضر",
+    "absentCount": "غائب",
+    "pendingFees": "الرسوم المعلقة",
+    "totalRevenue": "إجمالي الإيرادات",
+    "totalInvoiced": "إجمالي الفوترة",
+    "collectionRate": "نسبة التحصيل",
+    "viewAll": "عرض الكل",
+    "activity": {
+      "newStudent": "تسجيل طالب جديد",
+      "paymentPending": "دفعة معلقة",
+      "classUpdated": "تحديث الفصل",
+      "announcement": "إعلان",
+      "examResults": "نتائج الامتحانات"
+    }
+  },
+  "admin": {
+    "userManagement": "إدارة المستخدمين",
+    "userManagementDesc": "إنشاء وإدارة مستخدمي النظام",
+    "createUser": "إنشاء مستخدم",
+    "creating": "جاري الإنشاء...",
+    "fullNameEn": "الاسم الكامل (إنجليزي)",
+    "fullNameAr": "الاسم الكامل (عربي)",
+    "role": "الدور",
+    "phone": "الهاتف",
+    "instructions": "التعليمات",
+    "usernameRule": "يجب أن يكون فريداً، ٣-٢٠ حرفاً، يبدأ بحرف",
+    "passwordRule": "٨ أحرف كحد أدنى، تستخدم لتسجيل الدخول",
+    "noEmailRule": "النظام يتعامل مع البريد الإلكتروني تلقائياً",
+    "loginRule": "يسجل المستخدمون الدخول باسم المستخدم وكلمة المرور فقط",
+    "userCreatedSuccess": "تم إنشاء المستخدم \"{username}\" بنجاح!",
+    "userCreateFailed": "فشل في إنشاء المستخدم"
   },
   "landing": {
     "hero": {
@@ -77,7 +150,9 @@
     "tech": {
       "title": "مبني بتقنيات حديثة",
       "stack": "Next.js 15 • React 19 • TypeScript • Supabase • Tailwind CSS"
-    }
+    },
+    "subtitle": "نظام إدارة المدرسة",
+    "footer": "تم تطوير هذا البرنامج بأحدث التقنيات في مجال تصميم المواقع - بواسطة حمزة النعماني"
   },
   "auth": {
     "signIn": "تسجيل الدخول",
@@ -94,7 +169,12 @@
   },
   "student": {
     "studentId": "رقم الطالب",
+    "name": "الطالب",
     "firstName": "الاسم الأول",
+    "fatherName": "اسم الأب",
+    "grandfatherName": "اسم الجد",
+    "familyName": "اسم العائلة",
+    "fullName": "الاسم الكامل",
     "lastName": "اسم العائلة",
     "dateOfBirth": "تاريخ الميلاد",
     "gender": "الجنس",
@@ -106,7 +186,20 @@
     "guardian": "ولي الأمر",
     "medicalNotes": "ملاحظات طبية",
     "active": "نشط",
-    "inactive": "غير نشط"
+    "inactive": "غير نشط",
+    "allStudents": "جميع الطلاب",
+    "studentDetails": "تفاصيل الطالب",
+    "searchPlaceholder": "البحث بالاسم أو رقم الطالب...",
+    "filterByClass": "تصفية حسب الفصل",
+    "personalInfo": "المعلومات الشخصية",
+    "guardianInfo": "معلومات ولي الأمر",
+    "transportInfo": "معلومات النقل",
+    "financeInfo": "المعلومات المالية",
+    "noTransport": "بدون نقل",
+    "relationship": "صلة القرابة",
+    "phone": "الهاتف",
+    "email": "البريد الإلكتروني",
+    "address": "العنوان"
   },
   "teacher": {
     "employeeId": "رقم الموظف",
@@ -116,18 +209,57 @@
     "qualifications": "المؤهلات",
     "hireDate": "تاريخ التعيين",
     "subjects": "المواد",
-    "classes": "الفصول"
+    "classes": "الفصول",
+    "allTeachers": "جميع المعلمين",
+    "teacherDetails": "تفاصيل المعلم",
+    "searchPlaceholder": "البحث بالاسم أو رقم الموظف...",
+    "classesAssigned": "الفصول المسندة",
+    "subjectsAssigned": "المواد المسندة",
+    "supervisedClasses": "الفصول المشرف عليها",
+    "phone": "الهاتف"
   },
   "class": {
     "className": "اسم الفصل",
-    "gradeLevel": "المستوى الدراسي",
+    "gradeLevel": "الصف",
     "section": "الشعبة",
     "academicYear": "السنة الدراسية",
     "supervisor": "مشرف الفصل",
     "roomNumber": "رقم الغرفة",
     "capacity": "السعة",
     "students": "الطلاب",
-    "subjects": "المواد"
+    "subjects": "المواد",
+    "allClasses": "جميع الفصول",
+    "classDetails": "تفاصيل الفصل",
+    "studentCount": "عدد الطلاب",
+    "studentRoster": "قائمة الطلاب",
+    "subjectAssignments": "توزيع المواد"
+  },
+  "subject": {
+    "allSubjects": "جميع المواد",
+    "subjectDetails": "تفاصيل المادة",
+    "subjectCode": "الرمز",
+    "subjectName": "اسم المادة",
+    "subjectType": "النوع",
+    "academic": "أكاديمي",
+    "activity": "نشاط",
+    "gradeLevels": "المراحل الدراسية",
+    "scoringCategories": "فئات التقييم",
+    "categoryName": "الفئة",
+    "percentage": "النسبة",
+    "maxScore": "الدرجة القصوى"
+  },
+  "transport": {
+    "title": "إدارة النقل",
+    "buses": "الحافلات",
+    "areas": "مناطق النقل",
+    "busNumber": "رقم الحافلة",
+    "plateNumber": "رقم اللوحة",
+    "driverName": "اسم السائق",
+    "driverPhone": "هاتف السائق",
+    "capacity": "السعة",
+    "assignedStudents": "الطلاب المسجلين",
+    "annualFee": "الرسوم السنوية",
+    "area": "المنطقة"
   },
   "attendance": {
     "date": "التاريخ",
@@ -139,7 +271,11 @@
     "excused": "غياب بعذر",
     "notes": "ملاحظات",
     "takeAttendance": "تسجيل الحضور",
-    "viewHistory": "عرض السجل"
+    "viewHistory": "عرض السجل",
+    "selectClass": "اختر الفصل",
+    "selectDate": "اختر التاريخ",
+    "summary": "الملخص",
+    "noRecords": "لا توجد سجلات حضور لهذا الاختيار"
   },
   "grades": {
     "exam": "الامتحان",
@@ -152,7 +288,13 @@
     "locked": "مقفل",
     "remarks": "ملاحظات",
     "submitGrades": "تقديم الدرجات",
-    "lockGrades": "قفل الدرجات"
+    "lockGrades": "قفل الدرجات",
+    "selectSubject": "اختر المادة",
+    "selectExam": "اختر الامتحان",
+    "average": "المعدل",
+    "highest": "الأعلى",
+    "lowest": "الأدنى",
+    "noGrades": "لا توجد درجات لهذا الاختيار"
   },
   "finance": {
     "invoice": "الفاتورة",
@@ -172,6 +314,35 @@
     "paymentMethod": "طريقة الدفع",
     "cash": "نقدي",
     "card": "بطاقة",
-    "bankTransfer": "تحويل بنكي"
+    "bankTransfer": "تحويل بنكي",
+    "totalInvoiced": "إجمالي الفوترة",
+    "totalCollected": "إجمالي التحصيل",
+    "outstanding": "المبالغ المعلقة",
+    "collectionRate": "نسبة التحصيل",
+    "invoiceDetails": "تفاصيل الفاتورة",
+    "lineItems": "بنود الفاتورة",
+    "allInvoices": "جميع الفواتير",
+    "allPayments": "جميع المدفوعات",
+    "financeOverview": "نظرة مالية عامة"
+  },
+  "exams": {
+    "allExams": "جميع الامتحانات",
+    "examName": "اسم الامتحان",
+    "examDate": "تاريخ الامتحان",
+    "term": "الفصل الدراسي",
+    "published": "منشور",
+    "unpublished": "غير منشور",
+    "weight": "الوزن"
+  },
+  "timetable": {
+    "title": "الجدول الدراسي",
+    "selectClass": "اختر الفصل",
+    "sunday": "الأحد",
+    "monday": "الإثنين",
+    "tuesday": "الثلاثاء",
+    "wednesday": "الأربعاء",
+    "thursday": "الخميس",
+    "period": "الحصة",
+    "noSlots": "لا يوجد جدول دراسي لهذا الفصل"
   }
 }

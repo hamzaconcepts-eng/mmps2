@@ -4,24 +4,23 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
-import { User, Lock, AlertCircle, Loader2, Eye, EyeOff } from 'lucide-react';
+import { User, Lock, AlertCircle, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { login } from './actions';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function LoginForm({ locale }: { locale: string }) {
   const t = useTranslations();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const isRTL = locale === 'ar';
 
   const handleSubmit = async (formData: FormData) => {
     setError('');
     setLoading(true);
-
     try {
       const result = await login(formData);
-      if (result?.error) {
-        setError(result.error);
-      }
+      if (result?.error) setError(result.error);
     } catch (err: any) {
       setError(err.message || t('auth.invalidCredentials'));
     } finally {
@@ -30,69 +29,64 @@ export default function LoginForm({ locale }: { locale: string }) {
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
-      {/* Animated Background Orbs */}
-      <div className="fixed inset-0 -z-10">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-dream-pink rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-drift-slow" />
-        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-dream-lavender rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-drift-slower" />
-        <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-dream-sky rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-drift" />
-      </div>
+    <main className="h-screen flex items-center justify-center overflow-hidden relative">
+      {/* Dreamy orbs */}
+      <div className="orb orb-teal w-[400px] h-[400px] -top-32 -right-32 animate-drift-slow" />
+      <div className="orb orb-orange w-[300px] h-[300px] bottom-0 -left-20 animate-drift" />
+      <div className="orb orb-ice w-[250px] h-[250px] top-1/2 right-1/4 animate-drift-slow" />
 
-      <div className="w-full max-w-md">
-        {/* Logo and Title */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-6">
+      <div className="w-full max-w-sm px-6 relative z-10">
+        {/* Logo */}
+        <div className="text-center mb-6">
+          <div className="flex justify-center mb-4">
             <div className="relative">
-              <div className="absolute inset-0 bg-brand-sky/30 blur-2xl rounded-full" />
-              <Image
-                src="/logo.svg"
-                alt="Mashaail Logo"
-                width={120}
-                height={120}
-                className="relative drop-shadow-2xl"
-                priority
-              />
+              <div className="absolute inset-0 bg-brand-teal/25 blur-3xl rounded-full scale-[2]" />
+              <Image src="/logo.svg" alt="Mashaail" width={72} height={72} priority className="relative" style={{ filter: 'brightness(0) invert(1)' }} />
             </div>
           </div>
-          <h1 className="text-3xl font-black text-brand-deep mb-2" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-            {locale === 'ar' ? 'مدرسة مشاعل' : 'Mashaail School'}
+          <h1 className="text-xl font-black text-white mb-1" dir={isRTL ? 'rtl' : 'ltr'}>
+            {t('common.schoolName')}
           </h1>
-          <p className="text-gray-600 font-medium">
-            {t('auth.signIn')}
-          </p>
+          <p className="text-xs text-text-secondary">{t('auth.signIn')}</p>
         </div>
 
-        {/* Login Form */}
-        <div className="glass p-8 rounded-3xl border border-white/20">
-          <form action={handleSubmit} className="space-y-6">
-            {/* Error Message */}
+        {/* Form Card — glassmorphism */}
+        <div className="glass-strong rounded-xl p-6">
+          {/* Language toggle — opposite corner from inputs */}
+          <div className={`flex ${isRTL ? 'justify-end' : 'justify-start'} mb-4`}>
+            <LanguageSwitcher />
+          </div>
+
+          <form action={handleSubmit} className="space-y-4">
             {error && (
-              <div className="flex items-center gap-3 p-4 rounded-2xl bg-red-50 border border-red-200">
-                <AlertCircle size={20} className="text-red-600 flex-shrink-0" />
-                <p className="text-sm text-red-800">{error}</p>
+              <div className="flex items-center gap-2 p-3 rounded-lg bg-red-500/20 border border-red-400/30 backdrop-blur-sm">
+                <AlertCircle size={16} className="text-red-300 flex-shrink-0" />
+                <p className="text-xs text-red-200 font-medium">{error}</p>
               </div>
             )}
 
-            {/* Hidden locale field */}
             <input type="hidden" name="locale" value={locale} />
 
-            {/* Username Field */}
-            <div className="space-y-2">
-              <label htmlFor="username" className="block text-sm font-semibold text-gray-700">
+            {/* Username */}
+            <div>
+              <label htmlFor="username" className="block text-xs font-bold text-text-secondary mb-1.5">
                 {t('auth.username')}
               </label>
               <div className="relative">
-                <User size={20} className="absolute top-1/2 -translate-y-1/2 text-gray-400"
-                      style={{ [locale === 'ar' ? 'right' : 'left']: '1rem' }} />
+                <User
+                  size={14}
+                  className="absolute top-1/2 -translate-y-1/2 text-text-tertiary"
+                  style={{ [isRTL ? 'right' : 'left']: '0.5rem' }}
+                />
                 <input
                   id="username"
                   name="username"
                   type="text"
                   required
-                  className={`w-full bg-white/50 border border-gray-200 rounded-2xl py-3
-                            ${locale === 'ar' ? 'pr-12 pl-4' : 'pl-12 pr-4'}
-                            focus:outline-none focus:ring-2 focus:ring-brand-sky focus:border-transparent
-                            transition-all duration-200`}
+                  className={`w-full glass-input rounded-md
+                            py-2.5 text-sm text-white placeholder:text-text-tertiary
+                            focus:outline-none
+                            transition-all ${isRTL ? 'pr-6 pl-3' : 'pl-6 pr-3'}`}
                   placeholder={t('auth.username')}
                   disabled={loading}
                   autoComplete="username"
@@ -100,23 +94,26 @@ export default function LoginForm({ locale }: { locale: string }) {
               </div>
             </div>
 
-            {/* Password Field */}
-            <div className="space-y-2">
-              <label htmlFor="password" className="block text-sm font-semibold text-gray-700">
+            {/* Password */}
+            <div>
+              <label htmlFor="password" className="block text-xs font-bold text-text-secondary mb-1.5">
                 {t('auth.password')}
               </label>
               <div className="relative">
-                <Lock size={20} className="absolute top-1/2 -translate-y-1/2 text-gray-400"
-                      style={{ [locale === 'ar' ? 'right' : 'left']: '1rem' }} />
+                <Lock
+                  size={14}
+                  className="absolute top-1/2 -translate-y-1/2 text-text-tertiary"
+                  style={{ [isRTL ? 'right' : 'left']: '0.5rem' }}
+                />
                 <input
                   id="password"
                   name="password"
                   type={showPassword ? 'text' : 'password'}
                   required
-                  className={`w-full bg-white/50 border border-gray-200 rounded-2xl py-3
-                            ${locale === 'ar' ? 'pr-12 pl-12' : 'pl-12 pr-12'}
-                            focus:outline-none focus:ring-2 focus:ring-brand-sky focus:border-transparent
-                            transition-all duration-200`}
+                  className={`w-full glass-input rounded-md
+                            py-2.5 text-sm text-white placeholder:text-text-tertiary
+                            focus:outline-none
+                            transition-all ${isRTL ? 'pr-6 pl-8' : 'pl-6 pr-8'}`}
                   placeholder={t('auth.password')}
                   disabled={loading}
                   autoComplete="current-password"
@@ -124,54 +121,39 @@ export default function LoginForm({ locale }: { locale: string }) {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute top-1/2 -translate-y-1/2 text-gray-400 hover:text-brand-sky transition-colors"
-                  style={{ [locale === 'ar' ? 'left' : 'right']: '1rem' }}
+                  className="absolute top-1/2 -translate-y-1/2 text-text-tertiary hover:text-brand-teal transition-colors"
+                  style={{ [isRTL ? 'left' : 'right']: '0.5rem' }}
                   tabIndex={-1}
                 >
-                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
                 </button>
               </div>
             </div>
 
-            {/* Forgot Password Link */}
-            <div className="text-right">
-              <Link
-                href={`/${locale}/auth/forgot-password`}
-                className="text-sm font-medium text-brand-sky hover:text-brand-deep transition-colors"
-              >
-                {t('auth.forgotPassword')}
-              </Link>
-            </div>
-
-            {/* Sign In Button */}
+            {/* Submit */}
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-brand-deep to-brand-sky text-white
-                       py-3 rounded-2xl font-bold text-lg
-                       hover:shadow-xl hover:scale-105 active:scale-95
-                       transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed
-                       flex items-center justify-center gap-2"
+              className="w-full py-2.5 rounded-md bg-accent-orange text-white font-bold text-sm
+                       shadow-[0_4px_20px_rgba(240,144,33,0.35)]
+                       hover:shadow-[0_8px_30px_rgba(240,144,33,0.45)]
+                       hover:-translate-y-0.5
+                       disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0
+                       transition-all duration-300"
             >
-              {loading ? (
-                <>
-                  <Loader2 size={20} className="animate-spin" />
-                  <span>{t('common.loading')}</span>
-                </>
-              ) : (
-                t('auth.signIn')
-              )}
+              {loading ? t('common.loading') : t('auth.signIn')}
             </button>
           </form>
         </div>
 
-        {/* Back to Home */}
-        <div className="text-center mt-6">
+        {/* Back */}
+        <div className="text-center mt-4">
           <Link
             href={`/${locale}`}
-            className="text-sm font-medium text-gray-600 hover:text-brand-deep transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-text-secondary hover:text-white transition-colors"
           >
-            ← {locale === 'ar' ? 'العودة للصفحة الرئيسية' : 'Back to Home'}
+            <ArrowLeft size={14} className={isRTL ? 'rotate-180' : ''} />
+            {t('common.backToHome')}
           </Link>
         </div>
       </div>

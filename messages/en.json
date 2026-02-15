@@ -20,7 +20,26 @@
     "loading": "Loading...",
     "noData": "No data available",
     "error": "An error occurred",
-    "success": "Operation completed successfully"
+    "success": "Operation completed successfully",
+    "viewAll": "View All",
+    "backToHome": "Back to Home",
+    "active": "Active",
+    "inactive": "Inactive",
+    "total": "Total",
+    "of": "of",
+    "page": "Page",
+    "next": "Next",
+    "previous": "Previous",
+    "showing": "Showing",
+    "results": "results",
+    "noResults": "No results found",
+    "actions": "Actions",
+    "details": "Details",
+    "back": "Back",
+    "all": "All",
+    "status": "Status",
+    "comingSoon": "Coming Soon",
+    "comingSoonDesc": "This feature is under development"
   },
   "navigation": {
     "home": "Home",
@@ -38,7 +57,8 @@
     "messages": "Messages",
     "announcements": "Announcements",
     "reports": "Reports",
-    "administration": "Administration"
+    "administration": "Administration",
+    "transport": "Transport"
   },
   "roles": {
     "owner": "Owner",
@@ -48,6 +68,59 @@
     "student": "Student",
     "parent": "Parent",
     "accountant": "Accountant"
+  },
+  "sidebar": {
+    "main": "Main",
+    "academics": "Academics",
+    "financeSection": "Finance",
+    "communication": "Communication",
+    "system": "System",
+    "collapse": "Collapse Sidebar",
+    "expand": "Expand Sidebar"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "greeting": "Good morning!",
+    "date": "Saturday, Feb 15, 2026",
+    "academicYear": "Academic Year",
+    "quickAction": "Quick Action",
+    "todaysAttendance": "Today's Attendance",
+    "recentActivity": "Recent Activity",
+    "recentStudents": "Recent Students",
+    "systemOverview": "System Overview",
+    "quickStats": "Quick Stats",
+    "classesToday": "Classes Today",
+    "presentCount": "Present",
+    "absentCount": "Absent",
+    "pendingFees": "Pending Fees",
+    "totalRevenue": "Total Revenue",
+    "totalInvoiced": "Total Invoiced",
+    "collectionRate": "Collection Rate",
+    "viewAll": "View All",
+    "activity": {
+      "newStudent": "New Student Enrolled",
+      "paymentPending": "Payment Pending",
+      "classUpdated": "Class Updated",
+      "announcement": "Announcement",
+      "examResults": "Exam Results"
+    }
+  },
+  "admin": {
+    "userManagement": "User Management",
+    "userManagementDesc": "Create and manage system users",
+    "createUser": "Create User",
+    "creating": "Creating...",
+    "fullNameEn": "Full Name (English)",
+    "fullNameAr": "Full Name (Arabic)",
+    "role": "Role",
+    "phone": "Phone",
+    "instructions": "Instructions",
+    "usernameRule": "Must be unique, 3-20 characters, start with a letter",
+    "passwordRule": "Minimum 8 characters, will be used to login",
+    "noEmailRule": "System automatically handles email internally",
+    "loginRule": "Users login with username + password only",
+    "userCreatedSuccess": "User \"{username}\" created successfully!",
+    "userCreateFailed": "Failed to create user"
   },
   "landing": {
     "hero": {
@@ -77,7 +150,9 @@
     "tech": {
       "title": "Built with Modern Technology",
       "stack": "Next.js 15 • React 19 • TypeScript • Supabase • Tailwind CSS"
-    }
+    },
+    "subtitle": "School Management System",
+    "footer": "Developed by latest web-design technologies - Hamza Al Naamani"
   },
   "auth": {
     "signIn": "Sign In",
@@ -94,7 +169,12 @@
   },
   "student": {
     "studentId": "Student ID",
+    "name": "Student",
     "firstName": "First Name",
+    "fatherName": "Father Name",
+    "grandfatherName": "Grandfather Name",
+    "familyName": "Family Name",
+    "fullName": "Full Name",
     "lastName": "Last Name",
     "dateOfBirth": "Date of Birth",
     "gender": "Gender",
@@ -106,7 +186,20 @@
     "guardian": "Guardian",
     "medicalNotes": "Medical Notes",
     "active": "Active",
-    "inactive": "Inactive"
+    "inactive": "Inactive",
+    "allStudents": "All Students",
+    "studentDetails": "Student Details",
+    "searchPlaceholder": "Search by name or student ID...",
+    "filterByClass": "Filter by Class",
+    "personalInfo": "Personal Information",
+    "guardianInfo": "Guardian Information",
+    "transportInfo": "Transport Information",
+    "financeInfo": "Finance Information",
+    "noTransport": "No Transport",
+    "relationship": "Relationship",
+    "phone": "Phone",
+    "email": "Email",
+    "address": "Address"
   },
   "teacher": {
     "employeeId": "Employee ID",
@@ -116,18 +209,57 @@
     "qualifications": "Qualifications",
     "hireDate": "Hire Date",
     "subjects": "Subjects",
-    "classes": "Classes"
+    "classes": "Classes",
+    "allTeachers": "All Teachers",
+    "teacherDetails": "Teacher Details",
+    "searchPlaceholder": "Search by name or employee ID...",
+    "classesAssigned": "Classes Assigned",
+    "subjectsAssigned": "Subjects Assigned",
+    "supervisedClasses": "Supervised Classes",
+    "phone": "Phone"
   },
   "class": {
     "className": "Class Name",
-    "gradeLevel": "Grade Level",
+    "gradeLevel": "Grade",
     "section": "Section",
     "academicYear": "Academic Year",
     "supervisor": "Class Supervisor",
     "roomNumber": "Room Number",
     "capacity": "Capacity",
     "students": "Students",
-    "subjects": "Subjects"
+    "subjects": "Subjects",
+    "allClasses": "All Classes",
+    "classDetails": "Class Details",
+    "studentCount": "Student Count",
+    "studentRoster": "Student Roster",
+    "subjectAssignments": "Subject Assignments"
+  },
+  "subject": {
+    "allSubjects": "All Subjects",
+    "subjectDetails": "Subject Details",
+    "subjectCode": "Code",
+    "subjectName": "Subject Name",
+    "subjectType": "Type",
+    "academic": "Academic",
+    "activity": "Activity",
+    "gradeLevels": "Grade Levels",
+    "scoringCategories": "Scoring Categories",
+    "categoryName": "Category",
+    "percentage": "Percentage",
+    "maxScore": "Max Score"
+  },
+  "transport": {
+    "title": "Transport Management",
+    "buses": "Buses",
+    "areas": "Transport Areas",
+    "busNumber": "Bus Number",
+    "plateNumber": "Plate Number",
+    "driverName": "Driver Name",
+    "driverPhone": "Driver Phone",
+    "capacity": "Capacity",
+    "assignedStudents": "Assigned Students",
+    "annualFee": "Annual Fee",
+    "area": "Area"
   },
   "attendance": {
     "date": "Date",
@@ -139,7 +271,11 @@
     "excused": "Excused",
     "notes": "Notes",
     "takeAttendance": "Take Attendance",
-    "viewHistory": "View History"
+    "viewHistory": "View History",
+    "selectClass": "Select Class",
+    "selectDate": "Select Date",
+    "summary": "Summary",
+    "noRecords": "No attendance records for this selection"
   },
   "grades": {
     "exam": "Exam",
@@ -152,7 +288,13 @@
     "locked": "Locked",
     "remarks": "Remarks",
     "submitGrades": "Submit Grades",
-    "lockGrades": "Lock Grades"
+    "lockGrades": "Lock Grades",
+    "selectSubject": "Select Subject",
+    "selectExam": "Select Exam",
+    "average": "Average",
+    "highest": "Highest",
+    "lowest": "Lowest",
+    "noGrades": "No grades found for this selection"
   },
   "finance": {
     "invoice": "Invoice",
@@ -172,6 +314,35 @@
     "paymentMethod": "Payment Method",
     "cash": "Cash",
     "card": "Card",
-    "bankTransfer": "Bank Transfer"
+    "bankTransfer": "Bank Transfer",
+    "totalInvoiced": "Total Invoiced",
+    "totalCollected": "Total Collected",
+    "outstanding": "Outstanding",
+    "collectionRate": "Collection Rate",
+    "invoiceDetails": "Invoice Details",
+    "lineItems": "Line Items",
+    "allInvoices": "All Invoices",
+    "allPayments": "All Payments",
+    "financeOverview": "Finance Overview"
+  },
+  "exams": {
+    "allExams": "All Exams",
+    "examName": "Exam Name",
+    "examDate": "Exam Date",
+    "term": "Term",
+    "published": "Published",
+    "unpublished": "Not Published",
+    "weight": "Weight"
+  },
+  "timetable": {
+    "title": "Timetable",
+    "selectClass": "Select Class",
+    "sunday": "Sunday",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "period": "Period",
+    "noSlots": "No timetable configured for this class"
   }
 }

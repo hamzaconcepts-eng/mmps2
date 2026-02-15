@@ -1,19 +1,9 @@
 'use server';
 
-import { createClient } from '@supabase/supabase-js';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { usernameToEmail } from '@/lib/auth/helpers';
 
-// Create admin client with service role (bypasses RLS)
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false
-    }
-  }
-);
+const supabaseAdmin = createAdminClient();
 
 export interface CreateUserData {
   username: string;
@@ -125,13 +115,11 @@ export async function toggleUserStatus(userId: string, isActive: boolean) {
 
     // Ban/unban in auth
     if (isActive) {
-      // Unban user
       const { error: authError } = await supabaseAdmin.auth.admin.updateUserById(userId, {
         ban_duration: 'none'
       });
       if (authError) throw authError;
     } else {
-      // Ban user indefinitely
       const { error: authError } = await supabaseAdmin.auth.admin.updateUserById(userId, {
         ban_duration: '876000h' // ~100 years
       });

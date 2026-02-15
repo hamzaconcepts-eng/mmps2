@@ -1,133 +1,130 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Users, GraduationCap, BookOpen, DollarSign } from 'lucide-react';
+import { Users, GraduationCap, BookOpen, DollarSign, ArrowRight } from 'lucide-react';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
-
   const t = await getTranslations();
+  const isRTL = locale === 'ar';
 
   const features = [
     {
       icon: Users,
       title: t('landing.features.students.title'),
-      description: t('landing.features.students.description'),
-      color: 'from-dream-pink to-dream-lavender',
+      desc: t('landing.features.students.description'),
+      bg: 'bg-brand-teal/70',
+      iconBg: 'bg-accent-teal/30',
     },
     {
       icon: GraduationCap,
       title: t('landing.features.teachers.title'),
-      description: t('landing.features.teachers.description'),
-      color: 'from-dream-lavender to-dream-sky',
+      desc: t('landing.features.teachers.description'),
+      bg: 'bg-accent-ice/60',
+      iconBg: 'bg-white/20',
     },
     {
       icon: BookOpen,
       title: t('landing.features.academics.title'),
-      description: t('landing.features.academics.description'),
-      color: 'from-dream-sky to-dream-mint',
+      desc: t('landing.features.academics.description'),
+      bg: 'bg-accent-orange/70',
+      iconBg: 'bg-white/20',
     },
     {
       icon: DollarSign,
       title: t('landing.features.finance.title'),
-      description: t('landing.features.finance.description'),
-      color: 'from-dream-peach to-dream-yellow',
+      desc: t('landing.features.finance.description'),
+      bg: 'bg-accent-teal/50',
+      iconBg: 'bg-white/20',
     },
   ];
 
   return (
-    <main className="min-h-screen relative overflow-hidden">
-      {/* Animated Background Orbs */}
-      <div className="fixed inset-0 -z-10">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-dream-pink rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-drift-slow" />
-        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-dream-lavender rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-drift-slower" />
-        <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-dream-sky rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-drift" />
-        <div className="absolute bottom-0 right-1/3 w-96 h-96 bg-dream-peach rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-drift-slow" />
-        <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-dream-mint rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-drift-slower" />
-      </div>
+    <main className="h-screen flex flex-col overflow-hidden relative">
+      {/* Dreamy orbs */}
+      <div className="orb orb-teal w-[500px] h-[500px] -top-40 -right-40 animate-drift-slow" />
+      <div className="orb orb-orange w-[350px] h-[350px] bottom-0 -left-32 animate-drift" />
+      <div className="orb orb-ice w-[300px] h-[300px] top-1/2 left-1/3 animate-drift-slow" />
 
-      {/* Hero Section */}
-      <section className="container mx-auto px-6 pt-32 pb-20">
-        <div className="text-center max-w-5xl mx-auto">
-          {/* Logo with Glow Effect */}
-          <div className="mb-8 flex justify-center">
-            <div className="relative">
-              <div className="absolute inset-0 bg-brand-sky/30 blur-3xl rounded-full" />
-              <Image
-                src="/logo.svg"
-                alt="Mashaail Logo"
-                width={180}
-                height={180}
-                className="relative drop-shadow-2xl animate-float"
-                priority
-              />
+      {/* Top Bar — just language switcher */}
+      <header className="flex items-center justify-end px-8 py-4 flex-shrink-0 relative z-10">
+        <LanguageSwitcher />
+      </header>
+
+      {/* Main Content — both columns stretch to same height */}
+      <div className="flex-1 flex gap-6 px-8 pb-6 min-h-0 relative z-10">
+        {/* Left Column: Hero card */}
+        <div className="flex flex-col justify-center flex-shrink-0 w-[380px]">
+          <div className="glass-strong rounded-2xl p-8">
+            {/* Logo with soft glow */}
+            <div className="mb-6 flex justify-center">
+              <div className="relative">
+                <div className="absolute inset-0 bg-brand-teal/25 blur-3xl rounded-full scale-[2.5]" />
+                <Image
+                  src="/logo.svg"
+                  alt="Mashaail"
+                  width={90}
+                  height={90}
+                  className="relative animate-float"
+                  style={{ filter: 'brightness(0) invert(1) drop-shadow(0 4px 20px rgba(115,192,207,0.3))' }}
+                />
+              </div>
             </div>
-          </div>
 
-          {/* Bilingual Headers */}
-          <div className="space-y-3 mb-6">
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-brand-deep leading-tight" dir="rtl">
+            <h1 className="text-2xl font-black text-white text-center leading-tight mb-1" dir={isRTL ? 'rtl' : 'ltr'}>
               {t('common.schoolName')}
             </h1>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-brand-sky to-brand-deep bg-clip-text text-transparent">
-              {t('landing.hero.subtitle')}
-            </h2>
-          </div>
+            <p className="text-xs text-text-secondary text-center mb-6">{t('landing.subtitle')}</p>
 
-          <p className="text-lg sm:text-xl text-gray-700 mb-8 max-w-3xl mx-auto leading-relaxed">
-            {t('landing.hero.description')}
-          </p>
-
-          <Link
-            href={`/${locale}/auth/login`}
-            className="glass px-10 py-4 rounded-3xl text-lg font-bold text-brand-deep
-                     transition-all duration-300 hover:scale-105 hover:shadow-2xl
-                     border-2 border-brand-sky/30 hover:border-brand-sky/60
-                     inline-block"
-          >
-            {t('auth.signIn')}
-          </Link>
-        </div>
-      </section>
-
-      {/* Features Grid */}
-      <section className="container mx-auto px-6 py-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {features.map((feature, index) => (
-            <div
-              key={index}
-              className="glass p-8 rounded-3xl hover:scale-105 transition-all duration-500
-                         border border-white/20 hover:shadow-2xl group"
+            <Link
+              href={`/${locale}/auth/login`}
+              className="flex items-center justify-center gap-2 w-full py-3 rounded-md
+                       bg-accent-orange text-white font-bold text-sm
+                       shadow-[0_4px_20px_rgba(240,144,33,0.35)]
+                       hover:shadow-[0_8px_30px_rgba(240,144,33,0.45)]
+                       hover:-translate-y-0.5
+                       transition-all duration-300"
             >
-              <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${feature.color}
-                              flex items-center justify-center mb-6
-                              group-hover:scale-110 transition-transform duration-300
-                              shadow-lg`}>
-                <feature.icon size={32} className="text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-brand-deep mb-3">
-                {feature.title}
-              </h3>
-              <p className="text-gray-600 leading-relaxed">
-                {feature.description}
-              </p>
-            </div>
-          ))}
+              {t('auth.signIn')}
+              <ArrowRight size={16} className={isRTL ? 'rotate-180' : ''} />
+            </Link>
+          </div>
         </div>
-      </section>
 
-      {/* Tech Stack */}
-      <section className="container mx-auto px-6 py-20">
-        <div className="glass max-w-4xl mx-auto p-12 rounded-3xl text-center border border-white/20">
-          <h3 className="text-2xl font-bold text-brand-deep mb-4">
-            {t('landing.tech.title')}
-          </h3>
-          <p className="text-lg text-gray-600 font-mono">
-            {t('landing.tech.stack')}
-          </p>
+        {/* Right Column: Feature Cards Grid */}
+        <div className="flex-1 grid grid-cols-2 gap-4 content-center min-h-0">
+          {features.map((feature, i) => {
+            const Icon = feature.icon;
+            return (
+              <div
+                key={i}
+                className={`${feature.bg} backdrop-blur-sm rounded-2xl p-6 text-white
+                           border border-white/15
+                           shadow-[0_8px_30px_rgba(0,0,0,0.15)]
+                           transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.2)]
+                           flex flex-col justify-between`}
+              >
+                <div>
+                  <div className={`w-10 h-10 rounded-xl ${feature.iconBg} flex items-center justify-center mb-4`}>
+                    <Icon size={20} />
+                  </div>
+                  <h3 className="text-base font-extrabold mb-1.5">{feature.title}</h3>
+                  <p className="text-xs leading-relaxed opacity-70">{feature.desc}</p>
+                </div>
+              </div>
+            );
+          })}
         </div>
-      </section>
+      </div>
+
+      {/* Footer strip */}
+      <footer className="px-8 py-3 flex-shrink-0 border-t border-white/[0.06] relative z-10">
+        <p className="text-[11px] text-text-tertiary text-center font-medium">
+          {t('landing.footer')}
+        </p>
+      </footer>
     </main>
   );
 }

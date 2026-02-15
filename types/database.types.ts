@@ -1,5 +1,6 @@
 // Database Types for Mashaail School Management System
 // Generated from Supabase schema
+// Currency: OMR uses 3 decimal places
 
 export type Json =
   | string
@@ -65,6 +66,7 @@ export interface Database {
           email: string
           hire_date: string
           specialization: string | null
+          specialization_ar: string | null
           qualifications: string | null
           photo_url: string | null
           is_active: boolean
@@ -85,6 +87,7 @@ export interface Database {
           email: string
           hire_date: string
           specialization?: string | null
+          specialization_ar?: string | null
           qualifications?: string | null
           photo_url?: string | null
           is_active?: boolean
@@ -105,8 +108,47 @@ export interface Database {
           email?: string
           hire_date?: string
           specialization?: string | null
+          specialization_ar?: string | null
           qualifications?: string | null
           photo_url?: string | null
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      facilities: {
+        Row: {
+          id: string
+          name: string
+          name_ar: string
+          code: string
+          type: Database['public']['Enums']['facility_type']
+          capacity: number | null
+          is_shared: boolean
+          is_active: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          name_ar: string
+          code: string
+          type?: Database['public']['Enums']['facility_type']
+          capacity?: number | null
+          is_shared?: boolean
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          name_ar?: string
+          code?: string
+          type?: Database['public']['Enums']['facility_type']
+          capacity?: number | null
+          is_shared?: boolean
           is_active?: boolean
           created_at?: string
           updated_at?: string
@@ -121,8 +163,8 @@ export interface Database {
           section: string
           academic_year: string
           class_supervisor_id: string | null
-          room_number: string | null
-          capacity: number | null
+          facility_id: string | null
+          capacity: number
           is_active: boolean
           created_at: string
           updated_at: string
@@ -135,8 +177,8 @@ export interface Database {
           section: string
           academic_year: string
           class_supervisor_id?: string | null
-          room_number?: string | null
-          capacity?: number | null
+          facility_id?: string | null
+          capacity?: number
           is_active?: boolean
           created_at?: string
           updated_at?: string
@@ -149,8 +191,81 @@ export interface Database {
           section?: string
           academic_year?: string
           class_supervisor_id?: string | null
-          room_number?: string | null
-          capacity?: number | null
+          facility_id?: string | null
+          capacity?: number
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      transport_areas: {
+        Row: {
+          id: string
+          name: string
+          name_ar: string
+          annual_fee: number
+          academic_year: string
+          is_active: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          name_ar: string
+          annual_fee: number
+          academic_year: string
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          name_ar?: string
+          annual_fee?: number
+          academic_year?: string
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      buses: {
+        Row: {
+          id: string
+          bus_number: string
+          plate_number: string | null
+          driver_name: string
+          driver_name_ar: string
+          driver_phone: string
+          capacity: number
+          transport_area_id: string
+          is_active: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          bus_number: string
+          plate_number?: string | null
+          driver_name: string
+          driver_name_ar: string
+          driver_phone: string
+          capacity?: number
+          transport_area_id: string
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          bus_number?: string
+          plate_number?: string | null
+          driver_name?: string
+          driver_name_ar?: string
+          driver_phone?: string
+          capacity?: number
+          transport_area_id?: string
           is_active?: boolean
           created_at?: string
           updated_at?: string
@@ -163,8 +278,12 @@ export interface Database {
           student_id: string
           first_name: string
           first_name_ar: string
-          last_name: string
-          last_name_ar: string
+          father_name: string
+          father_name_ar: string
+          grandfather_name: string
+          grandfather_name_ar: string
+          family_name: string
+          family_name_ar: string
           date_of_birth: string
           gender: Database['public']['Enums']['gender']
           nationality: string | null
@@ -172,6 +291,7 @@ export interface Database {
           class_id: string | null
           enrollment_date: string
           photo_url: string | null
+          gps_location: string | null
           medical_notes: string | null
           is_active: boolean
           created_at: string
@@ -183,8 +303,12 @@ export interface Database {
           student_id: string
           first_name: string
           first_name_ar: string
-          last_name: string
-          last_name_ar: string
+          father_name: string
+          father_name_ar: string
+          grandfather_name: string
+          grandfather_name_ar: string
+          family_name: string
+          family_name_ar: string
           date_of_birth: string
           gender: Database['public']['Enums']['gender']
           nationality?: string | null
@@ -192,6 +316,7 @@ export interface Database {
           class_id?: string | null
           enrollment_date: string
           photo_url?: string | null
+          gps_location?: string | null
           medical_notes?: string | null
           is_active?: boolean
           created_at?: string
@@ -203,8 +328,12 @@ export interface Database {
           student_id?: string
           first_name?: string
           first_name_ar?: string
-          last_name?: string
-          last_name_ar?: string
+          father_name?: string
+          father_name_ar?: string
+          grandfather_name?: string
+          grandfather_name_ar?: string
+          family_name?: string
+          family_name_ar?: string
           date_of_birth?: string
           gender?: Database['public']['Enums']['gender']
           nationality?: string | null
@@ -212,10 +341,40 @@ export interface Database {
           class_id?: string | null
           enrollment_date?: string
           photo_url?: string | null
+          gps_location?: string | null
           medical_notes?: string | null
           is_active?: boolean
           created_at?: string
           updated_at?: string
+        }
+      }
+      student_transport: {
+        Row: {
+          id: string
+          student_id: string
+          transport_area_id: string
+          bus_id: string
+          academic_year: string
+          is_active: boolean
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          student_id: string
+          transport_area_id: string
+          bus_id: string
+          academic_year: string
+          is_active?: boolean
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          student_id?: string
+          transport_area_id?: string
+          bus_id?: string
+          academic_year?: string
+          is_active?: boolean
+          created_at?: string
         }
       }
       guardians: {
@@ -224,9 +383,14 @@ export interface Database {
           profile_id: string | null
           first_name: string
           first_name_ar: string
-          last_name: string
-          last_name_ar: string
+          father_name: string | null
+          father_name_ar: string | null
+          grandfather_name: string | null
+          grandfather_name_ar: string | null
+          family_name: string
+          family_name_ar: string
           relationship: string
+          relationship_ar: string | null
           email: string | null
           phone: string
           work_phone: string | null
@@ -240,9 +404,14 @@ export interface Database {
           profile_id?: string | null
           first_name: string
           first_name_ar: string
-          last_name: string
-          last_name_ar: string
+          father_name?: string | null
+          father_name_ar?: string | null
+          grandfather_name?: string | null
+          grandfather_name_ar?: string | null
+          family_name: string
+          family_name_ar: string
           relationship: string
+          relationship_ar?: string | null
           email?: string | null
           phone: string
           work_phone?: string | null
@@ -256,9 +425,14 @@ export interface Database {
           profile_id?: string | null
           first_name?: string
           first_name_ar?: string
-          last_name?: string
-          last_name_ar?: string
+          father_name?: string | null
+          father_name_ar?: string | null
+          grandfather_name?: string | null
+          grandfather_name_ar?: string | null
+          family_name?: string
+          family_name_ar?: string
           relationship?: string
+          relationship_ar?: string | null
           email?: string | null
           phone?: string
           work_phone?: string | null
@@ -298,7 +472,7 @@ export interface Database {
           name: string
           name_ar: string
           description: string | null
-          grade_levels: number[] | null
+          is_activity: boolean
           is_active: boolean
           created_at: string
           updated_at: string
@@ -309,7 +483,7 @@ export interface Database {
           name: string
           name_ar: string
           description?: string | null
-          grade_levels?: number[] | null
+          is_activity?: boolean
           is_active?: boolean
           created_at?: string
           updated_at?: string
@@ -320,10 +494,36 @@ export interface Database {
           name?: string
           name_ar?: string
           description?: string | null
-          grade_levels?: number[] | null
+          is_activity?: boolean
           is_active?: boolean
           created_at?: string
           updated_at?: string
+        }
+      }
+      grade_subjects: {
+        Row: {
+          id: string
+          subject_id: string
+          grade_level: number
+          periods_per_week: number
+          is_active: boolean
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          subject_id: string
+          grade_level: number
+          periods_per_week?: number
+          is_active?: boolean
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          subject_id?: string
+          grade_level?: number
+          periods_per_week?: number
+          is_active?: boolean
+          created_at?: string
         }
       }
       class_subjects: {
@@ -350,6 +550,50 @@ export interface Database {
           teacher_id?: string | null
           periods_per_week?: number
           created_at?: string
+        }
+      }
+      scoring_categories: {
+        Row: {
+          id: string
+          subject_id: string
+          grade_level: number
+          name: string
+          name_ar: string
+          percentage: number
+          max_score: number
+          sort_order: number
+          academic_year: string
+          is_active: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          subject_id: string
+          grade_level: number
+          name: string
+          name_ar: string
+          percentage: number
+          max_score?: number
+          sort_order?: number
+          academic_year: string
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          subject_id?: string
+          grade_level?: number
+          name?: string
+          name_ar?: string
+          percentage?: number
+          max_score?: number
+          sort_order?: number
+          academic_year?: string
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
         }
       }
       terms: {
@@ -393,6 +637,7 @@ export interface Database {
           name: string
           name_ar: string
           class_subject_id: string
+          scoring_category_id: string | null
           term_id: string | null
           exam_date: string | null
           max_score: number
@@ -406,6 +651,7 @@ export interface Database {
           name: string
           name_ar: string
           class_subject_id: string
+          scoring_category_id?: string | null
           term_id?: string | null
           exam_date?: string | null
           max_score: number
@@ -419,6 +665,7 @@ export interface Database {
           name?: string
           name_ar?: string
           class_subject_id?: string
+          scoring_category_id?: string | null
           term_id?: string | null
           exam_date?: string | null
           max_score?: number
@@ -567,7 +814,7 @@ export interface Database {
           period: number
           start_time: string
           end_time: string
-          room_number: string | null
+          facility_id: string | null
           is_active: boolean
           created_at: string
           updated_at: string
@@ -579,7 +826,7 @@ export interface Database {
           period: number
           start_time: string
           end_time: string
-          room_number?: string | null
+          facility_id?: string | null
           is_active?: boolean
           created_at?: string
           updated_at?: string
@@ -591,7 +838,54 @@ export interface Database {
           period?: number
           start_time?: string
           end_time?: string
-          room_number?: string | null
+          facility_id?: string | null
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      fee_structures: {
+        Row: {
+          id: string
+          name: string
+          name_ar: string
+          academic_year: string
+          grade_levels: number[]
+          total_amount: number
+          books_fee: number
+          school_fee: number
+          services_fee: number
+          registration_fee: number
+          is_active: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          name_ar: string
+          academic_year: string
+          grade_levels: number[]
+          total_amount: number
+          books_fee?: number
+          school_fee?: number
+          services_fee?: number
+          registration_fee?: number
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          name_ar?: string
+          academic_year?: string
+          grade_levels?: number[]
+          total_amount?: number
+          books_fee?: number
+          school_fee?: number
+          services_fee?: number
+          registration_fee?: number
           is_active?: boolean
           created_at?: string
           updated_at?: string
@@ -688,6 +982,7 @@ export interface Database {
           invoice_id: string
           fee_item_id: string | null
           description: string
+          description_ar: string | null
           amount: number
           created_at: string
         }
@@ -696,6 +991,7 @@ export interface Database {
           invoice_id: string
           fee_item_id?: string | null
           description: string
+          description_ar?: string | null
           amount: number
           created_at?: string
         }
@@ -704,6 +1000,7 @@ export interface Database {
           invoice_id?: string
           fee_item_id?: string | null
           description?: string
+          description_ar?: string | null
           amount?: number
           created_at?: string
         }
@@ -879,6 +1176,7 @@ export interface Database {
       payment_status: 'pending' | 'paid' | 'overdue' | 'cancelled'
       grade_status: 'draft' | 'submitted' | 'locked'
       gender: 'male' | 'female'
+      facility_type: 'classroom' | 'lab' | 'sports' | 'music_room' | 'library' | 'other'
     }
   }
 }

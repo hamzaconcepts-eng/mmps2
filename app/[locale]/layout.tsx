@@ -3,7 +3,6 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { locales } from '@/i18n';
-import LanguageSwitcher from '@/components/LanguageSwitcher';
 import '../globals.css';
 
 export const metadata: Metadata = {
@@ -25,25 +24,19 @@ export default async function LocaleLayout({
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
 }) {
-  // Await params
   const { locale } = await params;
 
-  // Validate locale
   if (!locales.includes(locale as any)) {
     notFound();
   }
 
-  // Enable static rendering
   setRequestLocale(locale);
-
-  // Get messages for the locale
   const messages = await getMessages();
 
   return (
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-      <body className="font-cairo antialiased">
+      <body className="antialiased">
         <NextIntlClientProvider messages={messages}>
-          <LanguageSwitcher />
           {children}
         </NextIntlClientProvider>
       </body>
