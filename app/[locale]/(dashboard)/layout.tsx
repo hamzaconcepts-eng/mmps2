@@ -1,8 +1,9 @@
 import Sidebar from '@/components/Sidebar';
 import { setRequestLocale } from 'next-intl/server';
 
-// All dashboard pages use Supabase queries at request time
-export const dynamic = 'force-dynamic';
+// ISR: cache pages for 60s, then revalidate in background.
+// School data changes infrequently — 60s staleness is fine.
+export const revalidate = 60;
 
 export default async function DashboardLayout({
   children,

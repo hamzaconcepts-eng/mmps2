@@ -1,7 +1,7 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
 import { School } from 'lucide-react';
-import { createAdminClient } from '@/lib/supabase/admin';
+import { getClassesWithCounts } from '@/lib/supabase/cached-queries';
 import { formatGradeLevel, formatTeacherName } from '@/lib/utils/format';
 import PageHeader from '@/components/PageHeader';
 import { Card } from '@/components/ui/Card';
@@ -12,30 +12,8 @@ export default async function ClassesPage({ params }: { params: Promise<{ locale
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations();
-  const supabase = createAdminClient();
 
-  const [classesRes, studentsRes] = await Promise.all([
-    supabase
-      .from('classes')
-      .select('*, teachers!classes_class_supervisor_id_fkey(first_name, first_name_ar, last_name, last_name_ar)')
-      .eq('is_active', true)
-      .eq('academic_year', '2025-2026')
-      .order('grade_level')
-      .order('section'),
-    supabase
-      .from('students')
-      .select('class_id')
-      .eq('is_active', true),
-  ]);
-
-  const classes = classesRes.data || [];
-  const students = studentsRes.data || [];
-
-  // Count students per class
-  const countMap: Record<string, number> = {};
-  students.forEach((s: any) => {
-    if (s.class_id) countMap[s.class_id] = (countMap[s.class_id] || 0) + 1;
-  });
+  const { classes, countMap } = await getClassesWithCounts();
 
   return (
     <div className="max-w-[1200px]">

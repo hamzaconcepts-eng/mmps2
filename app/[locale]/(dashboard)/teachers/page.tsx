@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
 import { GraduationCap, Plus } from 'lucide-react';
+import { getAllTeachers } from '@/lib/supabase/cached-queries';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { formatTeacherName, formatDate } from '@/lib/utils/format';
 import PageHeader from '@/components/PageHeader';
@@ -22,21 +23,22 @@ export default async function TeachersPage({
   const sp = await searchParams;
   setRequestLocale(locale);
   const t = await getTranslations();
-  const supabase = createAdminClient();
   const search = sp?.search || '';
 
-  let query = supabase
-    .from('teachers')
-    .select('*')
-    .eq('is_active', true)
-    .order('employee_id');
-
+  // Use cached list when no search; direct query only for search
+  let teacherList: any[];
   if (search) {
-    query = query.or(`first_name.ilike.%${search}%,last_name.ilike.%${search}%,employee_id.ilike.%${search}%,first_name_ar.ilike.%${search}%,last_name_ar.ilike.%${search}%`);
+    const supabase = createAdminClient();
+    const { data } = await supabase
+      .from('teachers')
+      .select('*')
+      .eq('is_active', true)
+      .or(`first_name.ilike.%${search}%,last_name.ilike.%${search}%,employee_id.ilike.%${search}%,first_name_ar.ilike.%${search}%,last_name_ar.ilike.%${search}%`)
+      .order('employee_id');
+    teacherList = data || [];
+  } else {
+    teacherList = await getAllTeachers();
   }
-
-  const { data: teachers } = await query;
-  const teacherList = teachers || [];
 
   return (
     <div className="max-w-[1200px]">

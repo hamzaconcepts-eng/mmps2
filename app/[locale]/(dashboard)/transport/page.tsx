@@ -1,6 +1,6 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Bus, MapPin } from 'lucide-react';
-import { createAdminClient } from '@/lib/supabase/admin';
+import { getTransportData } from '@/lib/supabase/cached-queries';
 import { formatCurrency } from '@/lib/utils/format';
 import PageHeader from '@/components/PageHeader';
 import { Card } from '@/components/ui/Card';
@@ -10,31 +10,9 @@ export default async function TransportPage({ params }: { params: Promise<{ loca
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations();
-  const supabase = createAdminClient();
   const isAr = locale === 'ar';
 
-  const [areasRes, busesRes, transportRes] = await Promise.all([
-    supabase.from('transport_areas').select('*').eq('academic_year', '2025-2026').eq('is_active', true).order('name'),
-    supabase.from('buses').select('*').eq('is_active', true).order('bus_number'),
-    supabase.from('student_transport').select('bus_id').eq('academic_year', '2025-2026').eq('is_active', true),
-  ]);
-
-  const areas = areasRes.data || [];
-  const buses = busesRes.data || [];
-  const transports = transportRes.data || [];
-
-  // Count students per bus
-  const busStudentCount: Record<string, number> = {};
-  transports.forEach((t: any) => {
-    busStudentCount[t.bus_id] = (busStudentCount[t.bus_id] || 0) + 1;
-  });
-
-  // Group buses by area
-  const busesByArea: Record<string, any[]> = {};
-  buses.forEach((bus: any) => {
-    if (!busesByArea[bus.transport_area_id]) busesByArea[bus.transport_area_id] = [];
-    busesByArea[bus.transport_area_id].push(bus);
-  });
+  const { areas, buses, transports, busStudentCount, busesByArea } = await getTransportData();
 
   return (
     <div className="max-w-[1200px]">

@@ -14,13 +14,23 @@ const intlMiddleware = createMiddleware({
   localePrefix: 'always'
 });
 
-export async function middleware(request: NextRequest) {
-  // First, handle authentication
-  const authResponse = await updateSession(request);
+// Public pages that don't need an auth DB call
+const PUBLIC_PATHS = ['/', '/auth/'];
 
-  // If auth middleware redirected, return that response
-  if (authResponse.status === 307 || authResponse.status === 308) {
-    return authResponse;
+export async function middleware(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+
+  // Skip the Supabase auth round-trip for public pages (landing, login)
+  const isPublic = PUBLIC_PATHS.some(
+    (p) => pathname === p || pathname.endsWith(p) || pathname.includes('/auth/')
+  );
+
+  if (!isPublic) {
+    // Only check auth for protected routes
+    const authResponse = await updateSession(request);
+    if (authResponse.status === 307 || authResponse.status === 308) {
+      return authResponse;
+    }
   }
 
   // Then handle i18n

@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
 import { Users, Plus } from 'lucide-react';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { getClassesList } from '@/lib/supabase/cached-queries';
 import { formatStudentName, formatGradeLevel } from '@/lib/utils/format';
 import PageHeader from '@/components/PageHeader';
 import SearchBar from '@/components/SearchBar';
@@ -49,15 +50,15 @@ export default async function StudentsPage({
     query = query.eq('class_id', classFilter);
   }
 
-  const [studentsRes, classesRes] = await Promise.all([
+  // Students query is always fresh (paginated + filtered); classes list is cached
+  const [studentsRes, classes] = await Promise.all([
     query,
-    supabase.from('classes').select('id, name, name_ar, grade_level, section').eq('is_active', true).order('grade_level').order('section'),
+    getClassesList(),
   ]);
 
   const students = studentsRes.data || [];
   const totalCount = studentsRes.count || 0;
   const totalPages = Math.ceil(totalCount / PER_PAGE);
-  const classes = classesRes.data || [];
 
   // Build base path for pagination (preserve search params)
   const searchParamsStr = new URLSearchParams();

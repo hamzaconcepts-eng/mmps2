@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
 import { Receipt } from 'lucide-react';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { getInvoiceStats } from '@/lib/supabase/cached-queries';
 import { formatCurrency, formatStudentName, formatDate } from '@/lib/utils/format';
 import PageHeader from '@/components/PageHeader';
 import Pagination from '@/components/Pagination';
@@ -31,18 +32,10 @@ export default async function InvoicesPage({
   const from = (page - 1) * PER_PAGE;
   const to = from + PER_PAGE - 1;
 
-  // Get all invoices for stats
-  const { data: allInvoices } = await supabase
-    .from('invoices')
-    .select('total_amount, paid_amount, status')
-    .eq('academic_year', '2025-2026');
+  // Stats from cache (instant); paginated list is fresh
+  const { totalInvoiced, totalCollected, outstanding, overdueCount } = await getInvoiceStats();
 
-  const totalInvoiced = allInvoices?.reduce((s, i) => s + (i.total_amount || 0), 0) || 0;
-  const totalCollected = allInvoices?.reduce((s, i) => s + (i.paid_amount || 0), 0) || 0;
-  const outstanding = totalInvoiced - totalCollected;
-  const overdueCount = allInvoices?.filter(i => i.status === 'overdue').length || 0;
-
-  // Paginated query
+  // Paginated query — always fresh for correct pagination
   let query = supabase
     .from('invoices')
     .select('*, students(first_name, first_name_ar, father_name, father_name_ar, family_name, family_name_ar, student_id, classes(name, name_ar))', { count: 'exact' })
