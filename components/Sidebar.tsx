@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import SignOutButton from './SignOutButton';
+import DualDateBar from './DualDateBar';
 import {
   Home, Users, GraduationCap, BookOpen, School,
   ClipboardCheck, FileText, Calendar, DollarSign,
@@ -199,6 +200,13 @@ export default function Sidebar({ locale, userRole = 'admin' }: SidebarProps) {
           );
         })}
       </nav>
+
+      {/* Date */}
+      {!isCollapsed && (
+        <div className="px-3 py-2 flex-shrink-0 border-t border-white/[0.06]">
+          <DualDateBar variant="sidebar" />
+        </div>
+      )}
 
       {/* Sign Out */}
       {!isCollapsed && (
