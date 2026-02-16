@@ -54,14 +54,9 @@ export default async function TransportPage({ params }: { params: Promise<{ loca
                             <span className="text-text-tertiary">{t('transport.plateNumber')}</span>
                             <span className="text-text-primary font-mono">{bus.plate_number || '—'}</span>
                           </div>
-                          <div className="flex justify-between items-center">
+                          <div className="flex justify-between">
                             <span className="text-text-tertiary">{t('transport.driverName')}</span>
-                            <div className="flex items-center gap-1.5">
-                              {bus.driver_photo_url && (
-                                <img src={bus.driver_photo_url} alt="" className="w-5 h-5 rounded-full object-cover" />
-                              )}
-                              <span className="text-text-primary">{formatDriverName(bus, locale)}</span>
-                            </div>
+                            <span className="text-text-primary">{formatDriverName(bus, locale)}</span>
                           </div>
                           <div className="flex justify-between">
                             <span className="text-text-tertiary">{t('transport.driverPhone')}</span>

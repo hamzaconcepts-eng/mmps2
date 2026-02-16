@@ -19,7 +19,7 @@ export default function ClickableRow({ href, children, className = '' }: Clickab
     <tr
       className={`border-b border-gray-100 last:border-0
                   even:bg-gray-50/50
-                  hover:bg-brand-teal/[0.04] transition-colors duration-150
+                  hover:bg-brand-teal/[0.08] transition-colors duration-150
                   cursor-pointer
                   ${className}`}
       onClick={() => router.push(href)}

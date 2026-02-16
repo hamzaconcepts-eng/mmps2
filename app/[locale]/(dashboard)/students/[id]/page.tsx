@@ -1,11 +1,12 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
-import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { ArrowLeft, User, Users, Bus, Receipt, Phone, Mail, MapPin, ExternalLink } from 'lucide-react';
+import { ArrowLeft, User, Users, Bus, Receipt, Phone, Mail, MapPin } from 'lucide-react';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { formatStudentName, formatGuardianName, formatGradeLevel, formatCurrency, formatDate, formatClassName, formatPhone } from '@/lib/utils/format';
 import PageHeader from '@/components/PageHeader';
+import PhotoZoom from '@/components/PhotoZoom';
+import LocationButtons from '@/components/LocationButtons';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
@@ -78,18 +79,14 @@ export default async function StudentDetailPage({
             </div>
           </Card.Header>
           <div className="flex gap-4">
-            {/* Student Photo */}
+            {/* Student Photo — clickable zoom */}
             {student.photo_url && (
-              <div className="flex-shrink-0">
-                <Image
-                  src={student.photo_url}
-                  alt={formatStudentName(student, locale)}
-                  width={80}
-                  height={80}
-                  className="rounded-lg object-cover border border-gray-200"
-                  style={{ width: 80, height: 80 }}
-                />
-              </div>
+              <PhotoZoom
+                src={student.photo_url}
+                alt={formatStudentName(student, locale)}
+                width={80}
+                height={80}
+              />
             )}
             <div className="flex-1 space-y-2.5">
               <InfoRow label={t('student.firstName')} value={isAr ? student.first_name_ar : student.first_name} />
@@ -146,15 +143,7 @@ export default async function StudentDetailPage({
                   <Card.Title>{isAr ? 'موقع المنزل' : 'Home Location'}</Card.Title>
                 </div>
               </Card.Header>
-              <a
-                href={student.gps_location}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-[12px] text-brand-teal hover:text-brand-teal-soft transition-colors font-medium"
-              >
-                <ExternalLink size={13} />
-                {isAr ? 'فتح في خرائط جوجل' : 'Open in Google Maps'}
-              </a>
+              <LocationButtons url={student.gps_location} locale={locale} />
             </Card>
           )}
         </div>
@@ -215,18 +204,6 @@ export default async function StudentDetailPage({
               <InfoRow label={t('transport.plateNumber')} value={transport.buses?.plate_number || '—'} />
               <InfoRow label={t('transport.driverName')} value={isAr ? transport.buses?.driver_name_ar : transport.buses?.driver_name} />
               <InfoRow label={t('transport.driverPhone')} value={formatPhone(transport.buses?.driver_phone || '')} />
-              {transport.buses?.driver_photo_url && (
-                <div className="pt-1">
-                  <Image
-                    src={transport.buses.driver_photo_url}
-                    alt="Driver"
-                    width={48}
-                    height={48}
-                    className="rounded-lg object-cover border border-gray-200"
-                    style={{ width: 48, height: 48 }}
-                  />
-                </div>
-              )}
               <InfoRow label={t('transport.annualFee')} value={formatCurrency(transport.transport_areas?.annual_fee || 0)} />
             </div>
           ) : (
