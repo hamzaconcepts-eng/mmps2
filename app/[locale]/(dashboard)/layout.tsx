@@ -36,8 +36,8 @@ export default async function DashboardLayout({
               </>
             ) : (
               <>
-                <DualDateBar />
                 <LanguageSwitcher variant="light" />
+                <DualDateBar />
               </>
             )}
           </div>
