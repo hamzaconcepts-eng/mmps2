@@ -38,7 +38,7 @@ export default async function InvoicesPage({
   // Paginated query — always fresh for correct pagination
   let query = supabase
     .from('invoices')
-    .select('*, students(first_name, first_name_ar, father_name, father_name_ar, family_name, family_name_ar, student_id, classes(name, name_ar))', { count: 'exact' })
+    .select('*, students(first_name, first_name_ar, father_name, father_name_ar, grandfather_name, grandfather_name_ar, family_name, family_name_ar, gender, student_id, classes(name, name_ar))', { count: 'exact' })
     .eq('academic_year', '2025-2026')
     .order('invoice_number', { ascending: false })
     .range(from, to);

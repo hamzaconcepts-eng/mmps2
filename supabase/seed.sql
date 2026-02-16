@@ -44,39 +44,39 @@ INSERT INTO facilities (name, name_ar, code, type, capacity, is_shared) VALUES
 -- 2. TEACHERS (30+ female teachers)
 -- ================================================
 
-INSERT INTO teachers (employee_id, first_name, first_name_ar, last_name, last_name_ar, gender, date_of_birth, phone, email, hire_date, specialization, specialization_ar) VALUES
-  ('TCH-001', 'Fatma', 'فاطمة', 'Al Balushi', 'البلوشي', 'female', '1985-03-15', '+96891001001', 'fatma.balushi@mashaail.school', '2020-09-01', 'Islamic Education', 'التربية الإسلامية'),
-  ('TCH-002', 'Maryam', 'مريم', 'Al Harthi', 'الحارثي', 'female', '1988-07-22', '+96891001002', 'maryam.harthi@mashaail.school', '2019-09-01', 'Arabic Language', 'اللغة العربية'),
-  ('TCH-003', 'Aisha', 'عائشة', 'Al Rashdi', 'الراشدي', 'female', '1990-01-10', '+96891001003', 'aisha.rashdi@mashaail.school', '2021-09-01', 'English Language', 'اللغة الإنجليزية'),
-  ('TCH-004', 'Noora', 'نورة', 'Al Busaidi', 'البوسعيدي', 'female', '1987-11-05', '+96891001004', 'noora.busaidi@mashaail.school', '2018-09-01', 'Mathematics', 'الرياضيات'),
-  ('TCH-005', 'Huda', 'هدى', 'Al Kindi', 'الكندي', 'female', '1986-05-18', '+96891001005', 'huda.kindi@mashaail.school', '2020-09-01', 'Science', 'العلوم'),
-  ('TCH-006', 'Layla', 'ليلى', 'Al Wahaibi', 'الوهيبي', 'female', '1991-09-30', '+96891001006', 'layla.wahaibi@mashaail.school', '2022-09-01', 'Social Studies', 'الدراسات الاجتماعية'),
-  ('TCH-007', 'Samia', 'سامية', 'Al Mahrouqi', 'المحروقي', 'female', '1989-04-12', '+96891001007', 'samia.mahrouqi@mashaail.school', '2019-09-01', 'Information Technology', 'تقنية المعلومات'),
-  ('TCH-008', 'Khadija', 'خديجة', 'Al Maskari', 'المسكري', 'female', '1992-08-25', '+96891001008', 'khadija.maskari@mashaail.school', '2023-09-01', 'Life Skills', 'المهارات الحياتية'),
-  ('TCH-009', 'Zainab', 'زينب', 'Al Habsi', 'الحبسي', 'female', '1988-12-03', '+96891001009', 'zainab.habsi@mashaail.school', '2020-09-01', 'Music Skills', 'المهارات الموسيقية'),
-  ('TCH-010', 'Sara', 'سارة', 'Al Siyabi', 'السيابي', 'female', '1993-06-14', '+96891001010', 'sara.siyabi@mashaail.school', '2022-09-01', 'Visual Arts', 'الفنون البصرية'),
-  ('TCH-011', 'Amna', 'آمنة', 'Al Naamani', 'النعماني', 'female', '1987-02-28', '+96891001011', 'amna.naamani@mashaail.school', '2018-09-01', 'Career Guidance', 'التوجيه المهني'),
-  ('TCH-012', 'Raya', 'رية', 'Al Farsi', 'الفارسي', 'female', '1990-10-19', '+96891001012', 'raya.farsi@mashaail.school', '2021-09-01', 'Swimming', 'السباحة'),
-  ('TCH-013', 'Halima', 'حليمة', 'Al Rawahi', 'الرواحي', 'female', '1986-07-07', '+96891001013', 'halima.rawahi@mashaail.school', '2017-09-01', 'Physical Education', 'التربية البدنية'),
-  ('TCH-014', 'Salma', 'سلمى', 'Al Hosni', 'الحسني', 'female', '1991-03-21', '+96891001014', 'salma.hosni@mashaail.school', '2022-09-01', 'Islamic Education', 'التربية الإسلامية'),
-  ('TCH-015', 'Nawal', 'نوال', 'Al Lawati', 'اللواتي', 'female', '1989-11-11', '+96891001015', 'nawal.lawati@mashaail.school', '2020-09-01', 'Arabic Language', 'اللغة العربية'),
-  ('TCH-016', 'Wafa', 'وفاء', 'Al Ghafri', 'الغافري', 'female', '1988-01-30', '+96891001016', 'wafa.ghafri@mashaail.school', '2019-09-01', 'English Language', 'اللغة الإنجليزية'),
-  ('TCH-017', 'Thuraya', 'ثريا', 'Al Hinai', 'الهنائي', 'female', '1992-05-05', '+96891001017', 'thuraya.hinai@mashaail.school', '2023-09-01', 'Mathematics', 'الرياضيات'),
-  ('TCH-018', 'Basma', 'بسمة', 'Al Amri', 'العامري', 'female', '1985-09-16', '+96891001018', 'basma.amri@mashaail.school', '2016-09-01', 'Science', 'العلوم'),
-  ('TCH-019', 'Maitha', 'ميثاء', 'Al Zadjali', 'الزدجالي', 'female', '1990-04-08', '+96891001019', 'maitha.zadjali@mashaail.school', '2021-09-01', 'Social Studies', 'الدراسات الاجتماعية'),
-  ('TCH-020', 'Rahma', 'رحمة', 'Al Shukaili', 'الشكيلي', 'female', '1993-12-25', '+96891001020', 'rahma.shukaili@mashaail.school', '2024-09-01', 'Information Technology', 'تقنية المعلومات'),
-  ('TCH-021', 'Asma', 'أسماء', 'Al Kharousi', 'الخروصي', 'female', '1987-06-17', '+96891001021', 'asma.kharousi@mashaail.school', '2018-09-01', 'Life Skills', 'المهارات الحياتية'),
-  ('TCH-022', 'Intisar', 'انتصار', 'Al Shamsi', 'الشامسي', 'female', '1991-08-09', '+96891001022', 'intisar.shamsi@mashaail.school', '2022-09-01', 'Arabic Language', 'اللغة العربية'),
-  ('TCH-023', 'Dalal', 'دلال', 'Al Jabri', 'الجابري', 'female', '1989-02-14', '+96891001023', 'dalal.jabri@mashaail.school', '2020-09-01', 'English Language', 'اللغة الإنجليزية'),
-  ('TCH-024', 'Hanan', 'حنان', 'Al Riyami', 'الريامي', 'female', '1986-10-31', '+96891001024', 'hanan.riyami@mashaail.school', '2017-09-01', 'Mathematics', 'الرياضيات'),
-  ('TCH-025', 'Sabah', 'صباح', 'Al Tobi', 'الطوبي', 'female', '1992-07-20', '+96891001025', 'sabah.tobi@mashaail.school', '2023-09-01', 'Science', 'العلوم'),
-  ('TCH-026', 'Muna', 'منى', 'Al Harrasi', 'الحراصي', 'female', '1988-03-04', '+96891001026', 'muna.harrasi@mashaail.school', '2019-09-01', 'Visual Arts', 'الفنون البصرية'),
-  ('TCH-027', 'Ibtisam', 'ابتسام', 'Al Mamari', 'المعمري', 'female', '1990-12-12', '+96891001027', 'ibtisam.mamari@mashaail.school', '2021-09-01', 'Music Skills', 'المهارات الموسيقية'),
-  ('TCH-028', 'Shaikha', 'شيخة', 'Al Battashi', 'البطاشي', 'female', '1994-01-25', '+96891001028', 'shaikha.battashi@mashaail.school', '2024-09-01', 'Career Guidance', 'التوجيه المهني'),
-  ('TCH-029', 'Zuwayna', 'زوينة', 'Al Saadi', 'السعدي', 'female', '1987-08-18', '+96891001029', 'zuwayna.saadi@mashaail.school', '2018-09-01', 'Islamic Education', 'التربية الإسلامية'),
-  ('TCH-030', 'Badria', 'بدرية', 'Al Qasmi', 'القاسمي', 'female', '1991-05-23', '+96891001030', 'badria.qasmi@mashaail.school', '2022-09-01', 'Life Skills', 'المهارات الحياتية'),
-  ('TCH-031', 'Mazoon', 'مزون', 'Al Maqbali', 'المقبالي', 'female', '1989-09-09', '+96891001031', 'mazoon.maqbali@mashaail.school', '2020-09-01', 'Physical Education', 'التربية البدنية'),
-  ('TCH-032', 'Sumaya', 'سمية', 'Al Khusaibi', 'الخصيبي', 'female', '1993-04-02', '+96891001032', 'sumaya.khusaibi@mashaail.school', '2024-09-01', 'Arabic Language', 'اللغة العربية');
+INSERT INTO teachers (employee_id, first_name, first_name_ar, father_name, father_name_ar, grandfather_name, grandfather_name_ar, family_name, family_name_ar, last_name, last_name_ar, gender, date_of_birth, phone, email, hire_date, specialization, specialization_ar) VALUES
+  ('TCH-001', 'Fatma', 'فاطمة', 'Mohammed', 'محمد', 'Khalfan', 'خلفان', 'Al Balushi', 'البلوشي', 'Al Balushi', 'البلوشي', 'female', '1985-03-15', '91001001', 'fatma.balushi@mashaail.school', '2020-09-01', 'Islamic Education', 'التربية الإسلامية'),
+  ('TCH-002', 'Maryam', 'مريم', 'Ali', 'علي', 'Hilal', 'هلال', 'Al Harthi', 'الحارثي', 'Al Harthi', 'الحارثي', 'female', '1988-07-22', '91001002', 'maryam.harthi@mashaail.school', '2019-09-01', 'Arabic Language', 'اللغة العربية'),
+  ('TCH-003', 'Aisha', 'عائشة', 'Salim', 'سالم', 'Mohammed', 'محمد', 'Al Rashdi', 'الراشدي', 'Al Rashdi', 'الراشدي', 'female', '1990-01-10', '91001003', 'aisha.rashdi@mashaail.school', '2021-09-01', 'English Language', 'اللغة الإنجليزية'),
+  ('TCH-004', 'Noora', 'نورة', 'Said', 'سعيد', 'Ali', 'علي', 'Al Busaidi', 'البوسعيدي', 'Al Busaidi', 'البوسعيدي', 'female', '1987-11-05', '91001004', 'noora.busaidi@mashaail.school', '2018-09-01', 'Mathematics', 'الرياضيات'),
+  ('TCH-005', 'Huda', 'هدى', 'Nasser', 'ناصر', 'Hamad', 'حمد', 'Al Kindi', 'الكندي', 'Al Kindi', 'الكندي', 'female', '1986-05-18', '91001005', 'huda.kindi@mashaail.school', '2020-09-01', 'Science', 'العلوم'),
+  ('TCH-006', 'Layla', 'ليلى', 'Khalid', 'خالد', 'Salim', 'سالم', 'Al Wahaibi', 'الوهيبي', 'Al Wahaibi', 'الوهيبي', 'female', '1991-09-30', '91001006', 'layla.wahaibi@mashaail.school', '2022-09-01', 'Social Studies', 'الدراسات الاجتماعية'),
+  ('TCH-007', 'Samia', 'سامية', 'Ahmed', 'أحمد', 'Nasser', 'ناصر', 'Al Mahrouqi', 'المحروقي', 'Al Mahrouqi', 'المحروقي', 'female', '1989-04-12', '91001007', 'samia.mahrouqi@mashaail.school', '2019-09-01', 'Information Technology', 'تقنية المعلومات'),
+  ('TCH-008', 'Khadija', 'خديجة', 'Ibrahim', 'إبراهيم', 'Said', 'سعيد', 'Al Maskari', 'المسكري', 'Al Maskari', 'المسكري', 'female', '1992-08-25', '91001008', 'khadija.maskari@mashaail.school', '2023-09-01', 'Life Skills', 'المهارات الحياتية'),
+  ('TCH-009', 'Zainab', 'زينب', 'Hamad', 'حمد', 'Ahmed', 'أحمد', 'Al Habsi', 'الحبسي', 'Al Habsi', 'الحبسي', 'female', '1988-12-03', '91001009', 'zainab.habsi@mashaail.school', '2020-09-01', 'Music Skills', 'المهارات الموسيقية'),
+  ('TCH-010', 'Sara', 'سارة', 'Abdullah', 'عبدالله', 'Ibrahim', 'إبراهيم', 'Al Siyabi', 'السيابي', 'Al Siyabi', 'السيابي', 'female', '1993-06-14', '91001010', 'sara.siyabi@mashaail.school', '2022-09-01', 'Visual Arts', 'الفنون البصرية'),
+  ('TCH-011', 'Amna', 'آمنة', 'Rashid', 'راشد', 'Sultan', 'سلطان', 'Al Naamani', 'النعماني', 'Al Naamani', 'النعماني', 'female', '1987-02-28', '91001011', 'amna.naamani@mashaail.school', '2018-09-01', 'Career Guidance', 'التوجيه المهني'),
+  ('TCH-012', 'Raya', 'رية', 'Sultan', 'سلطان', 'Rashid', 'راشد', 'Al Farsi', 'الفارسي', 'Al Farsi', 'الفارسي', 'female', '1990-10-19', '91001012', 'raya.farsi@mashaail.school', '2021-09-01', 'Swimming', 'السباحة'),
+  ('TCH-013', 'Halima', 'حليمة', 'Yusuf', 'يوسف', 'Khalid', 'خالد', 'Al Rawahi', 'الرواحي', 'Al Rawahi', 'الرواحي', 'female', '1986-07-07', '91001013', 'halima.rawahi@mashaail.school', '2017-09-01', 'Physical Education', 'التربية البدنية'),
+  ('TCH-014', 'Salma', 'سلمى', 'Omar', 'عمر', 'Abdullah', 'عبدالله', 'Al Hosni', 'الحسني', 'Al Hosni', 'الحسني', 'female', '1991-03-21', '91001014', 'salma.hosni@mashaail.school', '2022-09-01', 'Islamic Education', 'التربية الإسلامية'),
+  ('TCH-015', 'Nawal', 'نوال', 'Hassan', 'حسن', 'Omar', 'عمر', 'Al Lawati', 'اللواتي', 'Al Lawati', 'اللواتي', 'female', '1989-11-11', '91001015', 'nawal.lawati@mashaail.school', '2020-09-01', 'Arabic Language', 'اللغة العربية'),
+  ('TCH-016', 'Wafa', 'وفاء', 'Majid', 'ماجد', 'Yusuf', 'يوسف', 'Al Ghafri', 'الغافري', 'Al Ghafri', 'الغافري', 'female', '1988-01-30', '91001016', 'wafa.ghafri@mashaail.school', '2019-09-01', 'English Language', 'اللغة الإنجليزية'),
+  ('TCH-017', 'Thuraya', 'ثريا', 'Hamed', 'حامد', 'Hassan', 'حسن', 'Al Hinai', 'الهنائي', 'Al Hinai', 'الهنائي', 'female', '1992-05-05', '91001017', 'thuraya.hinai@mashaail.school', '2023-09-01', 'Mathematics', 'الرياضيات'),
+  ('TCH-018', 'Basma', 'بسمة', 'Suleiman', 'سليمان', 'Majid', 'ماجد', 'Al Amri', 'العامري', 'Al Amri', 'العامري', 'female', '1985-09-16', '91001018', 'basma.amri@mashaail.school', '2016-09-01', 'Science', 'العلوم'),
+  ('TCH-019', 'Maitha', 'ميثاء', 'Mubarak', 'مبارك', 'Hamed', 'حامد', 'Al Zadjali', 'الزدجالي', 'Al Zadjali', 'الزدجالي', 'female', '1990-04-08', '91001019', 'maitha.zadjali@mashaail.school', '2021-09-01', 'Social Studies', 'الدراسات الاجتماعية'),
+  ('TCH-020', 'Rahma', 'رحمة', 'Saif', 'سيف', 'Suleiman', 'سليمان', 'Al Shukaili', 'الشكيلي', 'Al Shukaili', 'الشكيلي', 'female', '1993-12-25', '91001020', 'rahma.shukaili@mashaail.school', '2024-09-01', 'Information Technology', 'تقنية المعلومات'),
+  ('TCH-021', 'Asma', 'أسماء', 'Khalfan', 'خلفان', 'Saif', 'سيف', 'Al Kharousi', 'الخروصي', 'Al Kharousi', 'الخروصي', 'female', '1987-06-17', '91001021', 'asma.kharousi@mashaail.school', '2018-09-01', 'Life Skills', 'المهارات الحياتية'),
+  ('TCH-022', 'Intisar', 'انتصار', 'Hilal', 'هلال', 'Mubarak', 'مبارك', 'Al Shamsi', 'الشامسي', 'Al Shamsi', 'الشامسي', 'female', '1991-08-09', '91001022', 'intisar.shamsi@mashaail.school', '2022-09-01', 'Arabic Language', 'اللغة العربية'),
+  ('TCH-023', 'Dalal', 'دلال', 'Badr', 'بدر', 'Badr', 'بدر', 'Al Jabri', 'الجابري', 'Al Jabri', 'الجابري', 'female', '1989-02-14', '91001023', 'dalal.jabri@mashaail.school', '2020-09-01', 'English Language', 'اللغة الإنجليزية'),
+  ('TCH-024', 'Hanan', 'حنان', 'Harith', 'حارث', 'Fahad', 'فهد', 'Al Riyami', 'الريامي', 'Al Riyami', 'الريامي', 'female', '1986-10-31', '91001024', 'hanan.riyami@mashaail.school', '2017-09-01', 'Mathematics', 'الرياضيات'),
+  ('TCH-025', 'Sabah', 'صباح', 'Fahad', 'فهد', 'Harith', 'حارث', 'Al Tobi', 'الطوبي', 'Al Tobi', 'الطوبي', 'female', '1992-07-20', '91001025', 'sabah.tobi@mashaail.school', '2023-09-01', 'Science', 'العلوم'),
+  ('TCH-026', 'Muna', 'منى', 'Amer', 'عامر', 'Amer', 'عامر', 'Al Harrasi', 'الحراصي', 'Al Harrasi', 'الحراصي', 'female', '1988-03-04', '91001026', 'muna.harrasi@mashaail.school', '2019-09-01', 'Visual Arts', 'الفنون البصرية'),
+  ('TCH-027', 'Ibtisam', 'ابتسام', 'Talal', 'طلال', 'Talal', 'طلال', 'Al Mamari', 'المعمري', 'Al Mamari', 'المعمري', 'female', '1990-12-12', '91001027', 'ibtisam.mamari@mashaail.school', '2021-09-01', 'Music Skills', 'المهارات الموسيقية'),
+  ('TCH-028', 'Shaikha', 'شيخة', 'Mansour', 'منصور', 'Mansour', 'منصور', 'Al Battashi', 'البطاشي', 'Al Battashi', 'البطاشي', 'female', '1994-01-25', '91001028', 'shaikha.battashi@mashaail.school', '2024-09-01', 'Career Guidance', 'التوجيه المهني'),
+  ('TCH-029', 'Zuwayna', 'زوينة', 'Mohammed', 'محمد', 'Khalfan', 'خلفان', 'Al Saadi', 'السعدي', 'Al Saadi', 'السعدي', 'female', '1987-08-18', '91001029', 'zuwayna.saadi@mashaail.school', '2018-09-01', 'Islamic Education', 'التربية الإسلامية'),
+  ('TCH-030', 'Badria', 'بدرية', 'Ali', 'علي', 'Hilal', 'هلال', 'Al Qasmi', 'القاسمي', 'Al Qasmi', 'القاسمي', 'female', '1991-05-23', '91001030', 'badria.qasmi@mashaail.school', '2022-09-01', 'Life Skills', 'المهارات الحياتية'),
+  ('TCH-031', 'Mazoon', 'مزون', 'Salim', 'سالم', 'Mohammed', 'محمد', 'Al Maqbali', 'المقبالي', 'Al Maqbali', 'المقبالي', 'female', '1989-09-09', '91001031', 'mazoon.maqbali@mashaail.school', '2020-09-01', 'Physical Education', 'التربية البدنية'),
+  ('TCH-032', 'Sumaya', 'سمية', 'Said', 'سعيد', 'Ali', 'علي', 'Al Khusaibi', 'الخصيبي', 'Al Khusaibi', 'الخصيبي', 'female', '1993-04-02', '91001032', 'sumaya.khusaibi@mashaail.school', '2024-09-01', 'Arabic Language', 'اللغة العربية');
 
 -- ================================================
 -- 3. CLASSES (KG1-G8, sections A & B = 20 classes)
@@ -346,24 +346,28 @@ INSERT INTO transport_areas (name, name_ar, annual_fee, academic_year) VALUES
 -- Each bus has a driver with Omani name + phone
 -- ================================================
 
-INSERT INTO buses (bus_number, plate_number, driver_name, driver_name_ar, driver_phone, capacity, transport_area_id)
+INSERT INTO buses (bus_number, plate_number, driver_name, driver_name_ar, driver_father_name, driver_father_name_ar, driver_grandfather_name, driver_grandfather_name_ar, driver_family_name, driver_family_name_ar, driver_photo_url, driver_phone, capacity, transport_area_id)
 SELECT
-  b.bus_number, b.plate_number, b.driver_name, b.driver_name_ar, b.driver_phone, b.capacity,
+  b.bus_number, b.plate_number, b.driver_name, b.driver_name_ar,
+  b.driver_father_name, b.driver_father_name_ar,
+  b.driver_grandfather_name, b.driver_grandfather_name_ar,
+  b.driver_family_name, b.driver_family_name_ar,
+  b.driver_photo_url, b.driver_phone, b.capacity,
   ta.id
 FROM (VALUES
-  ('BUS-01', '3/45821',  'Salim Al Balushi',     'سالم البلوشي',     '+96892001001', 40, 'Sur Al Hadid'),
-  ('BUS-02', '7/18394',  'Fatma Al Harthi',      'فاطمة الحارثي',    '+96892001002', 40, 'Sharadi'),
-  ('BUS-03', '12/67250', 'Khalid Al Rashdi',     'خالد الراشدي',     '+96892001003', 45, 'Mabellah North'),
-  ('BUS-04', '5/93147',  'Maryam Al Farsi',      'مريم الفارسي',     '+96892001004', 40, 'Mabellah North'),
-  ('BUS-05', '9/20586',  'Said Al Kindi',        'سعيد الكندي',      '+96892001005', 45, 'Mabellah South'),
-  ('BUS-06', '2/74163',  'Hamad Al Wahaibi',     'حمد الوهيبي',      '+96892001006', 40, 'Mabellah South'),
-  ('BUS-07', '15/31074', 'Mohammed Al Mahrouqi', 'محمد المحروقي',    '+96892001007', 45, 'Mabellah 6/7/8'),
-  ('BUS-08', '8/52690',  'Noora Al Busaidi',     'نورة البوسعيدي',   '+96892001008', 40, 'Mabellah 6/7/8'),
-  ('BUS-09', '4/86312',  'Ali Al Habsi',         'علي الحبسي',       '+96892001009', 40, 'Al Nasar'),
-  ('BUS-10', '11/40958', 'Rashid Al Siyabi',     'راشد السيابي',     '+96892001010', 40, 'Wadi Al Awami'),
-  ('BUS-11', '6/73429',  'Aisha Al Naamani',     'عائشة النعماني',   '+96892001011', 40, 'Wadi Bahais'),
-  ('BUS-12', '10/15847', 'Yusuf Al Rawahi',      'يوسف الرواحي',     '+96892001012', 40, 'Seeb Suq / Qalah')
-) AS b(bus_number, plate_number, driver_name, driver_name_ar, driver_phone, capacity, area_name)
+  ('BUS-01', '3/45821',  'Salim',     'سالم',     'Khalid',    'خالد',     'Nasser',    'ناصر',     'Al Balushi',   'البلوشي',     'https://i.pravatar.cc/200?u=driver01', '92001001', 40, 'Sur Al Hadid'),
+  ('BUS-02', '7/18394',  'Fatma',     'فاطمة',    'Ali',       'علي',      'Mohammed',  'محمد',     'Al Harthi',    'الحارثي',     'https://i.pravatar.cc/200?u=driver02', '92001002', 40, 'Sharadi'),
+  ('BUS-03', '12/67250', 'Khalid',    'خالد',     'Said',      'سعيد',     'Ibrahim',   'إبراهيم',  'Al Rashdi',    'الراشدي',     'https://i.pravatar.cc/200?u=driver03', '92001003', 45, 'Mabellah North'),
+  ('BUS-04', '5/93147',  'Maryam',    'مريم',     'Hamad',     'حمد',      'Salim',     'سالم',     'Al Farsi',     'الفارسي',     'https://i.pravatar.cc/200?u=driver04', '92001004', 40, 'Mabellah North'),
+  ('BUS-05', '9/20586',  'Said',      'سعيد',     'Ahmed',     'أحمد',     'Khalfan',   'خلفان',    'Al Kindi',     'الكندي',      'https://i.pravatar.cc/200?u=driver05', '92001005', 45, 'Mabellah South'),
+  ('BUS-06', '2/74163',  'Hamad',     'حمد',      'Nasser',    'ناصر',     'Ali',       'علي',      'Al Wahaibi',   'الوهيبي',     'https://i.pravatar.cc/200?u=driver06', '92001006', 40, 'Mabellah South'),
+  ('BUS-07', '15/31074', 'Mohammed',  'محمد',     'Sultan',    'سلطان',    'Rashid',    'راشد',     'Al Mahrouqi',  'المحروقي',    'https://i.pravatar.cc/200?u=driver07', '92001007', 45, 'Mabellah 6/7/8'),
+  ('BUS-08', '8/52690',  'Noora',     'نورة',     'Abdullah',  'عبدالله',  'Hassan',    'حسن',      'Al Busaidi',   'البوسعيدي',   'https://i.pravatar.cc/200?u=driver08', '92001008', 40, 'Mabellah 6/7/8'),
+  ('BUS-09', '4/86312',  'Ali',       'علي',      'Ibrahim',   'إبراهيم',  'Majid',     'ماجد',     'Al Habsi',     'الحبسي',      'https://i.pravatar.cc/200?u=driver09', '92001009', 40, 'Al Nasar'),
+  ('BUS-10', '11/40958', 'Rashid',    'راشد',     'Yusuf',     'يوسف',     'Suleiman',  'سليمان',   'Al Siyabi',    'السيابي',     'https://i.pravatar.cc/200?u=driver10', '92001010', 40, 'Wadi Al Awami'),
+  ('BUS-11', '6/73429',  'Aisha',     'عائشة',    'Omar',      'عمر',      'Khalfan',   'خلفان',    'Al Naamani',   'النعماني',    'https://i.pravatar.cc/200?u=driver11', '92001011', 40, 'Wadi Bahais'),
+  ('BUS-12', '10/15847', 'Yusuf',     'يوسف',     'Hassan',    'حسن',      'Hilal',     'هلال',     'Al Rawahi',    'الرواحي',     'https://i.pravatar.cc/200?u=driver12', '92001012', 40, 'Seeb Suq / Qalah')
+) AS b(bus_number, plate_number, driver_name, driver_name_ar, driver_father_name, driver_father_name_ar, driver_grandfather_name, driver_grandfather_name_ar, driver_family_name, driver_family_name_ar, driver_photo_url, driver_phone, capacity, area_name)
 JOIN transport_areas ta ON ta.name = b.area_name AND ta.academic_year = '2025-2026';
 
 -- ================================================
@@ -547,8 +551,8 @@ BEGIN
       v_family_en := family_en[1 + ((v_student_counter * 11 + v_i * 3) % array_length(family_en, 1))];
       v_family_ar := family_ar[1 + ((v_student_counter * 11 + v_i * 3) % array_length(family_en, 1))];
 
-      -- Student ID: MMPS-2526-XXXX
-      v_sid := 'MMPS-2526-' || LPAD(v_student_counter::TEXT, 4, '0');
+      -- Student ID: 4-digit zero-padded
+      v_sid := LPAD(v_student_counter::TEXT, 4, '0');
 
       -- Date of birth based on grade level
       -- KG1(-1): born ~2020, KG2(0): born ~2019, G1: 2018, etc.
@@ -567,14 +571,15 @@ BEGIN
         grandfather_name, grandfather_name_ar,
         family_name, family_name_ar,
         date_of_birth, gender, nationality,
-        class_id, enrollment_date, gps_location
+        class_id, enrollment_date, gps_location, photo_url
       ) VALUES (
         v_sid, v_first_en, v_first_ar,
         v_father_en, v_father_ar,
         v_gfather_en, v_gfather_ar,
         v_family_en, v_family_ar,
         v_dob, v_gender::gender, 'Omani',
-        v_class_id, '2025-09-01', v_gps
+        v_class_id, '2025-09-01', v_gps,
+        'https://i.pravatar.cc/200?u=student' || LPAD(v_student_counter::TEXT, 4, '0')
       );
     END LOOP;
   END LOOP;
@@ -645,7 +650,7 @@ BEGIN
       ELSE 2
     END;
 
-    v_phone := '+9689' || LPAD((1000000 + (random() * 8999999)::INTEGER)::TEXT, 7, '0');
+    v_phone := '9' || LPAD((1000000 + (random() * 8999999)::INTEGER)::TEXT, 7, '0');
 
     IF v_role = 0 THEN
       -- Father: use student's father_name as first_name, grandfather as father_name
@@ -824,4 +829,74 @@ BEGIN
   END LOOP;
 
   RAISE NOTICE 'Created % invoices with fee breakdowns', v_inv_counter;
+END $$;
+
+-- ================================================
+-- 16. RANDOM PAYMENTS (partial payments for ~30% of invoices)
+-- ================================================
+
+DO $$
+DECLARE
+  v_invoice RECORD;
+  v_payment_counter INTEGER := 0;
+  v_pay_amount DECIMAL(10,3);
+  v_pay_pct DECIMAL;
+  v_methods TEXT[] := ARRAY['Cash', 'Bank Transfer', 'Credit Card', 'Cheque'];
+  v_method TEXT;
+  v_pay_date DATE;
+BEGIN
+  FOR v_invoice IN
+    SELECT id, invoice_number, total_amount, student_id
+    FROM invoices
+    WHERE academic_year = '2025-2026' AND status = 'pending'
+    ORDER BY random()
+    LIMIT (SELECT COUNT(*) * 0.30 FROM invoices WHERE academic_year = '2025-2026')::INTEGER
+  LOOP
+    v_payment_counter := v_payment_counter + 1;
+
+    -- Random payment percentage: 20-100%
+    v_pay_pct := 0.20 + (random() * 0.80);
+    v_pay_amount := ROUND((v_invoice.total_amount * v_pay_pct)::NUMERIC, 3);
+
+    -- Random payment method
+    v_method := v_methods[1 + (v_payment_counter % array_length(v_methods, 1))];
+
+    -- Random payment date between Sep 2025 and Feb 2026
+    v_pay_date := '2025-09-15'::DATE + (random() * 150)::INTEGER * INTERVAL '1 day';
+
+    -- Create payment
+    INSERT INTO payments (payment_number, invoice_id, amount, payment_date, payment_method, reference_number)
+    VALUES (
+      'PAY-2526-' || LPAD(v_payment_counter::TEXT, 4, '0'),
+      v_invoice.id,
+      v_pay_amount,
+      v_pay_date,
+      v_method,
+      'REF-' || LPAD((1000 + v_payment_counter)::TEXT, 6, '0')
+    );
+
+    -- Update invoice
+    UPDATE invoices
+    SET paid_amount = v_pay_amount,
+        status = CASE
+          WHEN v_pay_amount >= total_amount THEN 'paid'::payment_status
+          ELSE 'pending'::payment_status
+        END
+    WHERE id = v_invoice.id;
+  END LOOP;
+
+  -- Mark ~5% of unpaid invoices as overdue
+  UPDATE invoices
+  SET status = 'overdue'
+  WHERE academic_year = '2025-2026'
+    AND status = 'pending'
+    AND paid_amount = 0
+    AND id IN (
+      SELECT id FROM invoices
+      WHERE academic_year = '2025-2026' AND status = 'pending' AND paid_amount = 0
+      ORDER BY random()
+      LIMIT (SELECT COUNT(*) * 0.05 FROM invoices WHERE academic_year = '2025-2026' AND status = 'pending' AND paid_amount = 0)::INTEGER
+    );
+
+  RAISE NOTICE 'Created % payments for invoices', v_payment_counter;
 END $$;

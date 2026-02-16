@@ -89,7 +89,7 @@ export default function Sidebar({ locale, userRole = 'admin' }: SidebarProps) {
                  ${isCollapsed ? 'w-[68px]' : 'w-[220px]'}`}
       style={{ borderRight: isRTL ? 'none' : undefined, borderLeft: isRTL ? undefined : 'none' }}
     >
-      {/* Logo */}
+      {/* Logo + School Name */}
       <div className="px-4 py-4 flex items-center justify-between flex-shrink-0">
         <div className="flex items-center gap-2.5">
           <Image
@@ -97,12 +97,17 @@ export default function Sidebar({ locale, userRole = 'admin' }: SidebarProps) {
             alt="Mashaail"
             width={isCollapsed ? 28 : 32}
             height={isCollapsed ? 28 : 32}
-            className="transition-all duration-200"
+            className="transition-all duration-200 brightness-0 invert"
           />
           {!isCollapsed && (
-            <span className="font-extrabold text-sm text-white whitespace-nowrap">
-              {isRTL ? '\u0645\u0634\u0627\u0639\u0644' : 'Mashaail'}
-            </span>
+            <div className="flex flex-col">
+              <span className="font-extrabold text-[13px] text-white whitespace-nowrap leading-tight">
+                {isRTL ? '\u0645\u062f\u0631\u0633\u0629 \u0645\u0634\u0627\u0639\u0644 \u0645\u0633\u0642\u0637' : 'Mashaail Muscat'}
+              </span>
+              <span className="text-[9px] text-white/50 font-medium whitespace-nowrap leading-tight">
+                {isRTL ? '\u0627\u0644\u062e\u0627\u0635\u0629' : 'Private School'}
+              </span>
+            </div>
           )}
         </div>
         <button

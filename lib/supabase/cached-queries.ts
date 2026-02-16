@@ -16,12 +16,19 @@ import { createAdminClient } from './admin';
 export const getDashboardStats = unstable_cache(
   async () => {
     const supabase = createAdminClient();
-    const [studentsRes, teachersRes, invoicesRes, classesRes] = await Promise.all([
+    const [studentsRes, studentsGenderRes, teachersRes, invoicesRes, classesRes, transportRes, paidInvoicesRes] = await Promise.all([
       supabase.from('students').select('id', { count: 'exact', head: true }).eq('is_active', true),
+      supabase.from('students').select('gender').eq('is_active', true),
       supabase.from('teachers').select('id', { count: 'exact', head: true }).eq('is_active', true),
       supabase.from('invoices').select('total_amount, paid_amount, status').eq('academic_year', '2025-2026'),
       supabase.from('classes').select('id', { count: 'exact', head: true }).eq('academic_year', '2025-2026').eq('is_active', true),
+      supabase.from('student_transport').select('id', { count: 'exact', head: true }).eq('academic_year', '2025-2026').eq('is_active', true),
+      supabase.from('invoices').select('id', { count: 'exact', head: true }).eq('academic_year', '2025-2026').eq('status', 'paid'),
     ]);
+
+    const genderData = studentsGenderRes.data || [];
+    const maleCount = genderData.filter((s: any) => s.gender === 'male').length;
+    const femaleCount = genderData.filter((s: any) => s.gender === 'female').length;
 
     const invoices = invoicesRes.data || [];
     const totalRevenue = invoices.reduce((s, i: any) => s + (i.paid_amount || 0), 0);
@@ -32,17 +39,22 @@ export const getDashboardStats = unstable_cache(
     const collectionRate = totalInvoiced > 0 ? ((totalRevenue / totalInvoiced) * 100).toFixed(1) : '0';
     const pendingCount = invoices.filter((i: any) => i.status === 'pending').length;
     const overdueCount = invoices.filter((i: any) => i.status === 'overdue').length;
+    const paidCount = paidInvoicesRes.count || 0;
 
     return {
       studentCount: studentsRes.count || 0,
+      maleCount,
+      femaleCount,
       teacherCount: teachersRes.count || 0,
       classCount: classesRes.count || 0,
+      transportCount: transportRes.count || 0,
       totalRevenue,
       totalInvoiced,
       totalPending,
       collectionRate,
       pendingCount,
       overdueCount,
+      paidCount,
     };
   },
   ['dashboard-stats'],
@@ -54,7 +66,7 @@ export const getRecentStudents = unstable_cache(
     const supabase = createAdminClient();
     const { data } = await supabase
       .from('students')
-      .select('first_name, first_name_ar, father_name, father_name_ar, family_name, family_name_ar, student_id, created_at, classes(name, name_ar)')
+      .select('first_name, first_name_ar, father_name, father_name_ar, grandfather_name, grandfather_name_ar, family_name, family_name_ar, gender, student_id, created_at, classes(name, name_ar)')
       .eq('is_active', true)
       .order('created_at', { ascending: false })
       .limit(5);

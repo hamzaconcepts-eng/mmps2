@@ -1,9 +1,10 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { ArrowLeft, User, Users, Bus, Receipt, Phone, Mail, MapPin } from 'lucide-react';
+import { ArrowLeft, User, Users, Bus, Receipt, Phone, Mail, MapPin, ExternalLink } from 'lucide-react';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { formatStudentName, formatGradeLevel, formatCurrency, formatDate, formatClassName } from '@/lib/utils/format';
+import { formatStudentName, formatGuardianName, formatGradeLevel, formatCurrency, formatDate, formatClassName, formatPhone } from '@/lib/utils/format';
 import PageHeader from '@/components/PageHeader';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
@@ -32,7 +33,7 @@ export default async function StudentDetailPage({
       .eq('student_id', id),
     supabase
       .from('student_transport')
-      .select('*, buses(bus_number, plate_number, driver_name, driver_name_ar, driver_phone, capacity), transport_areas(name, name_ar, annual_fee)')
+      .select('*, buses(bus_number, plate_number, driver_name, driver_name_ar, driver_father_name, driver_father_name_ar, driver_grandfather_name, driver_grandfather_name_ar, driver_family_name, driver_family_name_ar, driver_phone, driver_photo_url, capacity), transport_areas(name, name_ar, annual_fee)')
       .eq('student_id', id)
       .eq('academic_year', '2025-2026')
       .maybeSingle(),
@@ -76,49 +77,87 @@ export default async function StudentDetailPage({
               <Card.Title>{t('student.personalInfo')}</Card.Title>
             </div>
           </Card.Header>
-          <div className="space-y-2.5">
-            <InfoRow label={t('student.firstName')} value={isAr ? student.first_name_ar : student.first_name} />
-            <InfoRow label={t('student.fatherName')} value={isAr ? student.father_name_ar : student.father_name} />
-            <InfoRow label={t('student.grandfatherName')} value={isAr ? student.grandfather_name_ar : student.grandfather_name} />
-            <InfoRow label={t('student.familyName')} value={isAr ? student.family_name_ar : student.family_name} />
-            <InfoRow label={t('student.dateOfBirth')} value={formatDate(student.date_of_birth, locale)} />
-            <InfoRow label={t('student.gender')}>
-              <Badge variant={student.gender === 'male' ? 'teal' : 'ice'}>
-                {student.gender === 'male' ? t('student.male') : t('student.female')}
-              </Badge>
-            </InfoRow>
-            <InfoRow label={t('student.nationality')} value={student.nationality || '—'} />
-            <InfoRow label={t('student.enrollmentDate')} value={formatDate(student.enrollment_date, locale)} />
-            {student.medical_notes && (
-              <InfoRow label={t('student.medicalNotes')} value={student.medical_notes} />
+          <div className="flex gap-4">
+            {/* Student Photo */}
+            {student.photo_url && (
+              <div className="flex-shrink-0">
+                <Image
+                  src={student.photo_url}
+                  alt={formatStudentName(student, locale)}
+                  width={80}
+                  height={80}
+                  className="rounded-lg object-cover border border-gray-200"
+                  style={{ width: 80, height: 80 }}
+                />
+              </div>
             )}
+            <div className="flex-1 space-y-2.5">
+              <InfoRow label={t('student.firstName')} value={isAr ? student.first_name_ar : student.first_name} />
+              <InfoRow label={t('student.fatherName')} value={isAr ? student.father_name_ar : student.father_name} />
+              <InfoRow label={t('student.grandfatherName')} value={isAr ? student.grandfather_name_ar : student.grandfather_name} />
+              <InfoRow label={t('student.familyName')} value={isAr ? student.family_name_ar : student.family_name} />
+              <InfoRow label={t('student.dateOfBirth')} value={formatDate(student.date_of_birth, locale)} />
+              <InfoRow label={t('student.gender')}>
+                <Badge variant={student.gender === 'male' ? 'teal' : 'ice'}>
+                  {student.gender === 'male' ? t('student.male') : t('student.female')}
+                </Badge>
+              </InfoRow>
+              <InfoRow label={t('student.nationality')} value={student.nationality || '—'} />
+              <InfoRow label={t('student.enrollmentDate')} value={formatDate(student.enrollment_date, locale)} />
+              {student.medical_notes && (
+                <InfoRow label={t('student.medicalNotes')} value={student.medical_notes} />
+              )}
+            </div>
           </div>
         </Card>
 
-        {/* Class Info */}
-        <Card>
-          <Card.Header>
-            <div className="flex items-center gap-2">
-              <Users size={15} className="text-accent-orange" />
-              <Card.Title>{t('student.class')}</Card.Title>
-            </div>
-          </Card.Header>
-          {student.classes ? (
-            <div className="space-y-2.5">
-              <InfoRow label={t('class.className')} value={formatClassName(student.classes, locale)} />
-              <InfoRow label={t('class.gradeLevel')} value={formatGradeLevel(student.classes.grade_level, locale)} />
-              <InfoRow label={t('class.section')} value={student.classes.section} />
-              <InfoRow label={t('class.capacity')} value={student.classes.capacity?.toString() || '—'} />
-              <div className="pt-2">
-                <Link href={`/${locale}/classes/${student.classes.id}`}>
-                  <Button variant="glass" size="sm">{t('common.viewAll')} {t('class.classDetails')}</Button>
-                </Link>
+        {/* Class + Location Info */}
+        <div className="space-y-3">
+          <Card>
+            <Card.Header>
+              <div className="flex items-center gap-2">
+                <Users size={15} className="text-accent-orange" />
+                <Card.Title>{t('student.class')}</Card.Title>
               </div>
-            </div>
-          ) : (
-            <p className="text-sm text-text-tertiary">{t('common.noData')}</p>
+            </Card.Header>
+            {student.classes ? (
+              <div className="space-y-2.5">
+                <InfoRow label={t('class.className')} value={formatClassName(student.classes, locale)} />
+                <InfoRow label={t('class.gradeLevel')} value={formatGradeLevel(student.classes.grade_level, locale)} />
+                <InfoRow label={t('class.section')} value={student.classes.section} />
+                <InfoRow label={t('class.capacity')} value={student.classes.capacity?.toString() || '—'} />
+                <div className="pt-2">
+                  <Link href={`/${locale}/classes/${student.classes.id}`}>
+                    <Button variant="glass" size="sm">{t('common.viewAll')} {t('class.classDetails')}</Button>
+                  </Link>
+                </div>
+              </div>
+            ) : (
+              <p className="text-sm text-text-tertiary">{t('common.noData')}</p>
+            )}
+          </Card>
+
+          {/* Home Location */}
+          {student.gps_location && (
+            <Card>
+              <Card.Header>
+                <div className="flex items-center gap-2">
+                  <MapPin size={15} className="text-danger" />
+                  <Card.Title>{isAr ? 'موقع المنزل' : 'Home Location'}</Card.Title>
+                </div>
+              </Card.Header>
+              <a
+                href={student.gps_location}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-[12px] text-brand-teal hover:text-brand-teal-soft transition-colors font-medium"
+              >
+                <ExternalLink size={13} />
+                {isAr ? 'فتح في خرائط جوجل' : 'Open in Google Maps'}
+              </a>
+            </Card>
           )}
-        </Card>
+        </div>
 
         {/* Guardian Info */}
         <Card>
@@ -133,17 +172,14 @@ export default async function StudentDetailPage({
               {guardians.map((sg: any) => {
                 const g = sg.guardians;
                 if (!g) return null;
-                const guardianName = isAr
-                  ? `${g.first_name_ar} ${g.family_name_ar}`
-                  : `${g.first_name} ${g.family_name}`;
                 return (
                   <div key={sg.id} className="space-y-2.5">
-                    <InfoRow label={t('student.fullName')} value={guardianName} />
+                    <InfoRow label={t('student.fullName')} value={formatGuardianName(g, locale)} />
                     <InfoRow label={t('student.relationship')}>
                       <Badge variant="brand">{isAr ? g.relationship_ar || g.relationship : g.relationship}</Badge>
                     </InfoRow>
                     <div className="flex items-center gap-2 text-[12px] text-text-secondary">
-                      <Phone size={12} /> {g.phone}
+                      <Phone size={12} /> {formatPhone(g.phone)}
                     </div>
                     {g.email && (
                       <div className="flex items-center gap-2 text-[12px] text-text-secondary">
@@ -178,7 +214,19 @@ export default async function StudentDetailPage({
               <InfoRow label={t('transport.busNumber')} value={transport.buses?.bus_number || '—'} />
               <InfoRow label={t('transport.plateNumber')} value={transport.buses?.plate_number || '—'} />
               <InfoRow label={t('transport.driverName')} value={isAr ? transport.buses?.driver_name_ar : transport.buses?.driver_name} />
-              <InfoRow label={t('transport.driverPhone')} value={transport.buses?.driver_phone || '—'} />
+              <InfoRow label={t('transport.driverPhone')} value={formatPhone(transport.buses?.driver_phone || '')} />
+              {transport.buses?.driver_photo_url && (
+                <div className="pt-1">
+                  <Image
+                    src={transport.buses.driver_photo_url}
+                    alt="Driver"
+                    width={48}
+                    height={48}
+                    className="rounded-lg object-cover border border-gray-200"
+                    style={{ width: 48, height: 48 }}
+                  />
+                </div>
+              )}
               <InfoRow label={t('transport.annualFee')} value={formatCurrency(transport.transport_areas?.annual_fee || 0)} />
             </div>
           ) : (
@@ -238,8 +286,8 @@ export default async function StudentDetailPage({
 
 function InfoRow({ label, value, children }: { label: string; value?: string; children?: React.ReactNode }) {
   return (
-    <div className="flex justify-between items-center">
-      <span className="text-[11px] text-text-tertiary font-medium">{label}</span>
+    <div className="flex items-center gap-2">
+      <span className="text-[11px] text-text-tertiary font-medium whitespace-nowrap">{label}:</span>
       {children || <span className="text-[12px] text-text-primary font-semibold">{value || '—'}</span>}
     </div>
   );

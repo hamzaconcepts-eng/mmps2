@@ -1,7 +1,7 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Bus, MapPin } from 'lucide-react';
 import { getTransportData } from '@/lib/supabase/cached-queries';
-import { formatCurrency } from '@/lib/utils/format';
+import { formatCurrency, formatDriverName, formatPhone } from '@/lib/utils/format';
 import PageHeader from '@/components/PageHeader';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
@@ -54,13 +54,18 @@ export default async function TransportPage({ params }: { params: Promise<{ loca
                             <span className="text-text-tertiary">{t('transport.plateNumber')}</span>
                             <span className="text-text-primary font-mono">{bus.plate_number || '—'}</span>
                           </div>
-                          <div className="flex justify-between">
+                          <div className="flex justify-between items-center">
                             <span className="text-text-tertiary">{t('transport.driverName')}</span>
-                            <span className="text-text-primary">{isAr ? bus.driver_name_ar : bus.driver_name}</span>
+                            <div className="flex items-center gap-1.5">
+                              {bus.driver_photo_url && (
+                                <img src={bus.driver_photo_url} alt="" className="w-5 h-5 rounded-full object-cover" />
+                              )}
+                              <span className="text-text-primary">{formatDriverName(bus, locale)}</span>
+                            </div>
                           </div>
                           <div className="flex justify-between">
                             <span className="text-text-tertiary">{t('transport.driverPhone')}</span>
-                            <span className="text-text-secondary">{bus.driver_phone}</span>
+                            <span className="text-text-secondary">{formatPhone(bus.driver_phone)}</span>
                           </div>
                         </div>
                       </div>

@@ -30,7 +30,7 @@ export default async function ClassDetailPage({
       .single(),
     supabase
       .from('students')
-      .select('id, student_id, first_name, first_name_ar, father_name, father_name_ar, family_name, family_name_ar, gender')
+      .select('id, student_id, first_name, first_name_ar, father_name, father_name_ar, grandfather_name, grandfather_name_ar, family_name, family_name_ar, gender')
       .eq('class_id', id)
       .eq('is_active', true)
       .order('student_id'),
@@ -217,8 +217,8 @@ export default async function ClassDetailPage({
 
 function InfoRow({ label, value, children }: { label: string; value?: string; children?: React.ReactNode }) {
   return (
-    <div className="flex justify-between items-center">
-      <span className="text-[11px] text-text-tertiary font-medium">{label}</span>
+    <div className="flex items-center gap-2">
+      <span className="text-[11px] text-text-tertiary font-medium">{label}:</span>
       {children || <span className="text-[12px] text-text-primary font-semibold">{value || '—'}</span>}
     </div>
   );

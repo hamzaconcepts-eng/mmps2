@@ -38,7 +38,7 @@ export default async function StudentsPage({
   // Build query
   let query = supabase
     .from('students')
-    .select('id, student_id, first_name, first_name_ar, father_name, father_name_ar, family_name, family_name_ar, gender, is_active, class_id, classes(name, name_ar, grade_level, section)', { count: 'exact' })
+    .select('id, student_id, first_name, first_name_ar, father_name, father_name_ar, grandfather_name, grandfather_name_ar, family_name, family_name_ar, gender, is_active, class_id, classes(name, name_ar, grade_level, section)', { count: 'exact' })
     .eq('is_active', true)
     .order('family_name', { ascending: true })
     .range(from, to);

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { GraduationCap, Plus } from 'lucide-react';
 import { getAllTeachers } from '@/lib/supabase/cached-queries';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { formatTeacherName, formatDate } from '@/lib/utils/format';
+import { formatTeacherName, formatDate, formatPhone } from '@/lib/utils/format';
 import PageHeader from '@/components/PageHeader';
 import SearchBar from '@/components/SearchBar';
 import EmptyState from '@/components/EmptyState';
@@ -92,7 +92,7 @@ export default async function TeachersPage({
                       {teacher.gender === 'male' ? t('student.male') : t('student.female')}
                     </Badge>
                   </Table.Cell>
-                  <Table.Cell className="text-text-secondary text-[11px]">{teacher.phone || '—'}</Table.Cell>
+                  <Table.Cell className="text-text-secondary text-[11px]">{formatPhone(teacher.phone)}</Table.Cell>
                   <Table.Cell className="text-text-secondary text-[11px]">{formatDate(teacher.hire_date, locale)}</Table.Cell>
                 </Table.Row>
               ))}

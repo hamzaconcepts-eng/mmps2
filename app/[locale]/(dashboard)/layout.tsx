@@ -1,4 +1,5 @@
 import Sidebar from '@/components/Sidebar';
+import DualDateBar from '@/components/DualDateBar';
 import { setRequestLocale } from 'next-intl/server';
 
 // ISR: cache pages for 60s, then revalidate in background.
@@ -26,6 +27,7 @@ export default async function DashboardLayout({
                    ${isRTL ? 'lg:mr-[220px]' : 'lg:ml-[220px]'}`}
       >
         <div className="p-5 lg:p-6">
+          <DualDateBar />
           {children}
         </div>
       </main>

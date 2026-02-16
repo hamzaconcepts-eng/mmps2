@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, GraduationCap, School, BookOpen, Phone, Mail, Calendar } from 'lucide-react';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { formatTeacherName, formatDate, formatGradeLevel, formatClassName, formatSubjectName } from '@/lib/utils/format';
+import { formatTeacherName, formatDate, formatGradeLevel, formatClassName, formatSubjectName, formatPhone } from '@/lib/utils/format';
 import PageHeader from '@/components/PageHeader';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
@@ -71,6 +71,11 @@ export default async function TeacherDetailPage({
             </div>
           </Card.Header>
           <div className="space-y-2.5">
+            {teacher.photo_url && (
+              <div className="flex justify-center pb-2">
+                <img src={teacher.photo_url} alt={formatTeacherName(teacher, locale)} className="w-20 h-20 rounded-full object-cover border-2 border-brand-teal/20" />
+              </div>
+            )}
             <InfoRow label={t('teacher.firstName')} value={isAr ? teacher.first_name_ar : teacher.first_name} />
             <InfoRow label={t('teacher.lastName')} value={isAr ? teacher.last_name_ar : teacher.last_name} />
             <InfoRow label={t('student.gender')}>
@@ -83,7 +88,7 @@ export default async function TeacherDetailPage({
               <InfoRow label={t('teacher.qualifications')} value={teacher.qualifications} />
             )}
             <div className="flex items-center gap-2 text-[12px] text-text-secondary pt-1">
-              <Phone size={12} /> {teacher.phone || '—'}
+              <Phone size={12} /> {formatPhone(teacher.phone)}
             </div>
             <div className="flex items-center gap-2 text-[12px] text-text-secondary">
               <Mail size={12} /> {teacher.email}
@@ -177,8 +182,8 @@ export default async function TeacherDetailPage({
 
 function InfoRow({ label, value, children }: { label: string; value?: string; children?: React.ReactNode }) {
   return (
-    <div className="flex justify-between items-center">
-      <span className="text-[11px] text-text-tertiary font-medium">{label}</span>
+    <div className="flex items-center gap-2">
+      <span className="text-[11px] text-text-tertiary font-medium">{label}:</span>
       {children || <span className="text-[12px] text-text-primary font-semibold">{value || '—'}</span>}
     </div>
   );

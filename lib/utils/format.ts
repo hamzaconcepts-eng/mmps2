@@ -15,8 +15,9 @@ export function formatCurrency(amount: number): string {
 }
 
 /**
- * Format student full name based on locale.
- * EN: "First Father Family" | AR: "الأول الأب العائلة"
+ * Format student full name (4-part Omani name) based on locale.
+ * EN: "First Father Grandfather Family" (no bin/bint)
+ * AR: "الأول بن الأب بن الجد العائلة"
  */
 export function formatStudentName(
   student: {
@@ -24,34 +25,150 @@ export function formatStudentName(
     first_name_ar: string;
     father_name: string;
     father_name_ar: string;
+    grandfather_name?: string;
+    grandfather_name_ar?: string;
     family_name: string;
     family_name_ar: string;
+    gender?: string;
   },
   locale: string
 ): string {
   if (locale === 'ar') {
-    return `${student.first_name_ar} ${student.father_name_ar} ${student.family_name_ar}`;
+    const bin = student.gender === 'female' ? 'بنت' : 'بن';
+    const parts = [student.first_name_ar, bin, student.father_name_ar];
+    if (student.grandfather_name_ar) {
+      parts.push(bin, student.grandfather_name_ar);
+    }
+    parts.push(student.family_name_ar);
+    return parts.join(' ');
   }
-  return `${student.first_name} ${student.father_name} ${student.family_name}`;
+  const parts = [student.first_name, student.father_name];
+  if (student.grandfather_name) {
+    parts.push(student.grandfather_name);
+  }
+  parts.push(student.family_name);
+  return parts.join(' ');
 }
 
 /**
- * Format teacher full name based on locale.
- * EN: "First Last" | AR: "الأول الأخير"
+ * Format guardian full name (4-part Omani name) based on locale.
+ * EN: "First Father Grandfather Family"
+ * AR: "الأول بن الأب بن الجد العائلة" (بنت for female guardians)
+ */
+export function formatGuardianName(
+  guardian: {
+    first_name: string;
+    first_name_ar: string;
+    father_name?: string;
+    father_name_ar?: string;
+    grandfather_name?: string;
+    grandfather_name_ar?: string;
+    family_name: string;
+    family_name_ar: string;
+    relationship?: string;
+  },
+  locale: string
+): string {
+  const isFemale = guardian.relationship === 'Mother';
+  if (locale === 'ar') {
+    const bin = isFemale ? 'بنت' : 'بن';
+    const parts = [guardian.first_name_ar];
+    if (guardian.father_name_ar) {
+      parts.push(bin, guardian.father_name_ar);
+    }
+    if (guardian.grandfather_name_ar) {
+      parts.push(bin, guardian.grandfather_name_ar);
+    }
+    parts.push(guardian.family_name_ar);
+    return parts.join(' ');
+  }
+  const parts = [guardian.first_name];
+  if (guardian.father_name) parts.push(guardian.father_name);
+  if (guardian.grandfather_name) parts.push(guardian.grandfather_name);
+  parts.push(guardian.family_name);
+  return parts.join(' ');
+}
+
+/**
+ * Format teacher full name (4-part Omani name) based on locale.
+ * EN: "First Father Grandfather Family"
+ * AR: "الأول بنت الأب بن الجد العائلة" (all teachers are female → بنت)
  */
 export function formatTeacherName(
   teacher: {
     first_name: string;
     first_name_ar: string;
-    last_name: string;
-    last_name_ar: string;
+    father_name?: string;
+    father_name_ar?: string;
+    grandfather_name?: string;
+    grandfather_name_ar?: string;
+    last_name?: string;
+    last_name_ar?: string;
+    family_name?: string;
+    family_name_ar?: string;
+    gender?: string;
+  },
+  locale: string
+): string {
+  const familyEn = teacher.family_name || teacher.last_name || '';
+  const familyAr = teacher.family_name_ar || teacher.last_name_ar || '';
+  const isFemale = teacher.gender === 'female';
+
+  if (locale === 'ar') {
+    const bin = isFemale ? 'بنت' : 'بن';
+    const parts = [teacher.first_name_ar];
+    if (teacher.father_name_ar) {
+      parts.push(bin, teacher.father_name_ar);
+    }
+    if (teacher.grandfather_name_ar) {
+      parts.push(bin, teacher.grandfather_name_ar);
+    }
+    parts.push(familyAr);
+    return parts.join(' ');
+  }
+  const parts = [teacher.first_name];
+  if (teacher.father_name) parts.push(teacher.father_name);
+  if (teacher.grandfather_name) parts.push(teacher.grandfather_name);
+  parts.push(familyEn);
+  return parts.join(' ');
+}
+
+/**
+ * Format bus driver full name (4-part Omani name) based on locale.
+ * EN: "First Father Grandfather Family"
+ * AR: "الأول بن/بنت الأب بن/بنت الجد العائلة"
+ */
+export function formatDriverName(
+  driver: {
+    driver_name: string;
+    driver_name_ar: string;
+    driver_father_name?: string;
+    driver_father_name_ar?: string;
+    driver_grandfather_name?: string;
+    driver_grandfather_name_ar?: string;
+    driver_family_name?: string;
+    driver_family_name_ar?: string;
   },
   locale: string
 ): string {
   if (locale === 'ar') {
-    return `${teacher.first_name_ar} ${teacher.last_name_ar}`;
+    const parts = [driver.driver_name_ar];
+    if (driver.driver_father_name_ar) {
+      parts.push('بن', driver.driver_father_name_ar);
+    }
+    if (driver.driver_grandfather_name_ar) {
+      parts.push('بن', driver.driver_grandfather_name_ar);
+    }
+    if (driver.driver_family_name_ar) {
+      parts.push(driver.driver_family_name_ar);
+    }
+    return parts.join(' ');
   }
-  return `${teacher.first_name} ${teacher.last_name}`;
+  const parts = [driver.driver_name];
+  if (driver.driver_father_name) parts.push(driver.driver_father_name);
+  if (driver.driver_grandfather_name) parts.push(driver.driver_grandfather_name);
+  if (driver.driver_family_name) parts.push(driver.driver_family_name);
+  return parts.join(' ');
 }
 
 /**
@@ -84,6 +201,27 @@ export function formatDate(dateStr: string, locale: string): string {
 }
 
 /**
+ * Get today's date formatted in both English and Arabic (Hijri).
+ * Returns { en: "Sunday, 16 February 2026", ar: "الأحد، ٢٣ رجب ١٤٤٧ هـ" }
+ */
+export function getDualDate(): { en: string; ar: string } {
+  const now = new Date();
+  const en = now.toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+  const ar = now.toLocaleDateString('ar-SA-u-ca-islamic-umalqura', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+  return { en, ar };
+}
+
+/**
  * Get class display name based on locale.
  */
 export function formatClassName(
@@ -101,4 +239,13 @@ export function formatSubjectName(
   locale: string
 ): string {
   return locale === 'ar' ? subject.name_ar : subject.name;
+}
+
+/**
+ * Format phone number: 8 digits only, no country code.
+ * Strips +968 prefix if present.
+ */
+export function formatPhone(phone: string): string {
+  if (!phone) return '—';
+  return phone.replace(/^\+?968/, '').replace(/\D/g, '');
 }

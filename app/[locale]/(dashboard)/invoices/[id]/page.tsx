@@ -25,7 +25,7 @@ export default async function InvoiceDetailPage({
   const [invoiceRes, itemsRes, paymentsRes] = await Promise.all([
     supabase
       .from('invoices')
-      .select('*, students(id, student_id, first_name, first_name_ar, father_name, father_name_ar, family_name, family_name_ar, classes(id, name, name_ar, grade_level))')
+      .select('*, students(id, student_id, first_name, first_name_ar, father_name, father_name_ar, grandfather_name, grandfather_name_ar, family_name, family_name_ar, gender, classes(id, name, name_ar, grade_level))')
       .eq('id', id)
       .single(),
     supabase
@@ -203,8 +203,8 @@ export default async function InvoiceDetailPage({
 
 function InfoRow({ label, value, children }: { label: string; value?: string; children?: React.ReactNode }) {
   return (
-    <div className="flex justify-between items-center">
-      <span className="text-[11px] text-text-tertiary font-medium">{label}</span>
+    <div className="flex items-center gap-2">
+      <span className="text-[11px] text-text-tertiary font-medium">{label}:</span>
       {children || <span className="text-[12px] text-text-primary font-semibold">{value || '—'}</span>}
     </div>
   );
