@@ -16,9 +16,10 @@ export default function ResetFilters({ label }: ResetFiltersProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  // Hide if no params are set
-  const hasFilters = searchParams.toString().length > 0;
-  if (!hasFilters) return null;
+  // Hide if no real filters are set (ignore internal params like 'print')
+  const params = new URLSearchParams(searchParams.toString());
+  params.delete('print');
+  if (params.toString().length === 0) return null;
 
   return (
     <Link
