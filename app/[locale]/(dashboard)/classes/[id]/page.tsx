@@ -21,17 +21,13 @@ export default async function ClassDetailPage({
   const supabase = createAdminClient();
   const isAr = locale === 'ar';
 
-  // Fetch class with supervisor
-  const { data: cls } = await supabase
-    .from('classes')
-    .select('*, teachers!classes_class_supervisor_id_fkey(id, first_name, first_name_ar, last_name, last_name_ar)')
-    .eq('id', id)
-    .single();
-
-  if (!cls) notFound();
-
-  // Parallel fetches: students + subject assignments
-  const [studentsRes, subjectsRes] = await Promise.all([
+  // All queries in parallel
+  const [clsRes, studentsRes, subjectsRes] = await Promise.all([
+    supabase
+      .from('classes')
+      .select('*, teachers!classes_class_supervisor_id_fkey(id, first_name, first_name_ar, last_name, last_name_ar)')
+      .eq('id', id)
+      .single(),
     supabase
       .from('students')
       .select('id, student_id, first_name, first_name_ar, father_name, father_name_ar, family_name, family_name_ar, gender')
@@ -43,6 +39,9 @@ export default async function ClassDetailPage({
       .select('id, periods_per_week, subjects(id, name, name_ar, code), teachers(id, first_name, first_name_ar, last_name, last_name_ar)')
       .eq('class_id', id),
   ]);
+
+  const cls = clsRes.data;
+  if (!cls) notFound();
 
   const students = studentsRes.data || [];
   const subjectAssignments = subjectsRes.data || [];

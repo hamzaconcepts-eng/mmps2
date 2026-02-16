@@ -28,7 +28,6 @@ export default function LanguageSwitcher({ className = '', variant = 'dark' }: L
       onClick={switchLocale}
       className={`px-3 py-1.5 rounded-lg
                  font-bold text-[11px] border
-                 backdrop-blur-sm
                  transition-all duration-200
                  ${styles}
                  ${className}`}

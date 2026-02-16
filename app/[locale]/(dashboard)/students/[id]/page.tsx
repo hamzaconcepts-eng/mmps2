@@ -19,17 +19,13 @@ export default async function StudentDetailPage({
   const t = await getTranslations();
   const supabase = createAdminClient();
 
-  // Fetch student with class info
-  const { data: student } = await supabase
-    .from('students')
-    .select('*, classes(id, name, name_ar, grade_level, section, capacity)')
-    .eq('id', id)
-    .single();
-
-  if (!student) notFound();
-
-  // Parallel fetches for related data
-  const [guardianRes, transportRes, invoiceRes] = await Promise.all([
+  // All 4 queries in parallel — no sequential blocking
+  const [studentRes, guardianRes, transportRes, invoiceRes] = await Promise.all([
+    supabase
+      .from('students')
+      .select('*, classes(id, name, name_ar, grade_level, section, capacity)')
+      .eq('id', id)
+      .single(),
     supabase
       .from('student_guardians')
       .select('*, guardians(*)')
@@ -47,6 +43,9 @@ export default async function StudentDetailPage({
       .eq('academic_year', '2025-2026')
       .order('created_at', { ascending: false }),
   ]);
+
+  const student = studentRes.data;
+  if (!student) notFound();
 
   const guardians = guardianRes.data || [];
   const transport = transportRes.data;

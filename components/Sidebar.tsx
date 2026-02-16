@@ -122,7 +122,7 @@ export default function Sidebar({ locale, userRole = 'admin' }: SidebarProps) {
                      hover:bg-white/[0.06] transition-all duration-200
                      ${isCollapsed ? 'justify-center' : ''}`}
         >
-          <div className="w-8 h-8 rounded-full bg-brand-teal/30 backdrop-blur-sm flex items-center justify-center text-white font-bold text-[11px] flex-shrink-0 border border-white/15">
+          <div className="w-8 h-8 rounded-full bg-brand-teal/30 flex items-center justify-center text-white font-bold text-[11px] flex-shrink-0 border border-white/15">
             {isRTL ? '\u0645' : 'U'}
           </div>
           {!isCollapsed && (

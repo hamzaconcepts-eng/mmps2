@@ -21,17 +21,13 @@ export default async function InvoiceDetailPage({
   const supabase = createAdminClient();
   const isAr = locale === 'ar';
 
-  // Fetch invoice with student + class
-  const { data: invoice } = await supabase
-    .from('invoices')
-    .select('*, students(id, student_id, first_name, first_name_ar, father_name, father_name_ar, family_name, family_name_ar, classes(id, name, name_ar, grade_level))')
-    .eq('id', id)
-    .single();
-
-  if (!invoice) notFound();
-
-  // Parallel: line items + payments
-  const [itemsRes, paymentsRes] = await Promise.all([
+  // All queries in parallel
+  const [invoiceRes, itemsRes, paymentsRes] = await Promise.all([
+    supabase
+      .from('invoices')
+      .select('*, students(id, student_id, first_name, first_name_ar, father_name, father_name_ar, family_name, family_name_ar, classes(id, name, name_ar, grade_level))')
+      .eq('id', id)
+      .single(),
     supabase
       .from('invoice_items')
       .select('*')
@@ -43,6 +39,9 @@ export default async function InvoiceDetailPage({
       .eq('invoice_id', id)
       .order('payment_date', { ascending: false }),
   ]);
+
+  const invoice = invoiceRes.data;
+  if (!invoice) notFound();
 
   const lineItems = itemsRes.data || [];
   const payments = paymentsRes.data || [];

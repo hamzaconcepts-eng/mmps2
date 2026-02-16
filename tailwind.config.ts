@@ -81,33 +81,13 @@ const config: Config = {
         card: '0 2px 12px rgba(0,0,0,0.15)',
         'card-hover': '0 12px 40px rgba(0,0,0,0.2)',
       },
-      backdropBlur: {
-        glass: '16px',
-        'glass-strong': '24px',
-      },
       keyframes: {
-        float: {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-8px)' },
-        },
-        'drift-slow': {
-          '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
-          '33%': { transform: 'translate(30px, -20px) scale(1.05)' },
-          '66%': { transform: 'translate(-20px, 15px) scale(0.95)' },
-        },
-        drift: {
-          '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
-          '50%': { transform: 'translate(-40px, 25px) scale(1.03)' },
-        },
         shimmer: {
           '0%': { backgroundPosition: '-200% 0' },
           '100%': { backgroundPosition: '200% 0' },
         },
       },
       animation: {
-        float: 'float 4s ease-in-out infinite',
-        'drift-slow': 'drift-slow 20s ease-in-out infinite',
-        drift: 'drift 15s ease-in-out infinite',
         shimmer: 'shimmer 3s ease-in-out infinite',
       },
     },

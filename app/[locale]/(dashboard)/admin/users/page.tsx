@@ -68,7 +68,7 @@ export default function AdminUsersPage() {
       {/* Create User Form */}
       <Card padding="lg">
         <div className="flex items-center gap-2.5 mb-5">
-          <div className="w-9 h-9 rounded-lg bg-accent-orange/80 backdrop-blur-sm flex items-center justify-center border border-white/15">
+          <div className="w-9 h-9 rounded-lg bg-accent-orange/80 flex items-center justify-center border border-white/15">
             <UserPlus size={18} className="text-white" />
           </div>
           <h2 className="text-base font-extrabold text-white">
@@ -78,7 +78,7 @@ export default function AdminUsersPage() {
 
         {/* Message */}
         {message && (
-          <div className={`flex items-center gap-2.5 p-3 rounded-lg mb-5 border backdrop-blur-sm
+          <div className={`flex items-center gap-2.5 p-3 rounded-lg mb-5 border
                           ${message.type === 'success'
                             ? 'bg-success/15 border-success/25'
                             : 'bg-danger/15 border-danger/25'}`}>

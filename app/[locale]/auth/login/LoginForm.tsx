@@ -30,17 +30,12 @@ export default function LoginForm({ locale }: { locale: string }) {
 
   return (
     <main className="h-screen flex items-center justify-center overflow-hidden relative">
-      {/* Dreamy orbs */}
-      <div className="orb orb-teal w-[400px] h-[400px] -top-32 -right-32 animate-drift-slow" />
-      <div className="orb orb-orange w-[300px] h-[300px] bottom-0 -left-20 animate-drift" />
-      <div className="orb orb-ice w-[250px] h-[250px] top-1/2 right-1/4 animate-drift-slow" />
 
       <div className="w-full max-w-sm px-6 relative z-10">
         {/* Logo */}
         <div className="text-center mb-6">
           <div className="flex justify-center mb-4">
             <div className="relative">
-              <div className="absolute inset-0 bg-brand-teal/25 blur-3xl rounded-full scale-[2]" />
               <Image src="/logo.svg" alt="Mashaail" width={72} height={72} priority className="relative" style={{ filter: 'brightness(0) invert(1)' }} />
             </div>
           </div>
@@ -59,7 +54,7 @@ export default function LoginForm({ locale }: { locale: string }) {
 
           <form action={handleSubmit} className="space-y-4">
             {error && (
-              <div className="flex items-center gap-2 p-3 rounded-lg bg-red-500/20 border border-red-400/30 backdrop-blur-sm">
+              <div className="flex items-center gap-2 p-3 rounded-lg bg-red-500/20 border border-red-400/30">
                 <AlertCircle size={16} className="text-red-300 flex-shrink-0" />
                 <p className="text-xs text-red-200 font-medium">{error}</p>
               </div>

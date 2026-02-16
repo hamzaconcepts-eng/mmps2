@@ -1,12 +1,12 @@
 const variantStyles: Record<string, string> = {
-  brand: 'bg-brand-teal/20 text-brand-teal backdrop-blur-sm',
-  orange: 'bg-brand-orange/20 text-brand-orange backdrop-blur-sm',
-  success: 'bg-success/20 text-success backdrop-blur-sm',
-  warning: 'bg-warning/20 text-warning backdrop-blur-sm',
-  danger: 'bg-danger/20 text-danger backdrop-blur-sm',
-  dark: 'bg-white/[0.1] text-text-secondary backdrop-blur-sm',
-  teal: 'bg-accent-teal/25 text-accent-teal backdrop-blur-sm',
-  ice: 'bg-accent-ice/20 text-accent-ice backdrop-blur-sm',
+  brand: 'bg-brand-teal/20 text-brand-teal',
+  orange: 'bg-brand-orange/20 text-brand-orange',
+  success: 'bg-success/20 text-success',
+  warning: 'bg-warning/20 text-warning',
+  danger: 'bg-danger/20 text-danger',
+  dark: 'bg-white/[0.1] text-text-secondary',
+  teal: 'bg-accent-teal/25 text-accent-teal',
+  ice: 'bg-accent-ice/20 text-accent-ice',
 };
 
 interface BadgeProps {

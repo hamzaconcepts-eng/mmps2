@@ -44,35 +44,27 @@
 }
 
 @layer components {
-  /* ── Glass Card ── */
+  /* ── Glass Card (no backdrop-filter for GPU performance) ── */
   .glass {
     background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
     border: 1px solid rgba(255, 255, 255, 0.15);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.08);
   }
 
   .glass-strong {
     background: rgba(255, 255, 255, 0.14);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
     border: 1px solid rgba(255, 255, 255, 0.18);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
 
   .glass-subtle {
     background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   /* ── Glass Input ── */
   .glass-input {
     background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
     border: 1px solid rgba(255, 255, 255, 0.12);
     transition: all 0.2s ease;
   }
@@ -80,24 +72,5 @@
     background: rgba(255, 255, 255, 0.12);
     border-color: rgba(115, 192, 207, 0.5);
     box-shadow: 0 0 20px rgba(115, 192, 207, 0.1);
-  }
-
-  /* ── Dreamy Orbs (background decorations) ── */
-  .orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.3;
-    pointer-events: none;
-    z-index: 0;
-  }
-  .orb-teal {
-    background: radial-gradient(circle, #73C0CF, transparent 70%);
-  }
-  .orb-orange {
-    background: radial-gradient(circle, #F09021, transparent 70%);
-  }
-  .orb-ice {
-    background: radial-gradient(circle, #96C7D3, transparent 70%);
   }
 }

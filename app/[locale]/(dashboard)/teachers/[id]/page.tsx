@@ -21,17 +21,13 @@ export default async function TeacherDetailPage({
   const supabase = createAdminClient();
   const isAr = locale === 'ar';
 
-  // Fetch teacher
-  const { data: teacher } = await supabase
-    .from('teachers')
-    .select('*')
-    .eq('id', id)
-    .single();
-
-  if (!teacher) notFound();
-
-  // Parallel fetches: supervised classes + class_subjects assignments
-  const [supervisedRes, assignmentsRes] = await Promise.all([
+  // All queries in parallel
+  const [teacherRes, supervisedRes, assignmentsRes] = await Promise.all([
+    supabase
+      .from('teachers')
+      .select('*')
+      .eq('id', id)
+      .single(),
     supabase
       .from('classes')
       .select('id, name, name_ar, grade_level, section, capacity')
@@ -44,6 +40,9 @@ export default async function TeacherDetailPage({
       .select('id, periods_per_week, classes(id, name, name_ar, grade_level, section), subjects(id, name, name_ar, code)')
       .eq('teacher_id', id),
   ]);
+
+  const teacher = teacherRes.data;
+  if (!teacher) notFound();
 
   const supervisedClasses = supervisedRes.data || [];
   const assignments = assignmentsRes.data || [];

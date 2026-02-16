@@ -18,10 +18,6 @@ export default async function DashboardLayout({
 
   return (
     <div className="h-screen overflow-hidden flex relative">
-      {/* Subtle background orbs for dashboard */}
-      <div className="orb orb-teal w-[400px] h-[400px] -top-40 right-20 opacity-20 animate-drift-slow" />
-      <div className="orb orb-orange w-[250px] h-[250px] bottom-20 left-40 opacity-15 animate-drift" />
-
       <Sidebar locale={locale} />
 
       <main

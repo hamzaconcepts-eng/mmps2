@@ -44,8 +44,7 @@ export function StatCard({
     <div
       className={`
         ${scheme.bg} rounded-lg p-4 ${scheme.textColor}
-        backdrop-blur-sm
-        border border-white/20
+               border border-white/20
         ${scheme.glow}
         transition-all duration-300
         hover:-translate-y-1 hover:brightness-105

@@ -43,10 +43,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
   return (
     <main className="h-screen flex flex-col overflow-hidden relative">
-      {/* Dreamy orbs */}
-      <div className="orb orb-teal w-[500px] h-[500px] -top-40 -right-40 animate-drift-slow" />
-      <div className="orb orb-orange w-[350px] h-[350px] bottom-0 -left-32 animate-drift" />
-      <div className="orb orb-ice w-[300px] h-[300px] top-1/2 left-1/3 animate-drift-slow" />
 
       {/* Top Bar — just language switcher */}
       <header className="flex items-center justify-end px-8 py-4 flex-shrink-0 relative z-10">
@@ -61,13 +57,12 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             {/* Logo with soft glow */}
             <div className="mb-6 flex justify-center">
               <div className="relative">
-                <div className="absolute inset-0 bg-brand-teal/25 blur-3xl rounded-full scale-[2.5]" />
                 <Image
                   src="/logo.svg"
                   alt="Mashaail"
                   width={90}
                   height={90}
-                  className="relative animate-float"
+                  className="relative"
                   style={{ filter: 'brightness(0) invert(1) drop-shadow(0 4px 20px rgba(115,192,207,0.3))' }}
                 />
               </div>
@@ -100,7 +95,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             return (
               <div
                 key={i}
-                className={`${feature.bg} backdrop-blur-sm rounded-2xl p-6 text-white
+                className={`${feature.bg} rounded-2xl p-6 text-white
                            border border-white/15
                            shadow-[0_8px_30px_rgba(0,0,0,0.15)]
                            transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.2)]
