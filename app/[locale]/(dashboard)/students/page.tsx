@@ -1,5 +1,4 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import Link from 'next/link';
 import { Users, Plus } from 'lucide-react';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { getClassesList } from '@/lib/supabase/cached-queries';
@@ -10,6 +9,7 @@ import Pagination from '@/components/Pagination';
 import EmptyState from '@/components/EmptyState';
 import SortableHead from '@/components/SortableHead';
 import PrintButton from '@/components/PrintButton';
+import ClickableRow from '@/components/ClickableRow';
 import { Card } from '@/components/ui/Card';
 import { Table } from '@/components/ui/Table';
 import { Badge } from '@/components/ui/Badge';
@@ -153,22 +153,16 @@ export default async function StudentsPage({
                 </Table.Header>
                 <Table.Body>
                   {students.map((student: any) => (
-                    <Table.Row key={student.id}>
+                    <ClickableRow key={student.id} href={`/${locale}/students/${student.id}`}>
                       <Table.Cell>
-                        <Link
-                          href={`/${locale}/students/${student.id}`}
-                          className="font-mono text-[11px] text-brand-teal hover:text-brand-teal-soft transition-colors"
-                        >
+                        <span className="font-mono text-[11px] text-brand-teal">
                           {student.student_id}
-                        </Link>
+                        </span>
                       </Table.Cell>
                       <Table.Cell>
-                        <Link
-                          href={`/${locale}/students/${student.id}`}
-                          className="font-semibold text-text-primary hover:text-brand-teal transition-colors"
-                        >
+                        <span className="font-semibold text-text-primary">
                           {formatStudentName(student, locale)}
-                        </Link>
+                        </span>
                       </Table.Cell>
                       <Table.Cell className="text-text-secondary">
                         {student.classes
@@ -183,7 +177,7 @@ export default async function StudentsPage({
                       <Table.Cell>
                         <Badge variant="success">{t('student.active')}</Badge>
                       </Table.Cell>
-                    </Table.Row>
+                    </ClickableRow>
                   ))}
                 </Table.Body>
               </Table>

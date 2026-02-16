@@ -1,5 +1,4 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import Link from 'next/link';
 import { GraduationCap, Plus } from 'lucide-react';
 import { getAllTeachers } from '@/lib/supabase/cached-queries';
 import { createAdminClient } from '@/lib/supabase/admin';
@@ -9,6 +8,7 @@ import SearchBar from '@/components/SearchBar';
 import EmptyState from '@/components/EmptyState';
 import SortableHead from '@/components/SortableHead';
 import PrintButton from '@/components/PrintButton';
+import ClickableRow from '@/components/ClickableRow';
 import { Card } from '@/components/ui/Card';
 import { Table } from '@/components/ui/Table';
 import { Badge } from '@/components/ui/Badge';
@@ -111,16 +111,16 @@ export default async function TeachersPage({
             </Table.Header>
             <Table.Body>
               {teacherList.map((teacher: any) => (
-                <Table.Row key={teacher.id}>
+                <ClickableRow key={teacher.id} href={`/${locale}/teachers/${teacher.id}`}>
                   <Table.Cell>
-                    <Link href={`/${locale}/teachers/${teacher.id}`} className="font-mono text-[11px] text-brand-teal hover:text-brand-teal-soft transition-colors">
+                    <span className="font-mono text-[11px] text-brand-teal">
                       {teacher.employee_id}
-                    </Link>
+                    </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <Link href={`/${locale}/teachers/${teacher.id}`} className="font-semibold text-text-primary hover:text-brand-teal transition-colors">
+                    <span className="font-semibold text-text-primary">
                       {formatTeacherName(teacher, locale)}
-                    </Link>
+                    </span>
                   </Table.Cell>
                   <Table.Cell className="text-text-secondary">
                     {locale === 'ar' ? teacher.specialization_ar || teacher.specialization : teacher.specialization || '—'}
@@ -132,7 +132,7 @@ export default async function TeachersPage({
                   </Table.Cell>
                   <Table.Cell className="text-text-secondary text-[11px]">{formatPhone(teacher.phone)}</Table.Cell>
                   <Table.Cell className="text-text-secondary text-[11px]">{formatDate(teacher.hire_date, locale)}</Table.Cell>
-                </Table.Row>
+                </ClickableRow>
               ))}
             </Table.Body>
           </Table>
