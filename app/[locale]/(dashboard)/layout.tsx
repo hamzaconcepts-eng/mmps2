@@ -1,5 +1,6 @@
 import Sidebar from '@/components/Sidebar';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import DualDateBar from '@/components/DualDateBar';
 import { setRequestLocale } from 'next-intl/server';
 
 // ISR: cache pages for 60s, then revalidate in background.
@@ -27,8 +28,18 @@ export default async function DashboardLayout({
                    ${isRTL ? 'lg:mr-[220px]' : 'lg:ml-[220px]'}`}
       >
         <div className="p-5 lg:p-6">
-          <div className={`flex ${isRTL ? 'justify-start' : 'justify-end'} mb-2 print:hidden`}>
-            <LanguageSwitcher variant="light" />
+          <div className="flex items-center justify-between mb-2 print:hidden">
+            {isRTL ? (
+              <>
+                <LanguageSwitcher variant="light" />
+                <DualDateBar />
+              </>
+            ) : (
+              <>
+                <DualDateBar />
+                <LanguageSwitcher variant="light" />
+              </>
+            )}
           </div>
           {children}
         </div>
