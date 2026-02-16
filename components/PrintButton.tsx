@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { Printer } from 'lucide-react';
 
 interface PrintButtonProps {
@@ -8,20 +8,16 @@ interface PrintButtonProps {
 }
 
 export default function PrintButton({ label }: PrintButtonProps) {
-  const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const handlePrint = () => {
-    // Save current URL so AutoPrint can return to it
-    const currentQs = searchParams.toString();
-    const returnUrl = `${pathname}${currentQs ? `?${currentQs}` : ''}`;
-
+    // Open a new window with all rows (no pagination), print, then close it.
+    // The current page stays exactly as it is.
     const params = new URLSearchParams(searchParams.toString());
     params.delete('page');
     params.set('print', '1');
-    params.set('returnUrl', returnUrl);
-    router.push(`${pathname}?${params.toString()}`);
+    window.open(`${pathname}?${params.toString()}`, '_blank');
   };
 
   return (
