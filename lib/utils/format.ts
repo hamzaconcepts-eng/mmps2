@@ -16,11 +16,11 @@ export function formatCurrency(amount: number): string {
 
 /**
  * Append ة (taa marbuta) to Arabic family name for females.
- * If it already ends with ة or ي, return as-is.
+ * Always adds ة unless it already ends with ة.
  */
 function feminizeFamilyAr(name: string): string {
   if (!name) return name;
-  if (name.endsWith('ة') || name.endsWith('ي')) return name;
+  if (name.endsWith('ة')) return name;
   return name + 'ة';
 }
 
