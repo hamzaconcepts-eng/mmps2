@@ -346,28 +346,28 @@ INSERT INTO transport_areas (name, name_ar, annual_fee, academic_year) VALUES
 -- Each bus has a driver with Omani name + phone
 -- ================================================
 
-INSERT INTO buses (bus_number, plate_number, driver_name, driver_name_ar, driver_father_name, driver_father_name_ar, driver_grandfather_name, driver_grandfather_name_ar, driver_family_name, driver_family_name_ar, driver_photo_url, driver_phone, capacity, transport_area_id)
+INSERT INTO buses (bus_number, plate_number, driver_name, driver_name_ar, driver_father_name, driver_father_name_ar, driver_grandfather_name, driver_grandfather_name_ar, driver_family_name, driver_family_name_ar, driver_phone, capacity, transport_area_id)
 SELECT
   b.bus_number, b.plate_number, b.driver_name, b.driver_name_ar,
   b.driver_father_name, b.driver_father_name_ar,
   b.driver_grandfather_name, b.driver_grandfather_name_ar,
   b.driver_family_name, b.driver_family_name_ar,
-  b.driver_photo_url, b.driver_phone, b.capacity,
+  b.driver_phone, b.capacity,
   ta.id
 FROM (VALUES
-  ('BUS-01', '3/45821',  'Salim',     'سالم',     'Khalid',    'خالد',     'Nasser',    'ناصر',     'Al Balushi',   'البلوشي',     'https://i.pravatar.cc/200?u=driver01', '92001001', 40, 'Sur Al Hadid'),
-  ('BUS-02', '7/18394',  'Fatma',     'فاطمة',    'Ali',       'علي',      'Mohammed',  'محمد',     'Al Harthi',    'الحارثي',     'https://i.pravatar.cc/200?u=driver02', '92001002', 40, 'Sharadi'),
-  ('BUS-03', '12/67250', 'Khalid',    'خالد',     'Said',      'سعيد',     'Ibrahim',   'إبراهيم',  'Al Rashdi',    'الراشدي',     'https://i.pravatar.cc/200?u=driver03', '92001003', 45, 'Mabellah North'),
-  ('BUS-04', '5/93147',  'Maryam',    'مريم',     'Hamad',     'حمد',      'Salim',     'سالم',     'Al Farsi',     'الفارسي',     'https://i.pravatar.cc/200?u=driver04', '92001004', 40, 'Mabellah North'),
-  ('BUS-05', '9/20586',  'Said',      'سعيد',     'Ahmed',     'أحمد',     'Khalfan',   'خلفان',    'Al Kindi',     'الكندي',      'https://i.pravatar.cc/200?u=driver05', '92001005', 45, 'Mabellah South'),
-  ('BUS-06', '2/74163',  'Hamad',     'حمد',      'Nasser',    'ناصر',     'Ali',       'علي',      'Al Wahaibi',   'الوهيبي',     'https://i.pravatar.cc/200?u=driver06', '92001006', 40, 'Mabellah South'),
-  ('BUS-07', '15/31074', 'Mohammed',  'محمد',     'Sultan',    'سلطان',    'Rashid',    'راشد',     'Al Mahrouqi',  'المحروقي',    'https://i.pravatar.cc/200?u=driver07', '92001007', 45, 'Mabellah 6/7/8'),
-  ('BUS-08', '8/52690',  'Noora',     'نورة',     'Abdullah',  'عبدالله',  'Hassan',    'حسن',      'Al Busaidi',   'البوسعيدي',   'https://i.pravatar.cc/200?u=driver08', '92001008', 40, 'Mabellah 6/7/8'),
-  ('BUS-09', '4/86312',  'Ali',       'علي',      'Ibrahim',   'إبراهيم',  'Majid',     'ماجد',     'Al Habsi',     'الحبسي',      'https://i.pravatar.cc/200?u=driver09', '92001009', 40, 'Al Nasar'),
-  ('BUS-10', '11/40958', 'Rashid',    'راشد',     'Yusuf',     'يوسف',     'Suleiman',  'سليمان',   'Al Siyabi',    'السيابي',     'https://i.pravatar.cc/200?u=driver10', '92001010', 40, 'Wadi Al Awami'),
-  ('BUS-11', '6/73429',  'Aisha',     'عائشة',    'Omar',      'عمر',      'Khalfan',   'خلفان',    'Al Naamani',   'النعماني',    'https://i.pravatar.cc/200?u=driver11', '92001011', 40, 'Wadi Bahais'),
-  ('BUS-12', '10/15847', 'Yusuf',     'يوسف',     'Hassan',    'حسن',      'Hilal',     'هلال',     'Al Rawahi',    'الرواحي',     'https://i.pravatar.cc/200?u=driver12', '92001012', 40, 'Seeb Suq / Qalah')
-) AS b(bus_number, plate_number, driver_name, driver_name_ar, driver_father_name, driver_father_name_ar, driver_grandfather_name, driver_grandfather_name_ar, driver_family_name, driver_family_name_ar, driver_photo_url, driver_phone, capacity, area_name)
+  ('BUS-01', '3/45821',  'Salim',     'سالم',     'Khalid',    'خالد',     'Nasser',    'ناصر',     'Al Balushi',   'البلوشي',     '92001001', 40, 'Sur Al Hadid'),
+  ('BUS-02', '7/18394',  'Fatma',     'فاطمة',    'Ali',       'علي',      'Mohammed',  'محمد',     'Al Harthi',    'الحارثي',     '92001002', 40, 'Sharadi'),
+  ('BUS-03', '12/67250', 'Khalid',    'خالد',     'Said',      'سعيد',     'Ibrahim',   'إبراهيم',  'Al Rashdi',    'الراشدي',     '92001003', 45, 'Mabellah North'),
+  ('BUS-04', '5/93147',  'Maryam',    'مريم',     'Hamad',     'حمد',      'Salim',     'سالم',     'Al Farsi',     'الفارسي',     '92001004', 40, 'Mabellah North'),
+  ('BUS-05', '9/20586',  'Said',      'سعيد',     'Ahmed',     'أحمد',     'Khalfan',   'خلفان',    'Al Kindi',     'الكندي',      '92001005', 45, 'Mabellah South'),
+  ('BUS-06', '2/74163',  'Hamad',     'حمد',      'Nasser',    'ناصر',     'Ali',       'علي',      'Al Wahaibi',   'الوهيبي',     '92001006', 40, 'Mabellah South'),
+  ('BUS-07', '15/31074', 'Mohammed',  'محمد',     'Sultan',    'سلطان',    'Rashid',    'راشد',     'Al Mahrouqi',  'المحروقي',    '92001007', 45, 'Mabellah 6/7/8'),
+  ('BUS-08', '8/52690',  'Noora',     'نورة',     'Abdullah',  'عبدالله',  'Hassan',    'حسن',      'Al Busaidi',   'البوسعيدي',   '92001008', 40, 'Mabellah 6/7/8'),
+  ('BUS-09', '4/86312',  'Ali',       'علي',      'Ibrahim',   'إبراهيم',  'Majid',     'ماجد',     'Al Habsi',     'الحبسي',      '92001009', 40, 'Al Nasar'),
+  ('BUS-10', '11/40958', 'Rashid',    'راشد',     'Yusuf',     'يوسف',     'Suleiman',  'سليمان',   'Al Siyabi',    'السيابي',     '92001010', 40, 'Wadi Al Awami'),
+  ('BUS-11', '6/73429',  'Aisha',     'عائشة',    'Omar',      'عمر',      'Khalfan',   'خلفان',    'Al Naamani',   'النعماني',    '92001011', 40, 'Wadi Bahais'),
+  ('BUS-12', '10/15847', 'Yusuf',     'يوسف',     'Hassan',    'حسن',      'Hilal',     'هلال',     'Al Rawahi',    'الرواحي',     '92001012', 40, 'Seeb Suq / Qalah')
+) AS b(bus_number, plate_number, driver_name, driver_name_ar, driver_father_name, driver_father_name_ar, driver_grandfather_name, driver_grandfather_name_ar, driver_family_name, driver_family_name_ar, driver_phone, capacity, area_name)
 JOIN transport_areas ta ON ta.name = b.area_name AND ta.academic_year = '2025-2026';
 
 -- ================================================
@@ -571,15 +571,14 @@ BEGIN
         grandfather_name, grandfather_name_ar,
         family_name, family_name_ar,
         date_of_birth, gender, nationality,
-        class_id, enrollment_date, gps_location, photo_url
+        class_id, enrollment_date, gps_location
       ) VALUES (
         v_sid, v_first_en, v_first_ar,
         v_father_en, v_father_ar,
         v_gfather_en, v_gfather_ar,
         v_family_en, v_family_ar,
         v_dob, v_gender::gender, 'Omani',
-        v_class_id, '2025-09-01', v_gps,
-        'https://i.pravatar.cc/200?u=student' || LPAD(v_student_counter::TEXT, 4, '0')
+        v_class_id, '2025-09-01', v_gps
       );
     END LOOP;
   END LOOP;

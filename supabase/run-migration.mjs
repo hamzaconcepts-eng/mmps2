@@ -65,20 +65,20 @@ const teacherNames = [
   ['TCH-032', 'Said', 'سعيد', 'Ali', 'علي', 'Al Khusaibi', 'الخصيبي'],
 ];
 
-// Driver name data: [bus_number, father_name, father_name_ar, grandfather_name, grandfather_name_ar, family_name, family_name_ar, photo_url]
+// Driver name data: [bus_number, father_name, father_name_ar, grandfather_name, grandfather_name_ar, family_name, family_name_ar]
 const driverNames = [
-  ['BUS-01', 'Khalid', 'خالد', 'Nasser', 'ناصر', 'Al Balushi', 'البلوشي', 'https://i.pravatar.cc/200?u=driver01'],
-  ['BUS-02', 'Ali', 'علي', 'Mohammed', 'محمد', 'Al Harthi', 'الحارثي', 'https://i.pravatar.cc/200?u=driver02'],
-  ['BUS-03', 'Said', 'سعيد', 'Ibrahim', 'إبراهيم', 'Al Rashdi', 'الراشدي', 'https://i.pravatar.cc/200?u=driver03'],
-  ['BUS-04', 'Hamad', 'حمد', 'Salim', 'سالم', 'Al Farsi', 'الفارسي', 'https://i.pravatar.cc/200?u=driver04'],
-  ['BUS-05', 'Ahmed', 'أحمد', 'Khalfan', 'خلفان', 'Al Kindi', 'الكندي', 'https://i.pravatar.cc/200?u=driver05'],
-  ['BUS-06', 'Nasser', 'ناصر', 'Ali', 'علي', 'Al Wahaibi', 'الوهيبي', 'https://i.pravatar.cc/200?u=driver06'],
-  ['BUS-07', 'Sultan', 'سلطان', 'Rashid', 'راشد', 'Al Mahrouqi', 'المحروقي', 'https://i.pravatar.cc/200?u=driver07'],
-  ['BUS-08', 'Abdullah', 'عبدالله', 'Hassan', 'حسن', 'Al Busaidi', 'البوسعيدي', 'https://i.pravatar.cc/200?u=driver08'],
-  ['BUS-09', 'Ibrahim', 'إبراهيم', 'Majid', 'ماجد', 'Al Habsi', 'الحبسي', 'https://i.pravatar.cc/200?u=driver09'],
-  ['BUS-10', 'Yusuf', 'يوسف', 'Suleiman', 'سليمان', 'Al Siyabi', 'السيابي', 'https://i.pravatar.cc/200?u=driver10'],
-  ['BUS-11', 'Omar', 'عمر', 'Khalfan', 'خلفان', 'Al Naamani', 'النعماني', 'https://i.pravatar.cc/200?u=driver11'],
-  ['BUS-12', 'Hassan', 'حسن', 'Hilal', 'هلال', 'Al Rawahi', 'الرواحي', 'https://i.pravatar.cc/200?u=driver12'],
+  ['BUS-01', 'Khalid', 'خالد', 'Nasser', 'ناصر', 'Al Balushi', 'البلوشي'],
+  ['BUS-02', 'Ali', 'علي', 'Mohammed', 'محمد', 'Al Harthi', 'الحارثي'],
+  ['BUS-03', 'Said', 'سعيد', 'Ibrahim', 'إبراهيم', 'Al Rashdi', 'الراشدي'],
+  ['BUS-04', 'Hamad', 'حمد', 'Salim', 'سالم', 'Al Farsi', 'الفارسي'],
+  ['BUS-05', 'Ahmed', 'أحمد', 'Khalfan', 'خلفان', 'Al Kindi', 'الكندي'],
+  ['BUS-06', 'Nasser', 'ناصر', 'Ali', 'علي', 'Al Wahaibi', 'الوهيبي'],
+  ['BUS-07', 'Sultan', 'سلطان', 'Rashid', 'راشد', 'Al Mahrouqi', 'المحروقي'],
+  ['BUS-08', 'Abdullah', 'عبدالله', 'Hassan', 'حسن', 'Al Busaidi', 'البوسعيدي'],
+  ['BUS-09', 'Ibrahim', 'إبراهيم', 'Majid', 'ماجد', 'Al Habsi', 'الحبسي'],
+  ['BUS-10', 'Yusuf', 'يوسف', 'Suleiman', 'سليمان', 'Al Siyabi', 'السيابي'],
+  ['BUS-11', 'Omar', 'عمر', 'Khalfan', 'خلفان', 'Al Naamani', 'النعماني'],
+  ['BUS-12', 'Hassan', 'حسن', 'Hilal', 'هلال', 'Al Rawahi', 'الرواحي'],
 ];
 
 async function migrate() {
@@ -146,7 +146,7 @@ async function migrate() {
   // Update buses
   let busSuccess = 0;
   let busFail = 0;
-  for (const [busNum, fn, fna, gn, gna, famn, famna, photo] of driverNames) {
+  for (const [busNum, fn, fna, gn, gna, famn, famna] of driverNames) {
     const { error } = await supabase
       .from('buses')
       .update({
@@ -156,7 +156,6 @@ async function migrate() {
         driver_grandfather_name_ar: gna,
         driver_family_name: famn,
         driver_family_name_ar: famna,
-        driver_photo_url: photo,
       })
       .eq('bus_number', busNum);
 

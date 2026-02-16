@@ -5,9 +5,7 @@ const withNextIntl = createNextIntlPlugin('./i18n.ts');
 
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [
-      { protocol: 'https', hostname: 'i.pravatar.cc' },
-    ],
+    remotePatterns: [],
   },
   experimental: {
     serverActions: {
