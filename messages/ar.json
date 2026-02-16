@@ -201,7 +201,10 @@
     "relationship": "صلة القرابة",
     "phone": "الهاتف",
     "email": "البريد الإلكتروني",
-    "address": "العنوان"
+    "address": "العنوان",
+    "nationalId": "الرقم المدني",
+    "noLocation": "لا يوجد موقع",
+    "whatsapp": "واتساب"
   },
   "teacher": {
     "employeeId": "رقم الموظف",

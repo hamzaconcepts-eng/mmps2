@@ -201,7 +201,10 @@
     "relationship": "Relationship",
     "phone": "Phone",
     "email": "Email",
-    "address": "Address"
+    "address": "Address",
+    "nationalId": "National ID",
+    "noLocation": "No Location",
+    "whatsapp": "WhatsApp"
   },
   "teacher": {
     "employeeId": "Employee ID",

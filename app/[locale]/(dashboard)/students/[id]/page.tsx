@@ -1,26 +1,32 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ArrowLeft, User, Users, Bus, Receipt, Phone, Mail, MapPin } from 'lucide-react';
+import { ArrowLeft, User, Users, Bus, Receipt, Phone, Mail, MapPin, MessageCircle } from 'lucide-react';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { formatStudentName, formatGuardianName, formatGradeLevel, formatCurrency, formatDate, formatClassName, formatPhone } from '@/lib/utils/format';
+import { formatStudentName, formatGuardianName, formatDriverName, formatGradeLevel, formatCurrency, formatDate, formatClassName, formatPhone } from '@/lib/utils/format';
 import { getDefaultStudentPhoto } from '@/lib/utils/student-photo';
 import PageHeader from '@/components/PageHeader';
 import PhotoZoom from '@/components/PhotoZoom';
 import LocationButtons from '@/components/LocationButtons';
+import PrintButton from '@/components/PrintButton';
+import AutoPrint from '@/components/AutoPrint';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 
 export default async function StudentDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string; id: string }>;
+  searchParams: Promise<{ print?: string }>;
 }) {
   const { locale, id } = await params;
+  const sp = await searchParams;
   setRequestLocale(locale);
   const t = await getTranslations();
   const supabase = createAdminClient();
+  const isPrint = sp?.print === '1';
 
   // All 4 queries in parallel — no sequential blocking
   const [studentRes, guardianRes, transportRes, invoiceRes] = await Promise.all([
@@ -56,21 +62,28 @@ export default async function StudentDetailPage({
 
   const isAr = locale === 'ar';
 
+  /** Strip non-digit chars to get raw phone for tel:/wa.me links */
+  const rawPhone = (phone: string) => phone.replace(/\D/g, '');
+
   return (
     <div className="max-w-[1000px]">
+      {isPrint && <AutoPrint />}
       <PageHeader
         title={formatStudentName(student, locale)}
         subtitle={`${t('student.studentId')}: ${student.student_id}`}
         actions={
-          <Link href={`/${locale}/students`}>
-            <Button variant="glass" size="sm" icon={<ArrowLeft size={14} />}>
-              {t('common.back')}
-            </Button>
-          </Link>
+          <div className="flex items-center gap-2 print:hidden">
+            <PrintButton label={t('common.print')} />
+            <Link href={`/${locale}/students`}>
+              <Button variant="glass" size="sm" icon={<ArrowLeft size={14} />}>
+                {t('common.back')}
+              </Button>
+            </Link>
+          </div>
         }
       />
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+      <div className="student-detail-grid grid grid-cols-1 lg:grid-cols-2 gap-3">
         {/* Personal Info */}
         <Card>
           <Card.Header>
@@ -99,7 +112,15 @@ export default async function StudentDetailPage({
                 </Badge>
               </InfoRow>
               <InfoRow label={t('student.nationality')} value={student.nationality || '—'} />
+              {student.national_id && (
+                <InfoRow label={t('student.nationalId')} value={student.national_id} />
+              )}
               <InfoRow label={t('student.enrollmentDate')} value={formatDate(student.enrollment_date, locale)} />
+              <InfoRow label={t('common.status')}>
+                <Badge variant={student.is_active ? 'success' : 'dark'}>
+                  {student.is_active ? t('student.active') : t('student.inactive')}
+                </Badge>
+              </InfoRow>
               {student.medical_notes && (
                 <InfoRow label={t('student.medicalNotes')} value={student.medical_notes} />
               )}
@@ -122,7 +143,7 @@ export default async function StudentDetailPage({
                 <InfoRow label={t('class.gradeLevel')} value={formatGradeLevel(student.classes.grade_level, locale)} />
                 <InfoRow label={t('class.section')} value={student.classes.section} />
                 <InfoRow label={t('class.capacity')} value={student.classes.capacity?.toString() || '—'} />
-                <div className="pt-2">
+                <div className="pt-2 print:hidden">
                   <Link href={`/${locale}/classes/${student.classes.id}`}>
                     <Button variant="glass" size="sm">{t('common.viewAll')} {t('class.classDetails')}</Button>
                   </Link>
@@ -133,18 +154,22 @@ export default async function StudentDetailPage({
             )}
           </Card>
 
-          {/* Home Location */}
-          {student.gps_location && (
-            <Card>
-              <Card.Header>
-                <div className="flex items-center gap-2">
-                  <MapPin size={15} className="text-danger" />
-                  <Card.Title>{isAr ? 'موقع المنزل' : 'Home Location'}</Card.Title>
-                </div>
-              </Card.Header>
+          {/* Home Location — always shown */}
+          <Card>
+            <Card.Header>
+              <div className="flex items-center gap-2">
+                <MapPin size={15} className="text-danger" />
+                <Card.Title>{isAr ? 'موقع المنزل' : 'Home Location'}</Card.Title>
+              </div>
+            </Card.Header>
+            {student.gps_location ? (
               <LocationButtons url={student.gps_location} locale={locale} />
-            </Card>
-          )}
+            ) : (
+              <div className="text-center py-4">
+                <Badge variant="dark">{t('student.noLocation')}</Badge>
+              </div>
+            )}
+          </Card>
         </div>
 
         {/* Guardian Info */}
@@ -160,15 +185,30 @@ export default async function StudentDetailPage({
               {guardians.map((sg: any) => {
                 const g = sg.guardians;
                 if (!g) return null;
+                const phoneRaw = rawPhone(g.phone || '');
                 return (
                   <div key={sg.id} className="space-y-2.5">
                     <InfoRow label={t('student.fullName')} value={formatGuardianName(g, locale)} />
                     <InfoRow label={t('student.relationship')}>
                       <Badge variant="brand">{isAr ? g.relationship_ar || g.relationship : g.relationship}</Badge>
                     </InfoRow>
-                    <div className="flex items-center gap-2 text-[12px] text-text-secondary">
-                      <Phone size={12} /> {formatPhone(g.phone)}
-                    </div>
+                    {g.phone && (
+                      <div className="flex items-center gap-2 text-[12px] text-text-secondary">
+                        <Phone size={12} />
+                        <a href={`tel:+968${phoneRaw}`} className="hover:text-brand-teal transition-colors">
+                          {formatPhone(g.phone)}
+                        </a>
+                        <a
+                          href={`https://wa.me/968${phoneRaw}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-bold rounded bg-green-50 text-green-600 border border-green-200 hover:bg-green-100 transition-all print:hidden"
+                          title={t('student.whatsapp')}
+                        >
+                          <MessageCircle size={11} />
+                        </a>
+                      </div>
+                    )}
                     {g.email && (
                       <div className="flex items-center gap-2 text-[12px] text-text-secondary">
                         <Mail size={12} /> {g.email}
@@ -196,16 +236,39 @@ export default async function StudentDetailPage({
               <Card.Title>{t('student.transportInfo')}</Card.Title>
             </div>
           </Card.Header>
-          {transport ? (
-            <div className="space-y-2.5">
-              <InfoRow label={t('transport.area')} value={isAr ? transport.transport_areas?.name_ar : transport.transport_areas?.name} />
-              <InfoRow label={t('transport.busNumber')} value={transport.buses?.bus_number || '—'} />
-              <InfoRow label={t('transport.plateNumber')} value={transport.buses?.plate_number || '—'} />
-              <InfoRow label={t('transport.driverName')} value={isAr ? transport.buses?.driver_name_ar : transport.buses?.driver_name} />
-              <InfoRow label={t('transport.driverPhone')} value={formatPhone(transport.buses?.driver_phone || '')} />
-              <InfoRow label={t('transport.annualFee')} value={formatCurrency(transport.transport_areas?.annual_fee || 0)} />
-            </div>
-          ) : (
+          {transport ? (() => {
+            const driverPhoneRaw = rawPhone(transport.buses?.driver_phone || '');
+            return (
+              <div className="space-y-2.5">
+                <InfoRow label={t('transport.area')} value={isAr ? transport.transport_areas?.name_ar : transport.transport_areas?.name} />
+                <InfoRow label={t('transport.busNumber')} value={transport.buses?.bus_number || '—'} />
+                <InfoRow label={t('transport.plateNumber')} value={transport.buses?.plate_number || '—'} />
+                <InfoRow label={t('transport.driverName')} value={transport.buses ? formatDriverName(transport.buses, locale) : '—'} />
+                {driverPhoneRaw ? (
+                  <div className="flex items-center gap-2">
+                    <span className="text-[11px] text-text-tertiary font-medium whitespace-nowrap">{t('transport.driverPhone')}:</span>
+                    <div className="flex items-center gap-2 text-[12px] text-text-primary font-semibold">
+                      <a href={`tel:+968${driverPhoneRaw}`} className="hover:text-brand-teal transition-colors">
+                        {formatPhone(transport.buses?.driver_phone || '')}
+                      </a>
+                      <a
+                        href={`https://wa.me/968${driverPhoneRaw}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-bold rounded bg-green-50 text-green-600 border border-green-200 hover:bg-green-100 transition-all print:hidden"
+                        title={t('student.whatsapp')}
+                      >
+                        <MessageCircle size={11} />
+                      </a>
+                    </div>
+                  </div>
+                ) : (
+                  <InfoRow label={t('transport.driverPhone')} value="—" />
+                )}
+                <InfoRow label={t('transport.annualFee')} value={formatCurrency(transport.transport_areas?.annual_fee || 0)} />
+              </div>
+            );
+          })() : (
             <div className="text-center py-4">
               <Badge variant="dark">{t('student.noTransport')}</Badge>
             </div>
