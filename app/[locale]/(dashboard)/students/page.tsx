@@ -8,6 +8,8 @@ import PageHeader from '@/components/PageHeader';
 import SearchBar from '@/components/SearchBar';
 import Pagination from '@/components/Pagination';
 import EmptyState from '@/components/EmptyState';
+import SortableHead from '@/components/SortableHead';
+import PrintButton from '@/components/PrintButton';
 import { Card } from '@/components/ui/Card';
 import { Table } from '@/components/ui/Table';
 import { Badge } from '@/components/ui/Badge';
@@ -16,12 +18,19 @@ import ClassFilter from '@/components/ClassFilter';
 
 const PER_PAGE = 20;
 
+// Map sort keys to Supabase column names
+const SORT_COLUMNS: Record<string, string> = {
+  student_id: 'student_id',
+  name: 'family_name',
+  gender: 'gender',
+};
+
 export default async function StudentsPage({
   params,
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ search?: string; class?: string; page?: string }>;
+  searchParams: Promise<{ search?: string; class?: string; page?: string; sort?: string; dir?: string }>;
 }) {
   const { locale } = await params;
   const sp = await searchParams;
@@ -35,13 +44,27 @@ export default async function StudentsPage({
   const from = (page - 1) * PER_PAGE;
   const to = from + PER_PAGE - 1;
 
+  // Sort params
+  const sortKey = sp?.sort || '';
+  const sortDir = sp?.dir === 'desc' ? 'desc' : 'asc';
+  const sortColumn = SORT_COLUMNS[sortKey];
+
   // Build query
   let query = supabase
     .from('students')
     .select('id, student_id, first_name, first_name_ar, father_name, father_name_ar, grandfather_name, grandfather_name_ar, family_name, family_name_ar, gender, is_active, class_id, classes(name, name_ar, grade_level, section)', { count: 'exact' })
     .eq('is_active', true)
-    .order('family_name', { ascending: true })
     .range(from, to);
+
+  // Apply sort
+  if (sortKey === 'class') {
+    // Sort by foreign table column
+    query = query.order('name', { ascending: sortDir === 'asc', referencedTable: 'classes' });
+  } else if (sortColumn) {
+    query = query.order(sortColumn, { ascending: sortDir === 'asc' });
+  } else {
+    query = query.order('family_name', { ascending: true });
+  }
 
   if (search) {
     query = query.or(`first_name.ilike.%${search}%,family_name.ilike.%${search}%,student_id.ilike.%${search}%,first_name_ar.ilike.%${search}%,family_name_ar.ilike.%${search}%`);
@@ -64,6 +87,8 @@ export default async function StudentsPage({
   const searchParamsStr = new URLSearchParams();
   if (search) searchParamsStr.set('search', search);
   if (classFilter) searchParamsStr.set('class', classFilter);
+  if (sortKey) searchParamsStr.set('sort', sortKey);
+  if (sortKey) searchParamsStr.set('dir', sortDir);
   const basePath = `/${locale}/students${searchParamsStr.toString() ? `?${searchParamsStr.toString()}` : ''}`;
 
   return (
@@ -72,14 +97,17 @@ export default async function StudentsPage({
         title={t('student.allStudents')}
         subtitle={`${totalCount} ${t('navigation.students')}`}
         actions={
-          <Button variant="accent" size="sm" icon={<Plus size={14} />}>
-            {t('common.add')} {t('student.name')}
-          </Button>
+          <div className="flex items-center gap-2">
+            <PrintButton label={t('common.print')} />
+            <Button variant="accent" size="sm" icon={<Plus size={14} />}>
+              {t('common.add')} {t('student.name')}
+            </Button>
+          </div>
         }
       />
 
       {/* Filters */}
-      <Card padding="sm">
+      <Card padding="sm" className="print:hidden">
         <div className="flex gap-3 items-center">
           <div className="flex-1">
             <SearchBar placeholder={t('student.searchPlaceholder')} locale={locale} />
@@ -116,10 +144,10 @@ export default async function StudentsPage({
                 </colgroup>
                 <Table.Header>
                   <Table.Row>
-                    <Table.Head>{t('student.studentId')}</Table.Head>
-                    <Table.Head>{t('student.fullName')}</Table.Head>
-                    <Table.Head>{t('student.class')}</Table.Head>
-                    <Table.Head>{t('student.gender')}</Table.Head>
+                    <SortableHead sortKey="student_id">{t('student.studentId')}</SortableHead>
+                    <SortableHead sortKey="name">{t('student.fullName')}</SortableHead>
+                    <SortableHead sortKey="class">{t('student.class')}</SortableHead>
+                    <SortableHead sortKey="gender">{t('student.gender')}</SortableHead>
                     <Table.Head>{t('common.status')}</Table.Head>
                   </Table.Row>
                 </Table.Header>
@@ -161,7 +189,7 @@ export default async function StudentsPage({
               </Table>
 
               {/* Pagination info + controls */}
-              <div className="flex items-center justify-between px-2 pt-3 border-t border-gray-100">
+              <div className="flex items-center justify-between px-2 pt-3 border-t border-gray-100 print:hidden">
                 <p className="text-[11px] text-text-tertiary">
                   {t('common.showing')} {from + 1}-{Math.min(to + 1, totalCount)} {t('common.of')} {totalCount}
                 </p>

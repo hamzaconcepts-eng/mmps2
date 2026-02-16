@@ -19,21 +19,21 @@ export default function DualDateBar() {
     const now = new Date();
 
     if (locale === 'ar') {
-      // Arabic page: both dates in Arabic
+      // Arabic page: both dates in Arabic — day name on Hijri only
       const hijri = now.toLocaleDateString('ar-SA-u-ca-islamic-umalqura', {
         weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
       });
       const gregorian = now.toLocaleDateString('ar-OM', {
-        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+        year: 'numeric', month: 'long', day: 'numeric',
       });
       setDates({ hijri, gregorian });
     } else {
-      // English page: both dates in English
+      // English page: both dates in English — day name on Hijri only
       const hijri = now.toLocaleDateString('en-SA-u-ca-islamic-umalqura', {
         weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
       });
       const gregorian = now.toLocaleDateString('en-US', {
-        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+        year: 'numeric', month: 'long', day: 'numeric',
       });
       setDates({ hijri, gregorian });
     }

@@ -7,17 +7,29 @@ import { formatTeacherName, formatDate, formatPhone } from '@/lib/utils/format';
 import PageHeader from '@/components/PageHeader';
 import SearchBar from '@/components/SearchBar';
 import EmptyState from '@/components/EmptyState';
+import SortableHead from '@/components/SortableHead';
+import PrintButton from '@/components/PrintButton';
 import { Card } from '@/components/ui/Card';
 import { Table } from '@/components/ui/Table';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
+
+// Map sort keys to Supabase column names
+const SORT_COLUMNS: Record<string, string> = {
+  employee_id: 'employee_id',
+  name: 'last_name',
+  specialization: 'specialization',
+  gender: 'gender',
+  phone: 'phone',
+  hire_date: 'hire_date',
+};
 
 export default async function TeachersPage({
   params,
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ search?: string }>;
+  searchParams: Promise<{ search?: string; sort?: string; dir?: string }>;
 }) {
   const { locale } = await params;
   const sp = await searchParams;
@@ -25,16 +37,31 @@ export default async function TeachersPage({
   const t = await getTranslations();
   const search = sp?.search || '';
 
-  // Use cached list when no search; direct query only for search
+  // Sort params
+  const sortKey = sp?.sort || '';
+  const sortDir = sp?.dir === 'desc' ? 'desc' : 'asc';
+  const sortColumn = SORT_COLUMNS[sortKey];
+
+  // Use cached list when no search and no sort; direct query for search or sort
   let teacherList: any[];
-  if (search) {
+  if (search || sortColumn) {
     const supabase = createAdminClient();
-    const { data } = await supabase
+    let query = supabase
       .from('teachers')
       .select('*')
-      .eq('is_active', true)
-      .or(`first_name.ilike.%${search}%,last_name.ilike.%${search}%,employee_id.ilike.%${search}%,first_name_ar.ilike.%${search}%,last_name_ar.ilike.%${search}%`)
-      .order('employee_id');
+      .eq('is_active', true);
+
+    if (search) {
+      query = query.or(`first_name.ilike.%${search}%,last_name.ilike.%${search}%,employee_id.ilike.%${search}%,first_name_ar.ilike.%${search}%,last_name_ar.ilike.%${search}%`);
+    }
+
+    if (sortColumn) {
+      query = query.order(sortColumn, { ascending: sortDir === 'asc' });
+    } else {
+      query = query.order('employee_id');
+    }
+
+    const { data } = await query;
     teacherList = data || [];
   } else {
     teacherList = await getAllTeachers();
@@ -46,13 +73,16 @@ export default async function TeachersPage({
         title={t('teacher.allTeachers')}
         subtitle={`${teacherList.length} ${t('navigation.teachers')}`}
         actions={
-          <Button variant="accent" size="sm" icon={<Plus size={14} />}>
-            {t('common.add')} {t('navigation.teachers')}
-          </Button>
+          <div className="flex items-center gap-2">
+            <PrintButton label={t('common.print')} />
+            <Button variant="accent" size="sm" icon={<Plus size={14} />}>
+              {t('common.add')} {t('navigation.teachers')}
+            </Button>
+          </div>
         }
       />
 
-      <Card padding="sm" className="mb-3">
+      <Card padding="sm" className="mb-3 print:hidden">
         <SearchBar placeholder={t('teacher.searchPlaceholder')} locale={locale} />
       </Card>
 
@@ -71,12 +101,12 @@ export default async function TeachersPage({
             </colgroup>
             <Table.Header>
               <Table.Row>
-                <Table.Head>{t('teacher.employeeId')}</Table.Head>
-                <Table.Head>{t('student.fullName')}</Table.Head>
-                <Table.Head>{t('teacher.specialization')}</Table.Head>
-                <Table.Head>{t('student.gender')}</Table.Head>
-                <Table.Head>{t('teacher.phone')}</Table.Head>
-                <Table.Head>{t('teacher.hireDate')}</Table.Head>
+                <SortableHead sortKey="employee_id">{t('teacher.employeeId')}</SortableHead>
+                <SortableHead sortKey="name">{t('student.fullName')}</SortableHead>
+                <SortableHead sortKey="specialization">{t('teacher.specialization')}</SortableHead>
+                <SortableHead sortKey="gender">{t('student.gender')}</SortableHead>
+                <SortableHead sortKey="phone">{t('teacher.phone')}</SortableHead>
+                <SortableHead sortKey="hire_date">{t('teacher.hireDate')}</SortableHead>
               </Table.Row>
             </Table.Header>
             <Table.Body>
