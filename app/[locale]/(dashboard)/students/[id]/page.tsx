@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import Image from 'next/image';
 import { ArrowLeft, User, Users, Bus, Receipt, Phone, Mail, MapPin, MessageCircle } from 'lucide-react';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { formatStudentName, formatGuardianName, formatDriverName, formatGradeLevel, formatCurrency, formatDate, formatClassName, formatPhone } from '@/lib/utils/format';
@@ -61,13 +62,25 @@ export default async function StudentDetailPage({
   const invoices = invoiceRes.data || [];
 
   const isAr = locale === 'ar';
-
-  /** Strip non-digit chars to get raw phone for tel:/wa.me links */
-  const rawPhone = (phone: string) => phone.replace(/\D/g, '');
+  const printDate = new Date().toLocaleDateString(isAr ? 'ar-OM' : 'en-GB', {
+    year: 'numeric', month: 'long', day: 'numeric',
+  });
 
   return (
     <div className="max-w-[1000px]">
       {isPrint && <AutoPrint />}
+
+      {/* Print-only header: school logo + name + date */}
+      <div className="print-header hidden print:flex items-center gap-3 pb-2 mb-3 border-b border-gray-300">
+        <Image src="/logo.svg" alt="" width={40} height={40} className="print-logo" />
+        <div className="flex-1">
+          <p className="print-school-name font-bold text-[14px] text-black leading-tight">
+            {t('common.schoolName')}
+          </p>
+          <p className="print-date text-[9px] text-gray-500">{printDate}</p>
+        </div>
+      </div>
+
       <PageHeader
         title={formatStudentName(student, locale)}
         subtitle={`${t('student.studentId')}: ${student.student_id}`}
@@ -185,7 +198,7 @@ export default async function StudentDetailPage({
               {guardians.map((sg: any) => {
                 const g = sg.guardians;
                 if (!g) return null;
-                const phoneRaw = rawPhone(g.phone || '');
+                const cleanPhone = formatPhone(g.phone || '');
                 return (
                   <div key={sg.id} className="space-y-2.5">
                     <InfoRow label={t('student.fullName')} value={formatGuardianName(g, locale)} />
@@ -195,11 +208,11 @@ export default async function StudentDetailPage({
                     {g.phone && (
                       <div className="flex items-center gap-2 text-[12px] text-text-secondary">
                         <Phone size={12} />
-                        <a href={`tel:+968${phoneRaw}`} className="hover:text-brand-teal transition-colors">
-                          {formatPhone(g.phone)}
+                        <a href={`tel:+968${cleanPhone}`} className="hover:text-brand-teal transition-colors">
+                          {cleanPhone}
                         </a>
                         <a
-                          href={`https://wa.me/968${phoneRaw}`}
+                          href={`https://wa.me/968${cleanPhone}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-bold rounded bg-green-50 text-green-600 border border-green-200 hover:bg-green-100 transition-all print:hidden"
@@ -237,22 +250,22 @@ export default async function StudentDetailPage({
             </div>
           </Card.Header>
           {transport ? (() => {
-            const driverPhoneRaw = rawPhone(transport.buses?.driver_phone || '');
+            const cleanDriverPhone = formatPhone(transport.buses?.driver_phone || '');
             return (
               <div className="space-y-2.5">
                 <InfoRow label={t('transport.area')} value={isAr ? transport.transport_areas?.name_ar : transport.transport_areas?.name} />
                 <InfoRow label={t('transport.busNumber')} value={transport.buses?.bus_number || '—'} />
                 <InfoRow label={t('transport.plateNumber')} value={transport.buses?.plate_number || '—'} />
                 <InfoRow label={t('transport.driverName')} value={transport.buses ? formatDriverName(transport.buses, locale) : '—'} />
-                {driverPhoneRaw ? (
+                {cleanDriverPhone && cleanDriverPhone !== '—' ? (
                   <div className="flex items-center gap-2">
                     <span className="text-[11px] text-text-tertiary font-medium whitespace-nowrap">{t('transport.driverPhone')}:</span>
                     <div className="flex items-center gap-2 text-[12px] text-text-primary font-semibold">
-                      <a href={`tel:+968${driverPhoneRaw}`} className="hover:text-brand-teal transition-colors">
-                        {formatPhone(transport.buses?.driver_phone || '')}
+                      <a href={`tel:+968${cleanDriverPhone}`} className="hover:text-brand-teal transition-colors">
+                        {cleanDriverPhone}
                       </a>
                       <a
-                        href={`https://wa.me/968${driverPhoneRaw}`}
+                        href={`https://wa.me/968${cleanDriverPhone}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-bold rounded bg-green-50 text-green-600 border border-green-200 hover:bg-green-100 transition-all print:hidden"

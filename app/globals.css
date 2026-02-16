@@ -198,6 +198,32 @@
     margin-bottom: 2pt !important;
   }
 
+  /* ── Print Header: school logo + name + date ── */
+  .print-header {
+    display: flex !important;
+    border-bottom: 1pt solid #999 !important;
+    padding-bottom: 4pt !important;
+    margin-bottom: 6pt !important;
+  }
+
+  .print-logo {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .print-school-name {
+    font-size: 12pt !important;
+    font-weight: bold !important;
+    color: #000 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .print-date {
+    font-size: 8pt !important;
+    color: #666 !important;
+    margin-bottom: 0 !important;
+  }
+
   /* ── Student Detail Page Print ── */
   .student-detail-grid {
     display: block !important;
