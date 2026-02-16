@@ -1,15 +1,24 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import Link from 'next/link';
 import { School } from 'lucide-react';
 import { getClassesWithCounts } from '@/lib/supabase/cached-queries';
 import { formatGradeLevel, formatTeacherName } from '@/lib/utils/format';
 import PageHeader from '@/components/PageHeader';
+import PrintButton from '@/components/PrintButton';
+import ClickableRow from '@/components/ClickableRow';
+import SortableHead from '@/components/SortableHead';
 import { Card } from '@/components/ui/Card';
 import { Table } from '@/components/ui/Table';
 import { Badge } from '@/components/ui/Badge';
 
-export default async function ClassesPage({ params }: { params: Promise<{ locale: string }> }) {
+export default async function ClassesPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ sort?: string; dir?: string }>;
+}) {
   const { locale } = await params;
+  await searchParams; // make page dynamic for SortableHead (useSearchParams)
   setRequestLocale(locale);
   const t = await getTranslations();
 
@@ -23,27 +32,48 @@ export default async function ClassesPage({ params }: { params: Promise<{ locale
       />
 
       <Card>
+        {/* Print button bar above table */}
+        <div className="flex items-center justify-between px-2 py-2 print:hidden">
+          <p className="text-[11px] text-text-tertiary">
+            {classes.length} {t('navigation.classes')}
+          </p>
+          <PrintButton label={t('common.print')} />
+        </div>
+
         <Table>
+          <colgroup>
+            <col className="w-[40px]" />
+            <col />
+            <col className="w-[120px]" />
+            <col className="w-[70px]" />
+            <col />
+            <col className="w-[90px]" />
+            <col className="w-[80px]" />
+          </colgroup>
           <Table.Header>
             <Table.Row>
-              <Table.Head>{t('class.className')}</Table.Head>
-              <Table.Head>{t('class.gradeLevel')}</Table.Head>
-              <Table.Head>{t('class.section')}</Table.Head>
+              <Table.Head>#</Table.Head>
+              <SortableHead sortKey="name">{t('class.className')}</SortableHead>
+              <SortableHead sortKey="grade">{t('class.gradeLevel')}</SortableHead>
+              <SortableHead sortKey="section">{t('class.section')}</SortableHead>
               <Table.Head>{t('class.supervisor')}</Table.Head>
               <Table.Head>{t('class.studentCount')}</Table.Head>
               <Table.Head>{t('class.capacity')}</Table.Head>
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {classes.map((cls: any) => {
+            {classes.map((cls: any, index: number) => {
               const studentCount = countMap[cls.id] || 0;
               const isFull = studentCount >= cls.capacity;
               return (
-                <Table.Row key={cls.id}>
+                <ClickableRow key={cls.id} href={`/${locale}/classes/${cls.id}`}>
+                  <Table.Cell className="text-text-tertiary text-[11px] font-mono">
+                    {index + 1}
+                  </Table.Cell>
                   <Table.Cell>
-                    <Link href={`/${locale}/classes/${cls.id}`} className="font-semibold text-text-primary hover:text-brand-teal transition-colors">
+                    <span className="font-semibold text-text-primary">
                       {locale === 'ar' ? cls.name_ar : cls.name}
-                    </Link>
+                    </span>
                   </Table.Cell>
                   <Table.Cell className="text-text-secondary">{formatGradeLevel(cls.grade_level, locale)}</Table.Cell>
                   <Table.Cell className="text-text-secondary">{cls.section}</Table.Cell>
@@ -56,7 +86,7 @@ export default async function ClassesPage({ params }: { params: Promise<{ locale
                     </Badge>
                   </Table.Cell>
                   <Table.Cell className="text-text-secondary">{cls.capacity}</Table.Cell>
-                </Table.Row>
+                </ClickableRow>
               );
             })}
           </Table.Body>
