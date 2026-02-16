@@ -56,13 +56,11 @@ export default async function StudentsPage({
     query = query.range(from, to);
   }
 
-  // Status filter (default: show active only)
-  if (statusFilter === 'inactive') {
-    query = query.eq('is_active', false);
-  } else if (statusFilter === 'all') {
-    // show all — no filter
-  } else {
+  // Status filter (default: show all)
+  if (statusFilter === 'active') {
     query = query.eq('is_active', true);
+  } else if (statusFilter === 'inactive') {
+    query = query.eq('is_active', false);
   }
 
   // Sort params
@@ -140,7 +138,6 @@ export default async function StudentsPage({
   const statusOptions = [
     { value: 'active', label: t('student.active') },
     { value: 'inactive', label: t('student.inactive') },
-    { value: 'all', label: t('common.all') },
   ];
 
   return (
