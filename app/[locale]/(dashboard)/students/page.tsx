@@ -31,7 +31,7 @@ export default async function StudentsPage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ search?: string; class?: string; page?: string; sort?: string; dir?: string; gender?: string }>;
+  searchParams: Promise<{ search?: string; class?: string; page?: string; sort?: string; dir?: string; gender?: string; status?: string }>;
 }) {
   const { locale } = await params;
   const sp = await searchParams;
@@ -42,6 +42,7 @@ export default async function StudentsPage({
   const search = sp?.search || '';
   const classFilter = sp?.class || '';
   const genderFilter = sp?.gender || '';
+  const statusFilter = sp?.status || '';
   const page = Math.max(1, Number(sp?.page || 1));
   const from = (page - 1) * PER_PAGE;
   const to = from + PER_PAGE - 1;
@@ -55,8 +56,17 @@ export default async function StudentsPage({
   let query = supabase
     .from('students')
     .select('id, student_id, first_name, first_name_ar, father_name, father_name_ar, grandfather_name, grandfather_name_ar, family_name, family_name_ar, gender, is_active, class_id, classes(name, name_ar, grade_level, section)', { count: 'exact' })
-    .eq('is_active', true)
     .range(from, to);
+
+  // Status filter (default: show active only)
+  if (statusFilter === 'inactive') {
+    query = query.eq('is_active', false);
+  } else if (statusFilter === 'all') {
+    // show all — no filter
+  } else {
+    // default (no filter or 'active') — show active only
+    query = query.eq('is_active', true);
+  }
 
   // Apply sort
   if (sortKey === 'class') {
@@ -92,6 +102,7 @@ export default async function StudentsPage({
   if (search) searchParamsStr.set('search', search);
   if (classFilter) searchParamsStr.set('class', classFilter);
   if (genderFilter) searchParamsStr.set('gender', genderFilter);
+  if (statusFilter) searchParamsStr.set('status', statusFilter);
   if (sortKey) searchParamsStr.set('sort', sortKey);
   if (sortKey) searchParamsStr.set('dir', sortDir);
   const basePath = `/${locale}/students${searchParamsStr.toString() ? `?${searchParamsStr.toString()}` : ''}`;
@@ -100,6 +111,13 @@ export default async function StudentsPage({
   const genderOptions = [
     { value: 'male', label: t('student.male') },
     { value: 'female', label: t('student.female') },
+  ];
+
+  // Status filter options
+  const statusOptions = [
+    { value: 'active', label: t('student.active') },
+    { value: 'inactive', label: t('student.inactive') },
+    { value: 'all', label: t('common.all') },
   ];
 
   return (
@@ -134,6 +152,14 @@ export default async function StudentsPage({
               placeholder={t('student.gender')}
               options={genderOptions}
               currentValue={genderFilter}
+            />
+          </div>
+          <div className="w-[130px]">
+            <SelectFilter
+              paramKey="status"
+              placeholder={t('common.status')}
+              options={statusOptions}
+              currentValue={statusFilter}
             />
           </div>
         </div>
@@ -204,7 +230,9 @@ export default async function StudentsPage({
                         </Badge>
                       </Table.Cell>
                       <Table.Cell>
-                        <Badge variant="success">{t('student.active')}</Badge>
+                        <Badge variant={student.is_active ? 'success' : 'dark'}>
+                          {student.is_active ? t('student.active') : t('student.inactive')}
+                        </Badge>
                       </Table.Cell>
                     </ClickableRow>
                   ))}
