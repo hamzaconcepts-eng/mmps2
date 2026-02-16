@@ -16,7 +16,7 @@ export function Table({ children, className = '' }: TableProps) {
 }
 
 function TableHeader({ children, className = '' }: TableProps) {
-  return <thead className={className}>{children}</thead>;
+  return <thead className={`bg-gray-50/80 ${className}`}>{children}</thead>;
 }
 
 function TableBody({ children, className = '' }: TableProps) {
@@ -25,7 +25,10 @@ function TableBody({ children, className = '' }: TableProps) {
 
 function TableRow({ children, className = '' }: TableProps) {
   return (
-    <tr className={`border-b border-gray-100 last:border-0 ${className}`}>
+    <tr className={`border-b border-gray-100 last:border-0
+                    even:bg-gray-50/50
+                    hover:bg-brand-teal/[0.04] transition-colors duration-150
+                    ${className}`}>
       {children}
     </tr>
   );
