@@ -1,10 +1,9 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Users, Plus } from 'lucide-react';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { getClassesList } from '@/lib/supabase/cached-queries';
-import { formatStudentName, formatGradeLevel } from '@/lib/utils/format';
+import { formatStudentName } from '@/lib/utils/format';
 import PageHeader from '@/components/PageHeader';
 import SearchBar from '@/components/SearchBar';
 import Pagination from '@/components/Pagination';
@@ -29,7 +28,6 @@ export default async function StudentsPage({
   setRequestLocale(locale);
   const t = await getTranslations();
   const supabase = createAdminClient();
-  const isRTL = locale === 'ar';
 
   const search = sp?.search || '';
   const classFilter = sp?.class || '';
@@ -40,7 +38,7 @@ export default async function StudentsPage({
   // Build query
   let query = supabase
     .from('students')
-    .select('id, student_id, first_name, first_name_ar, father_name, father_name_ar, grandfather_name, grandfather_name_ar, family_name, family_name_ar, gender, is_active, photo_url, class_id, classes(name, name_ar, grade_level, section)', { count: 'exact' })
+    .select('id, student_id, first_name, first_name_ar, father_name, father_name_ar, grandfather_name, grandfather_name_ar, family_name, family_name_ar, gender, is_active, class_id, classes(name, name_ar, grade_level, section)', { count: 'exact' })
     .eq('is_active', true)
     .order('family_name', { ascending: true })
     .range(from, to);
@@ -139,20 +137,9 @@ export default async function StudentsPage({
                       <Table.Cell>
                         <Link
                           href={`/${locale}/students/${student.id}`}
-                          className={`flex items-center gap-2.5 group ${isRTL ? 'flex-row-reverse text-right' : ''}`}
+                          className="font-semibold text-text-primary hover:text-brand-teal transition-colors"
                         >
-                          {student.photo_url && (
-                            <Image
-                              src={student.photo_url}
-                              alt=""
-                              width={28}
-                              height={28}
-                              className="rounded-full object-cover flex-shrink-0 ring-1 ring-gray-200"
-                            />
-                          )}
-                          <span className="font-semibold text-text-primary group-hover:text-brand-teal transition-colors truncate">
-                            {formatStudentName(student, locale)}
-                          </span>
+                          {formatStudentName(student, locale)}
                         </Link>
                       </Table.Cell>
                       <Table.Cell className="text-text-secondary">

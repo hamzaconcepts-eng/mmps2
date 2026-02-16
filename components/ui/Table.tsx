@@ -47,7 +47,7 @@ function TableHead({ children, className = '', sortKey, sortDirection, onSort }:
 
   return (
     <th
-      className={`text-left text-[10px] font-bold text-text-tertiary uppercase tracking-wider py-2 px-2
+      className={`text-start text-[10px] font-bold text-text-tertiary uppercase tracking-wider py-2 px-2
                   ${isSortable ? 'cursor-pointer select-none hover:text-text-secondary transition-colors' : ''}
                   ${className}`}
       onClick={isSortable ? () => onSort(sortKey) : undefined}
@@ -72,7 +72,7 @@ function TableHead({ children, className = '', sortKey, sortDirection, onSort }:
 
 function TableCell({ children, className = '' }: TableProps) {
   return (
-    <td className={`py-2.5 px-2 text-[12px] ${className}`}>
+    <td className={`py-2.5 px-2 text-[12px] text-start ${className}`}>
       {children}
     </td>
   );

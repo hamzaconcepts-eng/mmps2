@@ -1,6 +1,5 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
-import Image from 'next/image';
 import { GraduationCap, Plus } from 'lucide-react';
 import { getAllTeachers } from '@/lib/supabase/cached-queries';
 import { createAdminClient } from '@/lib/supabase/admin';
@@ -25,7 +24,6 @@ export default async function TeachersPage({
   setRequestLocale(locale);
   const t = await getTranslations();
   const search = sp?.search || '';
-  const isRTL = locale === 'ar';
 
   // Use cached list when no search; direct query only for search
   let teacherList: any[];
@@ -90,22 +88,8 @@ export default async function TeachersPage({
                     </Link>
                   </Table.Cell>
                   <Table.Cell>
-                    <Link
-                      href={`/${locale}/teachers/${teacher.id}`}
-                      className={`flex items-center gap-2.5 group ${isRTL ? 'flex-row-reverse text-right' : ''}`}
-                    >
-                      {teacher.photo_url && (
-                        <Image
-                          src={teacher.photo_url}
-                          alt=""
-                          width={28}
-                          height={28}
-                          className="rounded-full object-cover flex-shrink-0 ring-1 ring-gray-200"
-                        />
-                      )}
-                      <span className="font-semibold text-text-primary group-hover:text-brand-teal transition-colors truncate">
-                        {formatTeacherName(teacher, locale)}
-                      </span>
+                    <Link href={`/${locale}/teachers/${teacher.id}`} className="font-semibold text-text-primary hover:text-brand-teal transition-colors">
+                      {formatTeacherName(teacher, locale)}
                     </Link>
                   </Table.Cell>
                   <Table.Cell className="text-text-secondary">
