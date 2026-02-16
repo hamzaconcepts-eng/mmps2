@@ -9,8 +9,10 @@ import Pagination from '@/components/Pagination';
 import EmptyState from '@/components/EmptyState';
 import SortableHead from '@/components/SortableHead';
 import PrintButton from '@/components/PrintButton';
+import AutoPrint from '@/components/AutoPrint';
 import ClickableRow from '@/components/ClickableRow';
 import SelectFilter from '@/components/SelectFilter';
+import ResetFilters from '@/components/ResetFilters';
 import { Card } from '@/components/ui/Card';
 import { Table } from '@/components/ui/Table';
 import { Badge } from '@/components/ui/Badge';
@@ -19,19 +21,12 @@ import ClassFilter from '@/components/ClassFilter';
 
 const PER_PAGE = 20;
 
-// Map sort keys to Supabase column names
-const SORT_COLUMNS: Record<string, string> = {
-  student_id: 'student_id',
-  name: 'family_name',
-  gender: 'gender',
-};
-
 export default async function StudentsPage({
   params,
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ search?: string; class?: string; page?: string; sort?: string; dir?: string; gender?: string; status?: string }>;
+  searchParams: Promise<{ search?: string; class?: string; page?: string; sort?: string; dir?: string; gender?: string; status?: string; print?: string }>;
 }) {
   const { locale } = await params;
   const sp = await searchParams;
@@ -43,20 +38,23 @@ export default async function StudentsPage({
   const classFilter = sp?.class || '';
   const genderFilter = sp?.gender || '';
   const statusFilter = sp?.status || '';
-  const page = Math.max(1, Number(sp?.page || 1));
+  const isPrint = sp?.print === '1';
+  const page = isPrint ? 1 : Math.max(1, Number(sp?.page || 1));
   const from = (page - 1) * PER_PAGE;
   const to = from + PER_PAGE - 1;
 
-  // Sort params
-  const sortKey = sp?.sort || '';
-  const sortDir = sp?.dir === 'desc' ? 'desc' : 'asc';
-  const sortColumn = SORT_COLUMNS[sortKey];
+  // Sort: locale-aware first_name sorting
+  const nameColumn = locale === 'ar' ? 'first_name_ar' : 'first_name';
 
   // Build query
   let query = supabase
     .from('students')
-    .select('id, student_id, first_name, first_name_ar, father_name, father_name_ar, grandfather_name, grandfather_name_ar, family_name, family_name_ar, gender, is_active, class_id, classes(name, name_ar, grade_level, section)', { count: 'exact' })
-    .range(from, to);
+    .select('id, student_id, first_name, first_name_ar, father_name, father_name_ar, grandfather_name, grandfather_name_ar, family_name, family_name_ar, gender, is_active, class_id, classes(name, name_ar, grade_level, section)', { count: 'exact' });
+
+  // Only paginate when NOT printing
+  if (!isPrint) {
+    query = query.range(from, to);
+  }
 
   // Status filter (default: show active only)
   if (statusFilter === 'inactive') {
@@ -64,17 +62,25 @@ export default async function StudentsPage({
   } else if (statusFilter === 'all') {
     // show all — no filter
   } else {
-    // default (no filter or 'active') — show active only
     query = query.eq('is_active', true);
   }
 
+  // Sort params
+  const sortKey = sp?.sort || '';
+  const sortDir = sp?.dir === 'desc' ? 'desc' : 'asc';
+
   // Apply sort
-  if (sortKey === 'class') {
+  if (sortKey === 'student_id') {
+    query = query.order('student_id', { ascending: sortDir === 'asc' });
+  } else if (sortKey === 'name') {
+    query = query.order(nameColumn, { ascending: sortDir === 'asc' });
+  } else if (sortKey === 'gender') {
+    query = query.order('gender', { ascending: sortDir === 'asc' });
+  } else if (sortKey === 'class') {
     query = query.order('name', { ascending: sortDir === 'asc', referencedTable: 'classes' });
-  } else if (sortColumn) {
-    query = query.order(sortColumn, { ascending: sortDir === 'asc' });
   } else {
-    query = query.order('family_name', { ascending: true });
+    // Default sort: first_name by locale
+    query = query.order(nameColumn, { ascending: true });
   }
 
   if (search) {
@@ -122,6 +128,7 @@ export default async function StudentsPage({
 
   return (
     <div className="max-w-[1200px]">
+      {isPrint && <AutoPrint />}
       <PageHeader
         title={t('student.allStudents')}
         subtitle={`${totalCount} ${t('navigation.students')}`}
@@ -162,6 +169,7 @@ export default async function StudentsPage({
               currentValue={statusFilter}
             />
           </div>
+          <ResetFilters label={t('common.resetFilters')} />
         </div>
       </Card>
 
@@ -171,7 +179,9 @@ export default async function StudentsPage({
           {/* Print button bar above table */}
           <div className="flex items-center justify-between px-2 py-2 print:hidden">
             <p className="text-[11px] text-text-tertiary">
-              {t('common.showing')} {students.length > 0 ? from + 1 : 0}-{Math.min(to + 1, totalCount)} {t('common.of')} {totalCount}
+              {isPrint
+                ? `${totalCount} ${t('navigation.students')}`
+                : `${t('common.showing')} ${students.length > 0 ? from + 1 : 0}-${Math.min(to + 1, totalCount)} ${t('common.of')} ${totalCount}`}
             </p>
             <PrintButton label={t('common.print')} />
           </div>
@@ -207,7 +217,7 @@ export default async function StudentsPage({
                   {students.map((student: any, index: number) => (
                     <ClickableRow key={student.id} href={`/${locale}/students/${student.id}`}>
                       <Table.Cell className="text-text-tertiary text-[11px] font-mono">
-                        {from + index + 1}
+                        {isPrint ? index + 1 : from + index + 1}
                       </Table.Cell>
                       <Table.Cell>
                         <span className="font-mono text-[11px] text-brand-teal">
@@ -239,15 +249,17 @@ export default async function StudentsPage({
                 </Table.Body>
               </Table>
 
-              {/* Pagination */}
-              <div className="flex items-center justify-center px-2 pt-3 border-t border-gray-100 print:hidden">
-                <Pagination
-                  currentPage={page}
-                  totalPages={totalPages}
-                  basePath={basePath}
-                  locale={locale}
-                />
-              </div>
+              {/* Pagination — hidden when printing */}
+              {!isPrint && (
+                <div className="flex items-center justify-center px-2 pt-3 border-t border-gray-100 print:hidden">
+                  <Pagination
+                    currentPage={page}
+                    totalPages={totalPages}
+                    basePath={basePath}
+                    locale={locale}
+                  />
+                </div>
+              )}
             </>
           )}
         </Card>

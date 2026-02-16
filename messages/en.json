@@ -38,6 +38,7 @@
     "back": "Back",
     "all": "All",
     "status": "Status",
+    "resetFilters": "Reset Filters",
     "comingSoon": "Coming Soon",
     "comingSoonDesc": "This feature is under development"
   },

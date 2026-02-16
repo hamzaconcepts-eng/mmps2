@@ -4,6 +4,7 @@ import { getClassesWithCounts } from '@/lib/supabase/cached-queries';
 import { formatGradeLevel, formatTeacherName } from '@/lib/utils/format';
 import PageHeader from '@/components/PageHeader';
 import PrintButton from '@/components/PrintButton';
+import AutoPrint from '@/components/AutoPrint';
 import ClickableRow from '@/components/ClickableRow';
 import SortableHead from '@/components/SortableHead';
 import { Card } from '@/components/ui/Card';
@@ -15,17 +16,19 @@ export default async function ClassesPage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ sort?: string; dir?: string }>;
+  searchParams: Promise<{ sort?: string; dir?: string; print?: string }>;
 }) {
   const { locale } = await params;
-  await searchParams; // make page dynamic for SortableHead (useSearchParams)
+  const sp = await searchParams;
   setRequestLocale(locale);
   const t = await getTranslations();
+  const isPrint = sp?.print === '1';
 
   const { classes, countMap } = await getClassesWithCounts();
 
   return (
     <div className="max-w-[1200px]">
+      {isPrint && <AutoPrint />}
       <PageHeader
         title={t('class.allClasses')}
         subtitle={`${classes.length} ${t('navigation.classes')} · ${t('class.academicYear')} 2025-2026`}
