@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { ArrowLeft, User, Users, Bus, Receipt, Phone, Mail, MapPin } from 'lucide-react';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { formatStudentName, formatGuardianName, formatGradeLevel, formatCurrency, formatDate, formatClassName, formatPhone } from '@/lib/utils/format';
+import { getDefaultStudentPhoto } from '@/lib/utils/student-photo';
 import PageHeader from '@/components/PageHeader';
 import PhotoZoom from '@/components/PhotoZoom';
 import LocationButtons from '@/components/LocationButtons';
@@ -79,15 +80,13 @@ export default async function StudentDetailPage({
             </div>
           </Card.Header>
           <div className="flex gap-4">
-            {/* Student Photo — clickable zoom */}
-            {student.photo_url && (
-              <PhotoZoom
-                src={student.photo_url}
-                alt={formatStudentName(student, locale)}
-                width={80}
-                height={80}
-              />
-            )}
+            {/* Student Photo — clickable zoom (fallback to default by gender/grade) */}
+            <PhotoZoom
+              src={student.photo_url || getDefaultStudentPhoto(student.gender, student.classes?.grade_level ?? 0, student.id)}
+              alt={formatStudentName(student, locale)}
+              width={80}
+              height={80}
+            />
             <div className="flex-1 space-y-2.5">
               <InfoRow label={t('student.firstName')} value={isAr ? student.first_name_ar : student.first_name} />
               <InfoRow label={t('student.fatherName')} value={isAr ? student.father_name_ar : student.father_name} />
