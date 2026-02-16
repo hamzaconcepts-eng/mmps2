@@ -33,7 +33,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             className={`
               w-full glass-input rounded-md
-              py-2.5 text-sm text-white placeholder:text-text-tertiary
+              py-2.5 text-sm text-text-primary placeholder:text-text-tertiary
               focus:outline-none
               transition-all
               ${icon ? (isRTL ? 'pr-10 pl-3' : 'pl-10 pr-3') : 'px-3'}

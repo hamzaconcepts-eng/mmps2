@@ -37,7 +37,7 @@ function CardHeader({ children, className = '' }: { children: React.ReactNode; c
 
 function CardTitle({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return (
-    <h3 className={`text-sm font-extrabold text-white ${className}`}>
+    <h3 className={`text-sm font-extrabold text-text-primary ${className}`}>
       {children}
     </h3>
   );

@@ -79,7 +79,7 @@ export default function LoginForm({ locale }: { locale: string }) {
                   type="text"
                   required
                   className={`w-full glass-input rounded-md
-                            py-2.5 text-sm text-white placeholder:text-text-tertiary
+                            py-2.5 text-sm text-text-primary placeholder:text-text-tertiary
                             focus:outline-none
                             transition-all ${isRTL ? 'pr-6 pl-3' : 'pl-6 pr-3'}`}
                   placeholder={t('auth.username')}
@@ -106,7 +106,7 @@ export default function LoginForm({ locale }: { locale: string }) {
                   type={showPassword ? 'text' : 'password'}
                   required
                   className={`w-full glass-input rounded-md
-                            py-2.5 text-sm text-white placeholder:text-text-tertiary
+                            py-2.5 text-sm text-text-primary placeholder:text-text-tertiary
                             focus:outline-none
                             transition-all ${isRTL ? 'pr-6 pl-8' : 'pl-6 pr-8'}`}
                   placeholder={t('auth.password')}

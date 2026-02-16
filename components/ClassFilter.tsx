@@ -31,7 +31,7 @@ export default function ClassFilter({ classes, locale, placeholder, currentValue
     <select
       value={currentValue}
       onChange={handleChange}
-      className="w-full glass-input rounded-md py-2.5 px-3 text-sm text-white focus:outline-none transition-all appearance-none"
+      className="w-full glass-input rounded-md py-2.5 px-3 text-sm text-text-primary focus:outline-none transition-all appearance-none"
     >
       <option value="">{placeholder}</option>
       {classes.map((cls) => (

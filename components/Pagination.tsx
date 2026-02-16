@@ -39,7 +39,7 @@ export default function Pagination({ currentPage, totalPages, basePath, locale =
       {currentPage > 1 ? (
         <Link
           href={buildHref(currentPage - 1)}
-          className="p-2 rounded-lg glass hover:bg-white/[0.14] transition-all text-text-secondary hover:text-white"
+          className="p-2 rounded-lg glass hover:bg-black/[0.04] transition-all text-text-secondary hover:text-text-primary"
         >
           <PrevIcon size={14} />
         </Link>
@@ -57,7 +57,7 @@ export default function Pagination({ currentPage, totalPages, basePath, locale =
           className={`min-w-[32px] h-8 flex items-center justify-center rounded-lg text-[12px] font-bold transition-all
             ${page === currentPage
               ? 'bg-accent-orange/85 text-white shadow-[0_2px_12px_rgba(240,144,33,0.25)]'
-              : 'glass hover:bg-white/[0.14] text-text-secondary hover:text-white'
+              : 'glass hover:bg-black/[0.04] text-text-secondary hover:text-text-primary'
             }`}
         >
           {page}
@@ -68,7 +68,7 @@ export default function Pagination({ currentPage, totalPages, basePath, locale =
       {currentPage < totalPages ? (
         <Link
           href={buildHref(currentPage + 1)}
-          className="p-2 rounded-lg glass hover:bg-white/[0.14] transition-all text-text-secondary hover:text-white"
+          className="p-2 rounded-lg glass hover:bg-black/[0.04] transition-all text-text-secondary hover:text-text-primary"
         >
           <NextIcon size={14} />
         </Link>

@@ -15,10 +15,22 @@ export function formatCurrency(amount: number): string {
 }
 
 /**
+ * Append ة (taa marbuta) to Arabic family name for females.
+ * If it already ends with ة or ي, return as-is.
+ */
+function feminizeFamilyAr(name: string): string {
+  if (!name) return name;
+  if (name.endsWith('ة') || name.endsWith('ي')) return name;
+  return name + 'ة';
+}
+
+/**
  * Format student full name (4-part Omani official name) based on locale.
- * Official Omani naming uses بن for ALL genders.
+ * Females: بنت after first name, بن after father name, ة on family name
+ * Males: بن after first name and father name
  * EN: "First Father Grandfather Family"
- * AR: "الأول بن الأب بن الجد العائلة"
+ * AR male: "أحمد بن سالم بن خالد البلوشي"
+ * AR female: "فاطمة بنت سالم بن خالد البلوشية"
  */
 export function formatStudentName(
   student: {
@@ -34,12 +46,15 @@ export function formatStudentName(
   },
   locale: string
 ): string {
+  const isFemale = student.gender === 'female';
   if (locale === 'ar') {
-    const parts = [student.first_name_ar, 'بن', student.father_name_ar];
+    const connector1 = isFemale ? 'بنت' : 'بن';
+    const parts = [student.first_name_ar, connector1, student.father_name_ar];
     if (student.grandfather_name_ar) {
       parts.push('بن', student.grandfather_name_ar);
     }
-    parts.push(student.family_name_ar);
+    const family = isFemale ? feminizeFamilyAr(student.family_name_ar) : student.family_name_ar;
+    parts.push(family);
     return parts.join(' ');
   }
   const parts = [student.first_name, student.father_name];
@@ -52,9 +67,8 @@ export function formatStudentName(
 
 /**
  * Format guardian full name (4-part Omani official name) based on locale.
- * Official Omani naming uses بن for ALL genders.
- * EN: "First Father Grandfather Family"
- * AR: "الأول بن الأب بن الجد العائلة"
+ * Mother (female): بنت after first name, بن after father, ة on family name
+ * Father (male): بن throughout
  */
 export function formatGuardianName(
   guardian: {
@@ -70,15 +84,18 @@ export function formatGuardianName(
   },
   locale: string
 ): string {
+  const isFemale = guardian.relationship === 'Mother';
   if (locale === 'ar') {
+    const connector1 = isFemale ? 'بنت' : 'بن';
     const parts = [guardian.first_name_ar];
     if (guardian.father_name_ar) {
-      parts.push('بن', guardian.father_name_ar);
+      parts.push(connector1, guardian.father_name_ar);
     }
     if (guardian.grandfather_name_ar) {
       parts.push('بن', guardian.grandfather_name_ar);
     }
-    parts.push(guardian.family_name_ar);
+    const family = isFemale ? feminizeFamilyAr(guardian.family_name_ar) : guardian.family_name_ar;
+    parts.push(family);
     return parts.join(' ');
   }
   const parts = [guardian.first_name];
@@ -90,9 +107,8 @@ export function formatGuardianName(
 
 /**
  * Format teacher full name (4-part Omani official name) based on locale.
- * Official Omani naming uses بن for ALL genders.
- * EN: "First Father Grandfather Family"
- * AR: "الأول بن الأب بن الجد العائلة"
+ * Females: بنت after first name, بن after father name, ة on family name
+ * Males: بن throughout
  */
 export function formatTeacherName(
   teacher: {
@@ -112,16 +128,19 @@ export function formatTeacherName(
 ): string {
   const familyEn = teacher.family_name || teacher.last_name || '';
   const familyAr = teacher.family_name_ar || teacher.last_name_ar || '';
+  const isFemale = teacher.gender === 'female';
 
   if (locale === 'ar') {
+    const connector1 = isFemale ? 'بنت' : 'بن';
     const parts = [teacher.first_name_ar];
     if (teacher.father_name_ar) {
-      parts.push('بن', teacher.father_name_ar);
+      parts.push(connector1, teacher.father_name_ar);
     }
     if (teacher.grandfather_name_ar) {
       parts.push('بن', teacher.grandfather_name_ar);
     }
-    parts.push(familyAr);
+    const family = isFemale ? feminizeFamilyAr(familyAr) : familyAr;
+    parts.push(family);
     return parts.join(' ');
   }
   const parts = [teacher.first_name];
@@ -133,9 +152,9 @@ export function formatTeacherName(
 
 /**
  * Format bus driver full name (4-part Omani official name) based on locale.
- * Official Omani naming uses بن for ALL genders.
- * EN: "First Father Grandfather Family"
- * AR: "الأول بن الأب بن الجد العائلة"
+ * Uses driver_gender if available; otherwise infers from common female Arabic names.
+ * Females: بنت after first name, بن after father name, ة on family name
+ * Males: بن throughout
  */
 export function formatDriverName(
   driver: {
@@ -147,19 +166,26 @@ export function formatDriverName(
     driver_grandfather_name_ar?: string;
     driver_family_name?: string;
     driver_family_name_ar?: string;
+    driver_gender?: string;
   },
   locale: string
 ): string {
+  // Detect female drivers by Arabic first name pattern (common female names ending with ة or specific names)
+  const femaleNames = ['فاطمة', 'مريم', 'عائشة', 'نورة', 'هدى', 'ليلى', 'سارة', 'آمنة', 'زينب', 'خديجة', 'سلمى', 'رية', 'حليمة', 'منى'];
+  const isFemale = driver.driver_gender === 'female' || femaleNames.includes(driver.driver_name_ar);
+
   if (locale === 'ar') {
+    const connector1 = isFemale ? 'بنت' : 'بن';
     const parts = [driver.driver_name_ar];
     if (driver.driver_father_name_ar) {
-      parts.push('بن', driver.driver_father_name_ar);
+      parts.push(connector1, driver.driver_father_name_ar);
     }
     if (driver.driver_grandfather_name_ar) {
       parts.push('بن', driver.driver_grandfather_name_ar);
     }
     if (driver.driver_family_name_ar) {
-      parts.push(driver.driver_family_name_ar);
+      const family = isFemale ? feminizeFamilyAr(driver.driver_family_name_ar) : driver.driver_family_name_ar;
+      parts.push(family);
     }
     return parts.join(' ');
   }

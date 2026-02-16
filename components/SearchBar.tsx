@@ -48,7 +48,7 @@ export default function SearchBar({ placeholder = 'Search...', locale = 'en' }: 
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder={placeholder}
-        className={`w-full glass-input rounded-md py-2.5 text-sm text-white placeholder:text-text-tertiary
+        className={`w-full glass-input rounded-md py-2.5 text-sm text-text-primary placeholder:text-text-tertiary
                    focus:outline-none transition-all
                    ${isRTL ? 'pr-10 pl-3' : 'pl-10 pr-3'}`}
         dir={isRTL ? 'rtl' : 'ltr'}
