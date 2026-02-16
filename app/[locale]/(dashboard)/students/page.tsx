@@ -10,6 +10,7 @@ import EmptyState from '@/components/EmptyState';
 import SortableHead from '@/components/SortableHead';
 import PrintButton from '@/components/PrintButton';
 import ClickableRow from '@/components/ClickableRow';
+import SelectFilter from '@/components/SelectFilter';
 import { Card } from '@/components/ui/Card';
 import { Table } from '@/components/ui/Table';
 import { Badge } from '@/components/ui/Badge';
@@ -30,7 +31,7 @@ export default async function StudentsPage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ search?: string; class?: string; page?: string; sort?: string; dir?: string }>;
+  searchParams: Promise<{ search?: string; class?: string; page?: string; sort?: string; dir?: string; gender?: string }>;
 }) {
   const { locale } = await params;
   const sp = await searchParams;
@@ -40,6 +41,7 @@ export default async function StudentsPage({
 
   const search = sp?.search || '';
   const classFilter = sp?.class || '';
+  const genderFilter = sp?.gender || '';
   const page = Math.max(1, Number(sp?.page || 1));
   const from = (page - 1) * PER_PAGE;
   const to = from + PER_PAGE - 1;
@@ -58,7 +60,6 @@ export default async function StudentsPage({
 
   // Apply sort
   if (sortKey === 'class') {
-    // Sort by foreign table column
     query = query.order('name', { ascending: sortDir === 'asc', referencedTable: 'classes' });
   } else if (sortColumn) {
     query = query.order(sortColumn, { ascending: sortDir === 'asc' });
@@ -72,6 +73,9 @@ export default async function StudentsPage({
   if (classFilter) {
     query = query.eq('class_id', classFilter);
   }
+  if (genderFilter) {
+    query = query.eq('gender', genderFilter);
+  }
 
   // Students query is always fresh (paginated + filtered); classes list is cached
   const [studentsRes, classes] = await Promise.all([
@@ -83,13 +87,20 @@ export default async function StudentsPage({
   const totalCount = studentsRes.count || 0;
   const totalPages = Math.ceil(totalCount / PER_PAGE);
 
-  // Build base path for pagination (preserve search params)
+  // Build base path for pagination (preserve all params)
   const searchParamsStr = new URLSearchParams();
   if (search) searchParamsStr.set('search', search);
   if (classFilter) searchParamsStr.set('class', classFilter);
+  if (genderFilter) searchParamsStr.set('gender', genderFilter);
   if (sortKey) searchParamsStr.set('sort', sortKey);
   if (sortKey) searchParamsStr.set('dir', sortDir);
   const basePath = `/${locale}/students${searchParamsStr.toString() ? `?${searchParamsStr.toString()}` : ''}`;
+
+  // Gender filter options
+  const genderOptions = [
+    { value: 'male', label: t('student.male') },
+    { value: 'female', label: t('student.female') },
+  ];
 
   return (
     <div className="max-w-[1200px]">
@@ -97,12 +108,9 @@ export default async function StudentsPage({
         title={t('student.allStudents')}
         subtitle={`${totalCount} ${t('navigation.students')}`}
         actions={
-          <div className="flex items-center gap-2">
-            <PrintButton label={t('common.print')} />
-            <Button variant="accent" size="sm" icon={<Plus size={14} />}>
-              {t('common.add')} {t('student.name')}
-            </Button>
-          </div>
+          <Button variant="accent" size="sm" icon={<Plus size={14} />}>
+            {t('common.add')} {t('student.name')}
+          </Button>
         }
       />
 
@@ -112,12 +120,20 @@ export default async function StudentsPage({
           <div className="flex-1">
             <SearchBar placeholder={t('student.searchPlaceholder')} locale={locale} />
           </div>
-          <div className="w-[200px]">
+          <div className="w-[180px]">
             <ClassFilter
               classes={classes}
               locale={locale}
               placeholder={t('student.filterByClass')}
               currentValue={classFilter}
+            />
+          </div>
+          <div className="w-[130px]">
+            <SelectFilter
+              paramKey="gender"
+              placeholder={t('student.gender')}
+              options={genderOptions}
+              currentValue={genderFilter}
             />
           </div>
         </div>
@@ -126,6 +142,14 @@ export default async function StudentsPage({
       {/* Table */}
       <div className="mt-3">
         <Card>
+          {/* Print button bar above table */}
+          <div className="flex items-center justify-between px-2 py-2 print:hidden">
+            <p className="text-[11px] text-text-tertiary">
+              {t('common.showing')} {students.length > 0 ? from + 1 : 0}-{Math.min(to + 1, totalCount)} {t('common.of')} {totalCount}
+            </p>
+            <PrintButton label={t('common.print')} />
+          </div>
+
           {students.length === 0 ? (
             <EmptyState
               icon={<Users size={40} className="text-text-tertiary" />}
@@ -136,6 +160,7 @@ export default async function StudentsPage({
             <>
               <Table>
                 <colgroup>
+                  <col className="w-[40px]" />
                   <col className="w-[72px]" />
                   <col />
                   <col className="w-[140px]" />
@@ -144,6 +169,7 @@ export default async function StudentsPage({
                 </colgroup>
                 <Table.Header>
                   <Table.Row>
+                    <Table.Head>#</Table.Head>
                     <SortableHead sortKey="student_id">{t('student.studentId')}</SortableHead>
                     <SortableHead sortKey="name">{t('student.fullName')}</SortableHead>
                     <SortableHead sortKey="class">{t('student.class')}</SortableHead>
@@ -152,8 +178,11 @@ export default async function StudentsPage({
                   </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                  {students.map((student: any) => (
+                  {students.map((student: any, index: number) => (
                     <ClickableRow key={student.id} href={`/${locale}/students/${student.id}`}>
+                      <Table.Cell className="text-text-tertiary text-[11px] font-mono">
+                        {from + index + 1}
+                      </Table.Cell>
                       <Table.Cell>
                         <span className="font-mono text-[11px] text-brand-teal">
                           {student.student_id}
@@ -182,11 +211,8 @@ export default async function StudentsPage({
                 </Table.Body>
               </Table>
 
-              {/* Pagination info + controls */}
-              <div className="flex items-center justify-between px-2 pt-3 border-t border-gray-100 print:hidden">
-                <p className="text-[11px] text-text-tertiary">
-                  {t('common.showing')} {from + 1}-{Math.min(to + 1, totalCount)} {t('common.of')} {totalCount}
-                </p>
+              {/* Pagination */}
+              <div className="flex items-center justify-center px-2 pt-3 border-t border-gray-100 print:hidden">
                 <Pagination
                   currentPage={page}
                   totalPages={totalPages}
