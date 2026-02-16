@@ -125,9 +125,7 @@ export default async function StudentDetailPage({
                 </Badge>
               </InfoRow>
               <InfoRow label={t('student.nationality')} value={student.nationality || '—'} />
-              {student.national_id && (
-                <InfoRow label={t('student.nationalId')} value={student.national_id} />
-              )}
+              <InfoRow label={t('student.nationalId')} value={student.national_id || '—'} />
               <InfoRow label={t('student.enrollmentDate')} value={formatDate(student.enrollment_date, locale)} />
               <InfoRow label={t('common.status')}>
                 <Badge variant={student.is_active ? 'success' : 'dark'}>
