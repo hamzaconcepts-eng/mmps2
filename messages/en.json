@@ -185,6 +185,7 @@
     "class": "Class",
     "enrollmentDate": "Enrollment Date",
     "guardian": "Guardian",
+    "guardianPhone": "Guardian Phone",
     "medicalNotes": "Medical Notes",
     "active": "Active",
     "inactive": "Inactive",

@@ -185,6 +185,7 @@
     "class": "الفصل",
     "enrollmentDate": "تاريخ القيد",
     "guardian": "ولي الأمر",
+    "guardianPhone": "هاتف ولي الأمر",
     "medicalNotes": "ملاحظات طبية",
     "active": "نشط",
     "inactive": "غير نشط",

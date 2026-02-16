@@ -2,7 +2,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Users, Plus } from 'lucide-react';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { getClassesList } from '@/lib/supabase/cached-queries';
-import { formatStudentName } from '@/lib/utils/format';
+import { formatStudentName, formatPhone } from '@/lib/utils/format';
 import PageHeader from '@/components/PageHeader';
 import SearchBar from '@/components/SearchBar';
 import Pagination from '@/components/Pagination';
@@ -103,6 +103,23 @@ export default async function StudentsPage({
   const totalCount = studentsRes.count || 0;
   const totalPages = Math.ceil(totalCount / PER_PAGE);
 
+  // Fetch primary guardian phone for each student on this page
+  const studentIds = students.map((s: any) => s.id);
+  const guardianPhoneMap: Record<string, string> = {};
+  if (studentIds.length > 0) {
+    const { data: sgData } = await supabase
+      .from('student_guardians')
+      .select('student_id, guardians(phone)')
+      .in('student_id', studentIds)
+      .eq('is_primary_contact', true);
+    if (sgData) {
+      for (const sg of sgData) {
+        const phone = (sg as any).guardians?.phone;
+        if (phone) guardianPhoneMap[sg.student_id] = phone;
+      }
+    }
+  }
+
   // Build base path for pagination (preserve all params)
   const searchParamsStr = new URLSearchParams();
   if (search) searchParamsStr.set('search', search);
@@ -201,6 +218,7 @@ export default async function StudentsPage({
                   <col />
                   <col className="w-[140px]" />
                   <col className="w-[80px]" />
+                  <col className="w-[100px]" />
                   <col className="w-[80px]" />
                 </colgroup>
                 <Table.Header>
@@ -210,6 +228,7 @@ export default async function StudentsPage({
                     <SortableHead sortKey="name">{t('student.fullName')}</SortableHead>
                     <SortableHead sortKey="class">{t('student.class')}</SortableHead>
                     <SortableHead sortKey="gender">{t('student.gender')}</SortableHead>
+                    <Table.Head>{t('student.guardianPhone')}</Table.Head>
                     <Table.Head>{t('common.status')}</Table.Head>
                   </Table.Row>
                 </Table.Header>
@@ -238,6 +257,9 @@ export default async function StudentsPage({
                         <Badge variant={student.gender === 'male' ? 'teal' : 'ice'}>
                           {student.gender === 'male' ? t('student.male') : t('student.female')}
                         </Badge>
+                      </Table.Cell>
+                      <Table.Cell className="text-text-secondary text-[11px]">
+                        {guardianPhoneMap[student.id] ? formatPhone(guardianPhoneMap[student.id]) : '—'}
                       </Table.Cell>
                       <Table.Cell>
                         <Badge variant={student.is_active ? 'success' : 'dark'}>
