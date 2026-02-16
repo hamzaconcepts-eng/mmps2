@@ -13,9 +13,14 @@ export default function PrintButton({ label }: PrintButtonProps) {
   const searchParams = useSearchParams();
 
   const handlePrint = () => {
+    // Save current URL so AutoPrint can return to it
+    const currentQs = searchParams.toString();
+    const returnUrl = `${pathname}${currentQs ? `?${currentQs}` : ''}`;
+
     const params = new URLSearchParams(searchParams.toString());
     params.delete('page');
     params.set('print', '1');
+    params.set('returnUrl', returnUrl);
     router.push(`${pathname}?${params.toString()}`);
   };
 

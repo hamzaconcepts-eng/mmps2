@@ -19,6 +19,7 @@ export default function ResetFilters({ label }: ResetFiltersProps) {
   // Hide if no real filters are set (ignore internal params like 'print')
   const params = new URLSearchParams(searchParams.toString());
   params.delete('print');
+  params.delete('returnUrl');
   if (params.toString().length === 0) return null;
 
   return (
