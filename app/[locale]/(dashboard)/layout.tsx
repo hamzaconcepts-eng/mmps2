@@ -29,17 +29,8 @@ export default async function DashboardLayout({
       >
         <div className="p-5 lg:p-6">
           <div className="flex items-center justify-between mb-2 print:hidden">
-            {isRTL ? (
-              <>
-                <LanguageSwitcher variant="light" />
-                <DualDateBar />
-              </>
-            ) : (
-              <>
-                <LanguageSwitcher variant="light" />
-                <DualDateBar />
-              </>
-            )}
+            <DualDateBar />
+            <LanguageSwitcher variant="light" />
           </div>
           {children}
         </div>
