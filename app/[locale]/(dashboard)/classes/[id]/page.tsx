@@ -25,7 +25,7 @@ export default async function ClassDetailPage({
   const [clsRes, studentsRes, subjectsRes] = await Promise.all([
     supabase
       .from('classes')
-      .select('*, teachers!classes_class_supervisor_id_fkey(id, first_name, first_name_ar, last_name, last_name_ar)')
+      .select('*, teachers!classes_class_supervisor_id_fkey(id, first_name, first_name_ar, father_name, father_name_ar, grandfather_name, grandfather_name_ar, family_name, family_name_ar, last_name, last_name_ar, gender)')
       .eq('id', id)
       .single(),
     supabase
@@ -36,7 +36,7 @@ export default async function ClassDetailPage({
       .order('student_id'),
     supabase
       .from('class_subjects')
-      .select('id, periods_per_week, subjects(id, name, name_ar, code), teachers(id, first_name, first_name_ar, last_name, last_name_ar)')
+      .select('id, periods_per_week, subjects(id, name, name_ar, code), teachers(id, first_name, first_name_ar, father_name, father_name_ar, grandfather_name, grandfather_name_ar, family_name, family_name_ar, last_name, last_name_ar, gender)')
       .eq('class_id', id),
   ]);
 

@@ -76,8 +76,7 @@ export default async function TeacherDetailPage({
                 <img src={teacher.photo_url} alt={formatTeacherName(teacher, locale)} className="w-20 h-20 rounded-full object-cover border-2 border-brand-teal/20" />
               </div>
             )}
-            <InfoRow label={t('teacher.firstName')} value={isAr ? teacher.first_name_ar : teacher.first_name} />
-            <InfoRow label={t('teacher.lastName')} value={isAr ? teacher.last_name_ar : teacher.last_name} />
+            <InfoRow label={t('student.fullName')} value={formatTeacherName(teacher, locale)} />
             <InfoRow label={t('student.gender')}>
               <Badge variant={teacher.gender === 'male' ? 'teal' : 'ice'}>
                 {teacher.gender === 'male' ? t('student.male') : t('student.female')}

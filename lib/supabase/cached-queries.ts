@@ -100,7 +100,7 @@ export const getClassesWithCounts = unstable_cache(
     const [classesRes, studentsRes] = await Promise.all([
       supabase
         .from('classes')
-        .select('*, teachers!classes_class_supervisor_id_fkey(first_name, first_name_ar, last_name, last_name_ar)')
+        .select('*, teachers!classes_class_supervisor_id_fkey(id, first_name, first_name_ar, father_name, father_name_ar, grandfather_name, grandfather_name_ar, family_name, family_name_ar, last_name, last_name_ar, gender)')
         .eq('is_active', true)
         .eq('academic_year', '2025-2026')
         .order('grade_level')

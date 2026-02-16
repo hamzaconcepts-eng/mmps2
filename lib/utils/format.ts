@@ -15,8 +15,9 @@ export function formatCurrency(amount: number): string {
 }
 
 /**
- * Format student full name (4-part Omani name) based on locale.
- * EN: "First Father Grandfather Family" (no bin/bint)
+ * Format student full name (4-part Omani official name) based on locale.
+ * Official Omani naming uses بن for ALL genders.
+ * EN: "First Father Grandfather Family"
  * AR: "الأول بن الأب بن الجد العائلة"
  */
 export function formatStudentName(
@@ -34,10 +35,9 @@ export function formatStudentName(
   locale: string
 ): string {
   if (locale === 'ar') {
-    const bin = student.gender === 'female' ? 'بنت' : 'بن';
-    const parts = [student.first_name_ar, bin, student.father_name_ar];
+    const parts = [student.first_name_ar, 'بن', student.father_name_ar];
     if (student.grandfather_name_ar) {
-      parts.push(bin, student.grandfather_name_ar);
+      parts.push('بن', student.grandfather_name_ar);
     }
     parts.push(student.family_name_ar);
     return parts.join(' ');
@@ -51,9 +51,10 @@ export function formatStudentName(
 }
 
 /**
- * Format guardian full name (4-part Omani name) based on locale.
+ * Format guardian full name (4-part Omani official name) based on locale.
+ * Official Omani naming uses بن for ALL genders.
  * EN: "First Father Grandfather Family"
- * AR: "الأول بن الأب بن الجد العائلة" (بنت for female guardians)
+ * AR: "الأول بن الأب بن الجد العائلة"
  */
 export function formatGuardianName(
   guardian: {
@@ -69,15 +70,13 @@ export function formatGuardianName(
   },
   locale: string
 ): string {
-  const isFemale = guardian.relationship === 'Mother';
   if (locale === 'ar') {
-    const bin = isFemale ? 'بنت' : 'بن';
     const parts = [guardian.first_name_ar];
     if (guardian.father_name_ar) {
-      parts.push(bin, guardian.father_name_ar);
+      parts.push('بن', guardian.father_name_ar);
     }
     if (guardian.grandfather_name_ar) {
-      parts.push(bin, guardian.grandfather_name_ar);
+      parts.push('بن', guardian.grandfather_name_ar);
     }
     parts.push(guardian.family_name_ar);
     return parts.join(' ');
@@ -90,9 +89,10 @@ export function formatGuardianName(
 }
 
 /**
- * Format teacher full name (4-part Omani name) based on locale.
+ * Format teacher full name (4-part Omani official name) based on locale.
+ * Official Omani naming uses بن for ALL genders.
  * EN: "First Father Grandfather Family"
- * AR: "الأول بنت الأب بن الجد العائلة" (all teachers are female → بنت)
+ * AR: "الأول بن الأب بن الجد العائلة"
  */
 export function formatTeacherName(
   teacher: {
@@ -112,16 +112,14 @@ export function formatTeacherName(
 ): string {
   const familyEn = teacher.family_name || teacher.last_name || '';
   const familyAr = teacher.family_name_ar || teacher.last_name_ar || '';
-  const isFemale = teacher.gender === 'female';
 
   if (locale === 'ar') {
-    const bin = isFemale ? 'بنت' : 'بن';
     const parts = [teacher.first_name_ar];
     if (teacher.father_name_ar) {
-      parts.push(bin, teacher.father_name_ar);
+      parts.push('بن', teacher.father_name_ar);
     }
     if (teacher.grandfather_name_ar) {
-      parts.push(bin, teacher.grandfather_name_ar);
+      parts.push('بن', teacher.grandfather_name_ar);
     }
     parts.push(familyAr);
     return parts.join(' ');
@@ -134,9 +132,10 @@ export function formatTeacherName(
 }
 
 /**
- * Format bus driver full name (4-part Omani name) based on locale.
+ * Format bus driver full name (4-part Omani official name) based on locale.
+ * Official Omani naming uses بن for ALL genders.
  * EN: "First Father Grandfather Family"
- * AR: "الأول بن/بنت الأب بن/بنت الجد العائلة"
+ * AR: "الأول بن الأب بن الجد العائلة"
  */
 export function formatDriverName(
   driver: {
