@@ -108,10 +108,10 @@ export default async function TeacherDetailPage({
                 <Link
                   key={cls.id}
                   href={`/${locale}/classes/${cls.id}`}
-                  className="flex items-center justify-between py-2 px-3 rounded-lg glass hover:bg-white/[0.08] transition-all"
+                  className="flex items-center justify-between py-2 px-3 rounded-lg glass hover:bg-black/[0.04] transition-all"
                 >
                   <div>
-                    <p className="text-[12px] font-bold text-white">{formatClassName(cls, locale)}</p>
+                    <p className="text-[12px] font-bold text-text-primary">{formatClassName(cls, locale)}</p>
                     <p className="text-[10px] text-text-tertiary">{formatGradeLevel(cls.grade_level, locale)} · {t('class.section')} {cls.section}</p>
                   </div>
                   <Badge variant="teal">{cls.capacity} {t('class.capacity')}</Badge>
@@ -147,12 +147,12 @@ export default async function TeacherDetailPage({
                   {assignments.map((a: any) => (
                     <Table.Row key={a.id}>
                       <Table.Cell className="font-mono text-[11px] text-brand-teal">{a.subjects?.code || '—'}</Table.Cell>
-                      <Table.Cell className="text-white font-semibold text-[11px]">
+                      <Table.Cell className="text-text-primary font-semibold text-[11px]">
                         {a.subjects ? formatSubjectName(a.subjects, locale) : '—'}
                       </Table.Cell>
                       <Table.Cell>
                         {a.classes ? (
-                          <Link href={`/${locale}/classes/${a.classes.id}`} className="text-[11px] text-white hover:text-brand-teal transition-colors">
+                          <Link href={`/${locale}/classes/${a.classes.id}`} className="text-[11px] text-text-primary hover:text-brand-teal transition-colors">
                             {formatClassName(a.classes, locale)}
                           </Link>
                         ) : '—'}
@@ -179,7 +179,7 @@ function InfoRow({ label, value, children }: { label: string; value?: string; ch
   return (
     <div className="flex justify-between items-center">
       <span className="text-[11px] text-text-tertiary font-medium">{label}</span>
-      {children || <span className="text-[12px] text-white font-semibold">{value || '—'}</span>}
+      {children || <span className="text-[12px] text-text-primary font-semibold">{value || '—'}</span>}
     </div>
   );
 }

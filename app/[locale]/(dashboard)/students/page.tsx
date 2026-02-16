@@ -130,7 +130,7 @@ export default async function StudentsPage({
                       <Table.Cell>
                         <Link
                           href={`/${locale}/students/${student.id}`}
-                          className="font-semibold text-white hover:text-brand-teal transition-colors"
+                          className="font-semibold text-text-primary hover:text-brand-teal transition-colors"
                         >
                           {formatStudentName(student, locale)}
                         </Link>
@@ -154,7 +154,7 @@ export default async function StudentsPage({
               </Table>
 
               {/* Pagination info + controls */}
-              <div className="flex items-center justify-between px-2 pt-3 border-t border-white/[0.06]">
+              <div className="flex items-center justify-between px-2 pt-3 border-t border-gray-100">
                 <p className="text-[11px] text-text-tertiary">
                   {t('common.showing')} {from + 1}-{Math.min(to + 1, totalCount)} {t('common.of')} {totalCount}
                 </p>

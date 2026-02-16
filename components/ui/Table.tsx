@@ -23,7 +23,7 @@ function TableBody({ children, className = '' }: TableProps) {
 
 function TableRow({ children, className = '' }: TableProps) {
   return (
-    <tr className={`border-b border-white/[0.06] last:border-0 ${className}`}>
+    <tr className={`border-b border-gray-100 last:border-0 ${className}`}>
       {children}
     </tr>
   );

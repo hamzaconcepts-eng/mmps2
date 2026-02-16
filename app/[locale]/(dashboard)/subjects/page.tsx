@@ -42,7 +42,7 @@ export default async function SubjectsPage({ params }: { params: Promise<{ local
                   <Table.Cell>
                     <span className="font-mono text-[11px] text-brand-teal font-bold">{subject.code}</span>
                   </Table.Cell>
-                  <Table.Cell className="font-semibold text-white">
+                  <Table.Cell className="font-semibold text-text-primary">
                     {locale === 'ar' ? subject.name_ar : subject.name}
                   </Table.Cell>
                   <Table.Cell>

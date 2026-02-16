@@ -9,12 +9,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // ── Surface (glass-friendly deep teal base) ──
+        // ── Surface (light theme) ──
         surface: {
-          DEFAULT: '#1B4A54',
-          card: 'rgba(255,255,255,0.12)',
-          raised: 'rgba(255,255,255,0.18)',
-          hover: 'rgba(255,255,255,0.22)',
+          DEFAULT: '#F5F7FA',
+          card: '#FFFFFF',
+          raised: '#FFFFFF',
+          hover: 'rgba(0,0,0,0.04)',
         },
         // ── Brand (isometric gradient palette) ──
         brand: {
@@ -38,14 +38,14 @@ const config: Config = {
           'light-soft': '#F0F0F0',
         },
         // ── Semantic ──
-        success: { DEFAULT: '#5DD99A', soft: '#1A3D2C' },
-        warning: { DEFAULT: '#F0C34E', soft: '#3D3520' },
-        danger:  { DEFAULT: '#F87171', soft: '#3D1E1E' },
-        // ── Text ──
+        success: { DEFAULT: '#16A34A', soft: '#ECFDF5' },
+        warning: { DEFAULT: '#D97706', soft: '#FFFBEB' },
+        danger:  { DEFAULT: '#DC2626', soft: '#FEF2F2' },
+        // ── Text (dark on light) ──
         text: {
-          primary: '#FFFFFF',
-          secondary: 'rgba(255,255,255,0.6)',
-          tertiary: 'rgba(255,255,255,0.35)',
+          primary: '#1E3A40',
+          secondary: 'rgba(30,58,64,0.60)',
+          tertiary: 'rgba(30,58,64,0.40)',
           dark: '#1E3A40',
           'dark-secondary': 'rgba(30,58,64,0.7)',
         },
@@ -63,8 +63,9 @@ const config: Config = {
         full: '999px',
       },
       backgroundImage: {
-        // Dreamy background gradient
-        'gradient-dreamy': 'linear-gradient(135deg, #1B4A54 0%, #254E58 30%, #2D6A6F 60%, #1B4A54 100%)',
+        // Light background
+        'gradient-dreamy': 'linear-gradient(135deg, #F5F7FA 0%, #EEF2F5 30%, #E8EEF2 60%, #F5F7FA 100%)',
+        // Sidebar stays dark teal
         'gradient-sidebar': 'linear-gradient(180deg, rgba(37,78,88,0.95), rgba(27,74,84,0.98))',
         // Button gradients
         'gradient-brand-btn': 'linear-gradient(135deg, #254E58, #35707C)',
@@ -72,14 +73,14 @@ const config: Config = {
         'gradient-orange-btn':'linear-gradient(135deg, #F09021, #F5A946)',
       },
       boxShadow: {
-        glass: '0 4px 30px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.1)',
-        'glass-hover': '0 8px 40px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.15)',
-        'glass-strong': '0 8px 32px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.12)',
-        glow: '0 0 50px rgba(115,192,207,0.2)',
-        'glow-orange': '0 0 50px rgba(240,144,33,0.2)',
-        'glow-soft': '0 0 80px rgba(115,192,207,0.1)',
-        card: '0 2px 12px rgba(0,0,0,0.15)',
-        'card-hover': '0 12px 40px rgba(0,0,0,0.2)',
+        glass: '0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)',
+        'glass-hover': '0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04)',
+        'glass-strong': '0 4px 16px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.06)',
+        glow: '0 0 50px rgba(115,192,207,0.15)',
+        'glow-orange': '0 0 50px rgba(240,144,33,0.15)',
+        'glow-soft': '0 0 80px rgba(115,192,207,0.08)',
+        card: '0 1px 3px rgba(0,0,0,0.06)',
+        'card-hover': '0 8px 24px rgba(0,0,0,0.1)',
       },
       keyframes: {
         shimmer: {

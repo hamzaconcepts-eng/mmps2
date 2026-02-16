@@ -21,7 +21,7 @@ export function Badge({ children, variant = 'brand', className = '' }: BadgeProp
       className={`
         inline-flex items-center px-2 py-0.5 rounded-lg
         text-[10px] font-extrabold tracking-wide
-        border border-white/[0.08]
+        border border-black/[0.06]
         ${variantStyles[variant] || variantStyles.brand}
         ${className}
       `}

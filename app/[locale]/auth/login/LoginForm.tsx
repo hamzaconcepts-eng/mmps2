@@ -36,10 +36,10 @@ export default function LoginForm({ locale }: { locale: string }) {
         <div className="text-center mb-6">
           <div className="flex justify-center mb-4">
             <div className="relative">
-              <Image src="/logo.svg" alt="Mashaail" width={72} height={72} priority className="relative" style={{ filter: 'brightness(0) invert(1)' }} />
+              <Image src="/logo.svg" alt="Mashaail" width={72} height={72} priority className="relative" />
             </div>
           </div>
-          <h1 className="text-xl font-black text-white mb-1" dir={isRTL ? 'rtl' : 'ltr'}>
+          <h1 className="text-xl font-black text-text-primary mb-1" dir={isRTL ? 'rtl' : 'ltr'}>
             {t('common.schoolName')}
           </h1>
           <p className="text-xs text-text-secondary">{t('auth.signIn')}</p>
@@ -54,9 +54,9 @@ export default function LoginForm({ locale }: { locale: string }) {
 
           <form action={handleSubmit} className="space-y-4">
             {error && (
-              <div className="flex items-center gap-2 p-3 rounded-lg bg-red-500/20 border border-red-400/30">
-                <AlertCircle size={16} className="text-red-300 flex-shrink-0" />
-                <p className="text-xs text-red-200 font-medium">{error}</p>
+              <div className="flex items-center gap-2 p-3 rounded-lg bg-red-50 border border-red-200">
+                <AlertCircle size={16} className="text-red-500 flex-shrink-0" />
+                <p className="text-xs text-red-600 font-medium">{error}</p>
               </div>
             )}
 
@@ -145,7 +145,7 @@ export default function LoginForm({ locale }: { locale: string }) {
         <div className="text-center mt-4">
           <Link
             href={`/${locale}`}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-text-secondary hover:text-white transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-text-secondary hover:text-text-primary transition-colors"
           >
             <ArrowLeft size={14} className={isRTL ? 'rotate-180' : ''} />
             {t('common.backToHome')}

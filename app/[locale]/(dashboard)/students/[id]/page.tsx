@@ -206,16 +206,16 @@ export default async function StudentDetailPage({
                     inv.status === 'overdue' ? 'danger' :
                     inv.status === 'cancelled' ? 'dark' : 'warning';
                   return (
-                    <div key={inv.id} className="flex items-center justify-between py-2 border-b border-white/[0.06] last:border-0">
+                    <div key={inv.id} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
                       <div>
-                        <Link href={`/${locale}/invoices/${inv.id}`} className="text-[12px] font-bold text-white hover:text-brand-teal transition-colors">
+                        <Link href={`/${locale}/invoices/${inv.id}`} className="text-[12px] font-bold text-text-primary hover:text-brand-teal transition-colors">
                           {inv.invoice_number}
                         </Link>
                         <p className="text-[10px] text-text-tertiary">{t('finance.dueDate')}: {formatDate(inv.due_date, locale)}</p>
                       </div>
                       <div className="flex items-center gap-3">
                         <div className="text-right">
-                          <p className="text-[12px] font-bold text-white">{formatCurrency(inv.total_amount)}</p>
+                          <p className="text-[12px] font-bold text-text-primary">{formatCurrency(inv.total_amount)}</p>
                           {due > 0 && <p className="text-[10px] text-brand-orange">{t('finance.dueAmount')}: {formatCurrency(due)}</p>}
                         </div>
                         <Badge variant={statusVariant as any}>
@@ -240,7 +240,7 @@ function InfoRow({ label, value, children }: { label: string; value?: string; ch
   return (
     <div className="flex justify-between items-center">
       <span className="text-[11px] text-text-tertiary font-medium">{label}</span>
-      {children || <span className="text-[12px] text-white font-semibold">{value || '—'}</span>}
+      {children || <span className="text-[12px] text-text-primary font-semibold">{value || '—'}</span>}
     </div>
   );
 }

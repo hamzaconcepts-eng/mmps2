@@ -83,11 +83,11 @@ export default function Sidebar({ locale, userRole = 'admin' }: SidebarProps) {
   return (
     <aside
       className={`fixed top-0 h-screen z-40
-                 glass-strong
+                 sidebar-dark
                  transition-all duration-300 flex flex-col
                  ${isRTL ? 'right-0' : 'left-0'}
                  ${isCollapsed ? 'w-[68px]' : 'w-[220px]'}`}
-      style={{ borderRight: isRTL ? 'none' : '1px solid rgba(255,255,255,0.08)', borderLeft: isRTL ? '1px solid rgba(255,255,255,0.08)' : 'none' }}
+      style={{ borderRight: isRTL ? 'none' : undefined, borderLeft: isRTL ? undefined : 'none' }}
     >
       {/* Logo */}
       <div className="px-4 py-4 flex items-center justify-between flex-shrink-0">
@@ -108,7 +108,7 @@ export default function Sidebar({ locale, userRole = 'admin' }: SidebarProps) {
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
           className="flex items-center justify-center w-6 h-6 rounded
-                     hover:bg-white/[0.08] transition-colors text-text-tertiary hover:text-white/60"
+                     hover:bg-white/[0.08] transition-colors text-white/40 hover:text-white/60"
         >
           {isCollapsed ? <ExpandIcon size={14} /> : <CollapseIcon size={14} />}
         </button>
@@ -130,7 +130,7 @@ export default function Sidebar({ locale, userRole = 'admin' }: SidebarProps) {
               <p className="font-bold text-[12px] text-white truncate">
                 {isRTL ? '\u0645\u0633\u062a\u062e\u062f\u0645' : 'User'}
               </p>
-              <p className="text-[10px] text-text-tertiary truncate">
+              <p className="text-[10px] text-white/40 truncate">
                 {t(`roles.${userRole}`)}
               </p>
             </div>
@@ -147,7 +147,7 @@ export default function Sidebar({ locale, userRole = 'admin' }: SidebarProps) {
           return (
             <div key={group.labelKey} className="mb-1">
               {!isCollapsed && (
-                <p className="text-[9px] font-extrabold tracking-[1.5px] uppercase text-text-tertiary px-3 pt-3 pb-1">
+                <p className="text-[9px] font-extrabold tracking-[1.5px] uppercase text-white/40 px-3 pt-3 pb-1">
                   {t(group.labelKey)}
                 </p>
               )}
@@ -166,7 +166,7 @@ export default function Sidebar({ locale, userRole = 'admin' }: SidebarProps) {
                                  transition-all duration-200 group relative
                                  ${active
                                    ? 'bg-accent-orange/85 text-white font-bold shadow-[0_2px_12px_rgba(240,144,33,0.25)]'
-                                   : 'text-text-secondary hover:text-white hover:bg-white/[0.06]'
+                                   : 'text-white/60 hover:text-white hover:bg-white/[0.06]'
                                  }
                                  ${isCollapsed ? 'justify-center' : ''}`}
                     >
@@ -179,9 +179,10 @@ export default function Sidebar({ locale, userRole = 'admin' }: SidebarProps) {
 
                       {isCollapsed && (
                         <div className={`absolute ${isRTL ? 'right-full mr-2' : 'left-full ml-2'}
-                                        px-2.5 py-1.5 rounded-lg glass-strong text-white text-[11px] font-semibold
+                                        px-2.5 py-1.5 rounded-lg bg-brand-deep text-white text-[11px] font-semibold
                                         opacity-0 invisible group-hover:opacity-100 group-hover:visible
-                                        transition-all duration-200 whitespace-nowrap z-50`}>
+                                        transition-all duration-200 whitespace-nowrap z-50
+                                        shadow-[0_4px_12px_rgba(0,0,0,0.2)]`}>
                           {t(`navigation.${item.key}`)}
                         </div>
                       )}

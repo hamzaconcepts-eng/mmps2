@@ -41,7 +41,7 @@ export default async function ClassesPage({ params }: { params: Promise<{ locale
               return (
                 <Table.Row key={cls.id}>
                   <Table.Cell>
-                    <Link href={`/${locale}/classes/${cls.id}`} className="font-semibold text-white hover:text-brand-teal transition-colors">
+                    <Link href={`/${locale}/classes/${cls.id}`} className="font-semibold text-text-primary hover:text-brand-teal transition-colors">
                       {locale === 'ar' ? cls.name_ar : cls.name}
                     </Link>
                   </Table.Cell>

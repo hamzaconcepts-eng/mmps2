@@ -57,7 +57,7 @@ export default function AdminUsersPage() {
     <div className="space-y-4 max-w-[900px]">
       {/* Header */}
       <div>
-        <h1 className="text-xl font-extrabold text-white mb-0.5">
+        <h1 className="text-xl font-extrabold text-text-primary mb-0.5">
           {t('admin.userManagement')}
         </h1>
         <p className="text-xs text-text-secondary">
@@ -68,10 +68,10 @@ export default function AdminUsersPage() {
       {/* Create User Form */}
       <Card padding="lg">
         <div className="flex items-center gap-2.5 mb-5">
-          <div className="w-9 h-9 rounded-lg bg-accent-orange/80 flex items-center justify-center border border-white/15">
+          <div className="w-9 h-9 rounded-lg bg-accent-orange/80 flex items-center justify-center border border-gray-200">
             <UserPlus size={18} className="text-white" />
           </div>
-          <h2 className="text-base font-extrabold text-white">
+          <h2 className="text-base font-extrabold text-text-primary">
             {t('admin.createUser')}
           </h2>
         </div>
@@ -128,7 +128,7 @@ export default function AdminUsersPage() {
                     value={formData.password}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                     className={`w-full glass-input rounded-md
-                             px-3 py-2.5 text-sm text-white placeholder:text-text-tertiary
+                             px-3 py-2.5 text-sm text-text-primary placeholder:text-text-tertiary
                              focus:outline-none
                              transition-all disabled:opacity-50
                              ${isRTL ? 'pl-10' : 'pr-10'}`}
@@ -228,17 +228,17 @@ export default function AdminUsersPage() {
 
       {/* Instructions */}
       <Card padding="md">
-        <h3 className="text-sm font-extrabold text-white mb-3">
+        <h3 className="text-sm font-extrabold text-text-primary mb-3">
           {t('admin.instructions')}
         </h3>
         <ul className="space-y-1.5 text-[11px] text-text-secondary">
           <li className="flex gap-2">
             <span className="text-accent-orange font-bold">1.</span>
-            <span><strong className="text-white">{t('auth.username')}</strong>: {t('admin.usernameRule')}</span>
+            <span><strong className="text-text-primary">{t('auth.username')}</strong>: {t('admin.usernameRule')}</span>
           </li>
           <li className="flex gap-2">
             <span className="text-accent-orange font-bold">2.</span>
-            <span><strong className="text-white">{t('auth.password')}</strong>: {t('admin.passwordRule')}</span>
+            <span><strong className="text-text-primary">{t('auth.password')}</strong>: {t('admin.passwordRule')}</span>
           </li>
           <li className="flex gap-2">
             <span className="text-accent-orange font-bold">3.</span>

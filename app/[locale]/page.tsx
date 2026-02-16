@@ -63,12 +63,12 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                   width={90}
                   height={90}
                   className="relative"
-                  style={{ filter: 'brightness(0) invert(1) drop-shadow(0 4px 20px rgba(115,192,207,0.3))' }}
+                  style={{ filter: 'drop-shadow(0 4px 20px rgba(115,192,207,0.3))' }}
                 />
               </div>
             </div>
 
-            <h1 className="text-2xl font-black text-white text-center leading-tight mb-1" dir={isRTL ? 'rtl' : 'ltr'}>
+            <h1 className="text-2xl font-black text-text-primary text-center leading-tight mb-1" dir={isRTL ? 'rtl' : 'ltr'}>
               {t('common.schoolName')}
             </h1>
             <p className="text-xs text-text-secondary text-center mb-6">{t('landing.subtitle')}</p>
@@ -115,7 +115,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       </div>
 
       {/* Footer strip */}
-      <footer className="px-8 py-3 flex-shrink-0 border-t border-white/[0.06] relative z-10">
+      <footer className="px-8 py-3 flex-shrink-0 border-t border-gray-200 relative z-10">
         <p className="text-[11px] text-text-tertiary text-center font-medium">
           {t('landing.footer')}
         </p>

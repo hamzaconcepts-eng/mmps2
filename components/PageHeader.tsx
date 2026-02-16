@@ -8,7 +8,7 @@ export default function PageHeader({ title, subtitle, actions }: PageHeaderProps
   return (
     <div className="flex justify-between items-start mb-5">
       <div>
-        <h1 className="text-xl font-extrabold text-white">{title}</h1>
+        <h1 className="text-xl font-extrabold text-text-primary">{title}</h1>
         {subtitle && (
           <p className="text-[11px] text-text-tertiary mt-0.5 font-medium">{subtitle}</p>
         )}

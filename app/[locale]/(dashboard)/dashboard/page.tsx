@@ -30,7 +30,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
       {/* Header */}
       <div className="flex justify-between items-center mb-5">
         <div>
-          <h1 className="text-xl font-extrabold text-white">{t('dashboard.title')}</h1>
+          <h1 className="text-xl font-extrabold text-text-primary">{t('dashboard.title')}</h1>
           <p className="text-[11px] text-text-tertiary mt-0.5 font-medium">
             {t('dashboard.academicYear')} 2025-2026
           </p>
@@ -39,7 +39,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
           <Button variant="accent" size="sm" icon={<Plus size={14} />}>
             {t('dashboard.quickAction')}
           </Button>
-          <button className="relative p-2 glass rounded-lg hover:bg-white/[0.14] transition-all">
+          <button className="relative p-2 glass rounded-lg hover:bg-black/[0.04] transition-all">
             <Bell size={15} className="text-text-secondary" />
             <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-accent-orange rounded-full" />
           </button>
@@ -76,7 +76,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
                 {recentStudents.map((student: any, i: number) => (
                   <Table.Row key={i}>
                     <Table.Cell className="text-text-secondary font-mono text-[11px]">{student.student_id}</Table.Cell>
-                    <Table.Cell className="font-semibold text-white">{formatStudentName(student, locale)}</Table.Cell>
+                    <Table.Cell className="font-semibold text-text-primary">{formatStudentName(student, locale)}</Table.Cell>
                     <Table.Cell className="text-text-secondary">
                       {student.classes ? (locale === 'ar' ? student.classes.name_ar : student.classes.name) : '—'}
                     </Table.Cell>
@@ -98,10 +98,10 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
                 { label: t('finance.pending'), sub: `${stats.pendingCount} ${t('navigation.invoices')}`, color: 'bg-warning' },
                 { label: t('finance.overdue'), sub: `${stats.overdueCount} ${t('navigation.invoices')}`, color: 'bg-danger' },
               ].map((item, i, arr) => (
-                <div key={i} className={`flex gap-2.5 ${i < arr.length - 1 ? 'pb-3 border-b border-white/[0.06]' : ''}`}>
+                <div key={i} className={`flex gap-2.5 ${i < arr.length - 1 ? 'pb-3 border-b border-gray-100' : ''}`}>
                   <div className={`w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0 ${item.color}`} />
                   <div className="flex-1 min-w-0">
-                    <p className="text-[12px] font-bold text-white">{item.label}</p>
+                    <p className="text-[12px] font-bold text-text-primary">{item.label}</p>
                     <p className="text-[10px] text-text-tertiary mt-0.5">{item.sub}</p>
                   </div>
                 </div>

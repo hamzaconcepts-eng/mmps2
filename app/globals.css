@@ -11,9 +11,8 @@
   }
 
   body {
-    background: linear-gradient(135deg, #1B4A54 0%, #1F5560 25%, #2A6E72 50%, #1D4F5A 75%, #1B4A54 100%);
-    background-attachment: fixed;
-    color: #FFFFFF;
+    background: #F5F7FA;
+    color: #1E3A40;
     font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -36,40 +35,58 @@
     outline-offset: 2px;
   }
 
-  /* Scrollbar — subtle glass style */
+  /* Scrollbar — subtle on light background */
   ::-webkit-scrollbar { width: 6px; height: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
-  ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+  ::-webkit-scrollbar-thumb { background: rgba(30,58,64,0.15); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(30,58,64,0.25); }
 }
 
 @layer components {
-  /* ── Glass Card (no backdrop-filter for GPU performance) ── */
+  /* ── Card (white on light background) ── */
   .glass {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
   }
 
   .glass-strong {
-    background: rgba(255, 255, 255, 0.14);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
   }
 
   .glass-subtle {
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: #FAFBFC;
+    border: 1px solid rgba(0, 0, 0, 0.04);
   }
 
-  /* ── Glass Input ── */
+  /* ── Input ── */
   .glass-input {
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.12);
     transition: all 0.2s ease;
+    color: #1E3A40;
   }
   .glass-input:focus {
-    background: rgba(255, 255, 255, 0.12);
+    background: #FFFFFF;
+    border-color: #73C0CF;
+    box-shadow: 0 0 0 3px rgba(115, 192, 207, 0.15);
+  }
+
+  /* ── Sidebar dark theme (override for dark sidebar on light page) ── */
+  .sidebar-dark {
+    background: linear-gradient(180deg, rgba(37,78,88,0.98), rgba(27,74,84,1));
+    border-right: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .sidebar-dark .glass-input {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #FFFFFF;
+  }
+  .sidebar-dark .glass-input:focus {
+    background: rgba(255,255,255,0.12);
     border-color: rgba(115, 192, 207, 0.5);
     box-shadow: 0 0 20px rgba(115, 192, 207, 0.1);
   }

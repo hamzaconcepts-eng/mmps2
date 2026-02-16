@@ -142,16 +142,16 @@ export default async function InvoiceDetailPage({
               {lineItems.map((item: any, idx: number) => (
                 <Table.Row key={item.id}>
                   <Table.Cell className="text-text-tertiary text-[11px]">{idx + 1}</Table.Cell>
-                  <Table.Cell className="text-white font-semibold text-[12px]">
+                  <Table.Cell className="text-text-primary font-semibold text-[12px]">
                     {isAr ? item.description_ar || item.description : item.description}
                   </Table.Cell>
-                  <Table.Cell className="text-white font-semibold text-[12px]">{formatCurrency(item.amount)}</Table.Cell>
+                  <Table.Cell className="text-text-primary font-semibold text-[12px]">{formatCurrency(item.amount)}</Table.Cell>
                 </Table.Row>
               ))}
               <Table.Row>
                 <Table.Cell>{' '}</Table.Cell>
-                <Table.Cell className="text-white font-bold text-[12px]">{t('common.total')}</Table.Cell>
-                <Table.Cell className="text-white font-bold text-[12px]">{formatCurrency(invoice.total_amount)}</Table.Cell>
+                <Table.Cell className="text-text-primary font-bold text-[12px]">{t('common.total')}</Table.Cell>
+                <Table.Cell className="text-text-primary font-bold text-[12px]">{formatCurrency(invoice.total_amount)}</Table.Cell>
               </Table.Row>
             </Table.Body>
           </Table>
@@ -205,7 +205,7 @@ function InfoRow({ label, value, children }: { label: string; value?: string; ch
   return (
     <div className="flex justify-between items-center">
       <span className="text-[11px] text-text-tertiary font-medium">{label}</span>
-      {children || <span className="text-[12px] text-white font-semibold">{value || '—'}</span>}
+      {children || <span className="text-[12px] text-text-primary font-semibold">{value || '—'}</span>}
     </div>
   );
 }

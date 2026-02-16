@@ -9,8 +9,8 @@ const variantStyles: Record<string, string> = {
   accent: 'bg-accent-orange text-white shadow-[0_4px_20px_rgba(240,144,33,0.3)] hover:shadow-[0_8px_30px_rgba(240,144,33,0.4)]',
   success: 'bg-success text-white hover:brightness-110',
   danger: 'bg-danger text-white hover:brightness-110',
-  glass: 'glass text-white hover:bg-white/[0.16]',
-  ghost: 'bg-transparent text-text-secondary hover:text-white hover:bg-white/[0.06]',
+  glass: 'glass text-text-primary hover:bg-gray-50',
+  ghost: 'bg-transparent text-text-secondary hover:text-text-primary hover:bg-black/[0.04]',
 };
 
 const sizeStyles: Record<string, string> = {

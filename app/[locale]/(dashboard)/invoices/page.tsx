@@ -73,7 +73,7 @@ export default async function InvoicesPage({
             className={`px-3 py-1.5 rounded-lg text-[11px] font-bold transition-all
               ${statusFilter === s
                 ? 'bg-accent-orange/85 text-white shadow-[0_2px_12px_rgba(240,144,33,0.25)]'
-                : 'glass text-text-secondary hover:text-white hover:bg-white/[0.1]'}`}
+                : 'glass text-text-secondary hover:text-text-primary hover:bg-black/[0.04]'}`}
           >
             {s ? t(`finance.${s}`) : t('common.all')}
           </Link>
@@ -104,13 +104,13 @@ export default async function InvoicesPage({
                       {inv.invoice_number}
                     </Link>
                   </Table.Cell>
-                  <Table.Cell className="font-semibold text-white text-[11px]">
+                  <Table.Cell className="font-semibold text-text-primary text-[11px]">
                     {inv.students ? formatStudentName(inv.students, locale) : '—'}
                   </Table.Cell>
                   <Table.Cell className="text-text-secondary text-[11px]">
                     {inv.students?.classes ? (locale === 'ar' ? inv.students.classes.name_ar : inv.students.classes.name) : '—'}
                   </Table.Cell>
-                  <Table.Cell className="text-white font-semibold text-[11px]">{formatCurrency(inv.total_amount)}</Table.Cell>
+                  <Table.Cell className="text-text-primary font-semibold text-[11px]">{formatCurrency(inv.total_amount)}</Table.Cell>
                   <Table.Cell className="text-success text-[11px]">{formatCurrency(inv.paid_amount)}</Table.Cell>
                   <Table.Cell className={`text-[11px] ${due > 0 ? 'text-brand-orange font-semibold' : 'text-text-tertiary'}`}>
                     {formatCurrency(due)}
@@ -125,7 +125,7 @@ export default async function InvoicesPage({
           </Table.Body>
         </Table>
 
-        <div className="flex items-center justify-between px-2 pt-3 border-t border-white/[0.06]">
+        <div className="flex items-center justify-between px-2 pt-3 border-t border-gray-100">
           <p className="text-[11px] text-text-tertiary">
             {t('common.showing')} {from + 1}-{Math.min(to + 1, totalCount)} {t('common.of')} {totalCount}
           </p>

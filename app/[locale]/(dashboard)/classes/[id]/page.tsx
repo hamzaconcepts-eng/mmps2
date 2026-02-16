@@ -148,12 +148,12 @@ export default async function ClassDetailPage({
               {subjectAssignments.map((sa: any) => (
                 <Table.Row key={sa.id}>
                   <Table.Cell className="font-mono text-[11px] text-brand-teal">{sa.subjects?.code || '—'}</Table.Cell>
-                  <Table.Cell className="text-white font-semibold text-[11px]">
+                  <Table.Cell className="text-text-primary font-semibold text-[11px]">
                     {sa.subjects ? formatSubjectName(sa.subjects, locale) : '—'}
                   </Table.Cell>
                   <Table.Cell>
                     {sa.teachers ? (
-                      <Link href={`/${locale}/teachers/${sa.teachers.id}`} className="text-[11px] text-white hover:text-brand-teal transition-colors">
+                      <Link href={`/${locale}/teachers/${sa.teachers.id}`} className="text-[11px] text-text-primary hover:text-brand-teal transition-colors">
                         {formatTeacherName(sa.teachers, locale)}
                       </Link>
                     ) : <span className="text-text-tertiary text-[11px]">—</span>}
@@ -194,7 +194,7 @@ export default async function ClassDetailPage({
                     </Link>
                   </Table.Cell>
                   <Table.Cell>
-                    <Link href={`/${locale}/students/${student.id}`} className="font-semibold text-white hover:text-brand-teal transition-colors text-[12px]">
+                    <Link href={`/${locale}/students/${student.id}`} className="font-semibold text-text-primary hover:text-brand-teal transition-colors text-[12px]">
                       {formatStudentName(student, locale)}
                     </Link>
                   </Table.Cell>
@@ -219,7 +219,7 @@ function InfoRow({ label, value, children }: { label: string; value?: string; ch
   return (
     <div className="flex justify-between items-center">
       <span className="text-[11px] text-text-tertiary font-medium">{label}</span>
-      {children || <span className="text-[12px] text-white font-semibold">{value || '—'}</span>}
+      {children || <span className="text-[12px] text-text-primary font-semibold">{value || '—'}</span>}
     </div>
   );
 }

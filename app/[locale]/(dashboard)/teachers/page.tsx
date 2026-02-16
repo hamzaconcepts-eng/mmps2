@@ -80,7 +80,7 @@ export default async function TeachersPage({
                     </Link>
                   </Table.Cell>
                   <Table.Cell>
-                    <Link href={`/${locale}/teachers/${teacher.id}`} className="font-semibold text-white hover:text-brand-teal transition-colors">
+                    <Link href={`/${locale}/teachers/${teacher.id}`} className="font-semibold text-text-primary hover:text-brand-teal transition-colors">
                       {formatTeacherName(teacher, locale)}
                     </Link>
                   </Table.Cell>

@@ -20,8 +20,8 @@ export default function LanguageSwitcher({ className = '', variant = 'dark' }: L
   };
 
   const styles = variant === 'light'
-    ? 'bg-white/40 border-white/50 text-[#254E58]/60 hover:bg-white/60 hover:text-[#254E58]'
-    : 'glass text-text-secondary hover:bg-white/[0.16] hover:text-white';
+    ? 'bg-black/[0.03] border-gray-200 text-text-secondary hover:bg-black/[0.06] hover:text-text-primary'
+    : 'glass text-text-secondary hover:bg-black/[0.04] hover:text-text-primary';
 
   return (
     <button

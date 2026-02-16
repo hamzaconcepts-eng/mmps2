@@ -43,7 +43,7 @@ export default async function TransportPage({ params }: { params: Promise<{ loca
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <Bus size={14} className="text-accent-orange" />
-                            <span className="text-[12px] font-bold text-white">{bus.bus_number}</span>
+                            <span className="text-[12px] font-bold text-text-primary">{bus.bus_number}</span>
                           </div>
                           <Badge variant={count >= bus.capacity ? 'danger' : 'success'}>
                             {count}/{bus.capacity}
@@ -52,11 +52,11 @@ export default async function TransportPage({ params }: { params: Promise<{ loca
                         <div className="space-y-1 text-[11px]">
                           <div className="flex justify-between">
                             <span className="text-text-tertiary">{t('transport.plateNumber')}</span>
-                            <span className="text-white font-mono">{bus.plate_number || '—'}</span>
+                            <span className="text-text-primary font-mono">{bus.plate_number || '—'}</span>
                           </div>
                           <div className="flex justify-between">
                             <span className="text-text-tertiary">{t('transport.driverName')}</span>
-                            <span className="text-white">{isAr ? bus.driver_name_ar : bus.driver_name}</span>
+                            <span className="text-text-primary">{isAr ? bus.driver_name_ar : bus.driver_name}</span>
                           </div>
                           <div className="flex justify-between">
                             <span className="text-text-tertiary">{t('transport.driverPhone')}</span>
