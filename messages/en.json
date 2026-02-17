@@ -228,6 +228,9 @@
     "saving": "Saving...",
     "updateSuccess": "Updated successfully",
     "updateFailed": "Failed to update",
+    "addStudent": "Add Student",
+    "createSuccess": "Student created successfully",
+    "createFailed": "Failed to create student",
     "unauthorized": "Unauthorized"
   },
   "teacher": {

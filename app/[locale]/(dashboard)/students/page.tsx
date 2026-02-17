@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import Link from 'next/link';
 import { Users, Plus } from 'lucide-react';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { getClassesList } from '@/lib/supabase/cached-queries';
@@ -147,9 +148,11 @@ export default async function StudentsPage({
         title={t('student.allStudents')}
         subtitle={`${totalCount} ${t('navigation.students')}`}
         actions={
-          <Button variant="accent" size="sm" icon={<Plus size={14} />}>
-            {t('common.add')} {t('student.name')}
-          </Button>
+          <Link href={`/${locale}/students/new`}>
+            <Button variant="accent" size="sm" icon={<Plus size={14} />}>
+              {t('student.addStudent')}
+            </Button>
+          </Link>
         }
       />
 

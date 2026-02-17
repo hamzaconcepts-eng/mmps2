@@ -228,6 +228,9 @@
     "saving": "جاري الحفظ...",
     "updateSuccess": "تم التحديث بنجاح",
     "updateFailed": "فشل التحديث",
+    "addStudent": "إضافة طالب",
+    "createSuccess": "تم إضافة الطالب بنجاح",
+    "createFailed": "فشل إضافة الطالب",
     "unauthorized": "غير مصرح"
   },
   "teacher": {
