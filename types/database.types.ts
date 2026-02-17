@@ -68,6 +68,7 @@ export interface Database {
           specialization: string | null
           specialization_ar: string | null
           qualifications: string | null
+          national_id: string | null
           photo_url: string | null
           is_active: boolean
           created_at: string
@@ -89,6 +90,7 @@ export interface Database {
           specialization?: string | null
           specialization_ar?: string | null
           qualifications?: string | null
+          national_id?: string | null
           photo_url?: string | null
           is_active?: boolean
           created_at?: string
@@ -110,6 +112,7 @@ export interface Database {
           specialization?: string | null
           specialization_ar?: string | null
           qualifications?: string | null
+          national_id?: string | null
           photo_url?: string | null
           is_active?: boolean
           created_at?: string
@@ -237,6 +240,7 @@ export interface Database {
           plate_number: string | null
           driver_name: string
           driver_name_ar: string
+          driver_national_id: string | null
           driver_phone: string
           capacity: number
           transport_area_id: string
@@ -250,6 +254,7 @@ export interface Database {
           plate_number?: string | null
           driver_name: string
           driver_name_ar: string
+          driver_national_id?: string | null
           driver_phone: string
           capacity?: number
           transport_area_id: string
@@ -263,6 +268,7 @@ export interface Database {
           plate_number?: string | null
           driver_name?: string
           driver_name_ar?: string
+          driver_national_id?: string | null
           driver_phone?: string
           capacity?: number
           transport_area_id?: string
