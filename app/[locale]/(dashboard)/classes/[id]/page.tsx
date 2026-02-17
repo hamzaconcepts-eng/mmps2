@@ -1,25 +1,34 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, School, Users, BookOpen, GraduationCap } from 'lucide-react';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { formatGradeLevel, formatTeacherName, formatStudentName, formatClassName, formatSubjectName } from '@/lib/utils/format';
 import PageHeader from '@/components/PageHeader';
+import PrintButton from '@/components/PrintButton';
+import AutoPrint from '@/components/AutoPrint';
+import EntityActions from '@/components/EntityActions';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Table } from '@/components/ui/Table';
+import { deleteClass } from './actions';
 
 export default async function ClassDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string; id: string }>;
+  searchParams: Promise<{ print?: string }>;
 }) {
   const { locale, id } = await params;
+  const sp = await searchParams;
   setRequestLocale(locale);
   const t = await getTranslations();
   const supabase = createAdminClient();
   const isAr = locale === 'ar';
+  const isPrint = sp?.print === '1';
 
   // All queries in parallel
   const [clsRes, studentsRes, subjectsRes] = await Promise.all([
@@ -46,19 +55,67 @@ export default async function ClassDetailPage({
   const students = studentsRes.data || [];
   const subjectAssignments = subjectsRes.data || [];
 
+  const printDate = new Date().toLocaleDateString(isAr ? 'ar-OM' : 'en-GB', {
+    year: 'numeric', month: 'long', day: 'numeric',
+  });
+
   return (
     <div className="max-w-[1100px]">
-      <PageHeader
-        title={formatClassName(cls, locale)}
-        subtitle={`${formatGradeLevel(cls.grade_level, locale)} · ${t('class.section')} ${cls.section} · ${t('class.academicYear')} ${cls.academic_year}`}
-        actions={
-          <Link href={`/${locale}/classes`}>
-            <Button variant="glass" size="sm" icon={<ArrowLeft size={14} />}>
-              {t('common.back')}
-            </Button>
-          </Link>
-        }
-      />
+      {isPrint && <AutoPrint />}
+
+      {/* Print-only header */}
+      <div className="print-header hidden print:flex items-center gap-3 pb-2 mb-3 border-b border-gray-300">
+        <Image src="/logo.svg" alt="" width={40} height={40} className="print-logo" />
+        <div className="flex-1">
+          <p className="print-school-name font-bold text-[14px] text-black leading-tight">
+            {t('common.schoolName')}
+          </p>
+          <p className="print-date text-[9px] text-gray-500">{printDate}</p>
+        </div>
+      </div>
+
+      {/* Print-only class banner */}
+      <div className="print-student-banner hidden print:flex items-center gap-4 py-4 mb-4 border-b border-gray-200">
+        <div>
+          <h2 className="print-student-name text-[16px] font-extrabold text-black leading-tight">
+            {formatClassName(cls, locale)}
+          </h2>
+          <p className="text-[9px] text-gray-500 mt-1">
+            {formatGradeLevel(cls.grade_level, locale)} · {t('class.section')} {cls.section} · {students.length} {t('class.students')}
+          </p>
+        </div>
+      </div>
+
+      <div className="print:hidden">
+        <PageHeader
+          title={formatClassName(cls, locale)}
+          subtitle={`${formatGradeLevel(cls.grade_level, locale)} · ${t('class.section')} ${cls.section} · ${t('class.academicYear')} ${cls.academic_year}`}
+          actions={
+            <div className="flex items-center gap-2">
+              <EntityActions
+                entityId={id}
+                editHref={`/${locale}/classes/${id}/edit`}
+                deleteAction={deleteClass}
+                redirectHref={`/${locale}/classes`}
+                labels={{
+                  edit: t('class.editClass'),
+                  delete: t('class.deleteClass'),
+                  confirmTitle: t('common.confirmDelete'),
+                  confirmMessage: t('common.confirmDeleteMessage'),
+                  cancel: t('common.cancel'),
+                  deleting: t('class.deleting'),
+                }}
+              />
+              <PrintButton label={t('common.print')} />
+              <Link href={`/${locale}/classes`}>
+                <Button variant="glass" size="sm" icon={<ArrowLeft size={14} />}>
+                  {t('common.back')}
+                </Button>
+              </Link>
+            </div>
+          }
+        />
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 mb-3">
         {/* Class Info */}
@@ -94,7 +151,7 @@ export default async function ClassDetailPage({
           {cls.teachers ? (
             <div className="space-y-2.5">
               <InfoRow label={t('student.fullName')} value={formatTeacherName(cls.teachers, locale)} />
-              <div className="pt-2">
+              <div className="pt-2 print:hidden">
                 <Link href={`/${locale}/teachers/${cls.teachers.id}`}>
                   <Button variant="glass" size="sm">{t('common.viewAll')} {t('teacher.teacherDetails')}</Button>
                 </Link>

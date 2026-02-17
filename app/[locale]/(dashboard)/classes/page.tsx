@@ -1,5 +1,6 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { School } from 'lucide-react';
+import Link from 'next/link';
+import { School, Plus } from 'lucide-react';
 import { getClassesWithCounts } from '@/lib/supabase/cached-queries';
 import { formatGradeLevel, formatTeacherName } from '@/lib/utils/format';
 import PageHeader from '@/components/PageHeader';
@@ -10,6 +11,7 @@ import SortableHead from '@/components/SortableHead';
 import { Card } from '@/components/ui/Card';
 import { Table } from '@/components/ui/Table';
 import { Badge } from '@/components/ui/Badge';
+import { Button } from '@/components/ui/Button';
 
 export default async function ClassesPage({
   params,
@@ -32,6 +34,13 @@ export default async function ClassesPage({
       <PageHeader
         title={t('class.allClasses')}
         subtitle={`${classes.length} ${t('navigation.classes')} · ${t('class.academicYear')} 2025-2026`}
+        actions={
+          <Link href={`/${locale}/classes/new`}>
+            <Button variant="accent" size="sm" icon={<Plus size={14} />}>
+              {t('class.addClass')}
+            </Button>
+          </Link>
+        }
       />
 
       <Card>
