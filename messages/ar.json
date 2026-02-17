@@ -40,7 +40,15 @@
     "status": "الحالة",
     "resetFilters": "إعادة تعيين",
     "comingSoon": "قريباً",
-    "comingSoonDesc": "هذه الميزة قيد التطوير"
+    "comingSoonDesc": "هذه الميزة قيد التطوير",
+    "confirmDelete": "هل أنت متأكد؟",
+    "confirmDeleteMessage": "لا يمكن التراجع عن هذا الإجراء. سيتم حذف جميع السجلات المرتبطة نهائياً.",
+    "deleting": "جاري الحذف...",
+    "editStudent": "تعديل الطالب",
+    "deleteStudent": "حذف الطالب",
+    "saving": "جاري الحفظ...",
+    "updateSuccess": "تم التحديث بنجاح",
+    "updateFailed": "فشل التحديث"
   },
   "navigation": {
     "home": "الرئيسية",
@@ -204,7 +212,23 @@
     "address": "العنوان",
     "nationalId": "الرقم المدني",
     "noLocation": "لا يوجد موقع",
-    "whatsapp": "واتساب"
+    "whatsapp": "واتساب",
+    "firstNameAr": "الاسم الأول (عربي)",
+    "fatherNameAr": "اسم الأب (عربي)",
+    "grandfatherNameAr": "اسم الجد (عربي)",
+    "familyNameAr": "اسم العائلة (عربي)",
+    "englishNames": "الأسماء بالإنجليزية",
+    "arabicNames": "الأسماء بالعربية",
+    "academicInfo": "المعلومات الأكاديمية",
+    "locationMedical": "الموقع والملاحظات الطبية",
+    "gpsLocation": "موقع GPS",
+    "editStudent": "تعديل الطالب",
+    "deleteStudent": "حذف الطالب",
+    "deleting": "جاري الحذف...",
+    "saving": "جاري الحفظ...",
+    "updateSuccess": "تم التحديث بنجاح",
+    "updateFailed": "فشل التحديث",
+    "unauthorized": "غير مصرح"
   },
   "teacher": {
     "employeeId": "رقم الموظف",

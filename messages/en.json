@@ -40,7 +40,15 @@
     "status": "Status",
     "resetFilters": "Reset Filters",
     "comingSoon": "Coming Soon",
-    "comingSoonDesc": "This feature is under development"
+    "comingSoonDesc": "This feature is under development",
+    "confirmDelete": "Are you sure?",
+    "confirmDeleteMessage": "This action cannot be undone. All related records will be permanently deleted.",
+    "deleting": "Deleting...",
+    "editStudent": "Edit Student",
+    "deleteStudent": "Delete Student",
+    "saving": "Saving...",
+    "updateSuccess": "Updated successfully",
+    "updateFailed": "Failed to update"
   },
   "navigation": {
     "home": "Home",
@@ -204,7 +212,23 @@
     "address": "Address",
     "nationalId": "National ID",
     "noLocation": "No Location",
-    "whatsapp": "WhatsApp"
+    "whatsapp": "WhatsApp",
+    "firstNameAr": "First Name (Arabic)",
+    "fatherNameAr": "Father Name (Arabic)",
+    "grandfatherNameAr": "Grandfather Name (Arabic)",
+    "familyNameAr": "Family Name (Arabic)",
+    "englishNames": "English Names",
+    "arabicNames": "Arabic Names",
+    "academicInfo": "Academic Information",
+    "locationMedical": "Location & Medical",
+    "gpsLocation": "GPS Location",
+    "editStudent": "Edit Student",
+    "deleteStudent": "Delete Student",
+    "deleting": "Deleting...",
+    "saving": "Saving...",
+    "updateSuccess": "Updated successfully",
+    "updateFailed": "Failed to update",
+    "unauthorized": "Unauthorized"
   },
   "teacher": {
     "employeeId": "Employee ID",
