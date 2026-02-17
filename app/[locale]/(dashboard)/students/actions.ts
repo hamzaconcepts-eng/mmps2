@@ -1,7 +1,6 @@
 'use server';
 
 import { createAdminClient } from '@/lib/supabase/admin';
-import { getCurrentUserRole, isAdminOrOwner } from '@/lib/auth/get-current-user-role';
 import { revalidatePath } from 'next/cache';
 
 /**
@@ -18,11 +17,6 @@ export async function createStudent(data: {
   transport?: { bus_id: string; transport_area_id: string } | null;
 }) {
   try {
-    const currentUser = await getCurrentUserRole();
-    if (!currentUser || !isAdminOrOwner(currentUser.role)) {
-      return { success: false, error: 'Unauthorized' };
-    }
-
     const supabase = createAdminClient();
     const s = data.student;
     const g = data.guardian;
