@@ -1,9 +1,8 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
-import { notFound, redirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { getCurrentUserRole, isAdminOrOwner } from '@/lib/auth/get-current-user-role';
 import { formatStudentName } from '@/lib/utils/format';
 import PageHeader from '@/components/PageHeader';
 import { Button } from '@/components/ui/Button';
@@ -19,10 +18,9 @@ export default async function StudentEditPage({
   const t = await getTranslations();
   const supabase = createAdminClient();
 
-  // Role gate + all data in parallel
-  const [currentUser, studentRes, classesRes, busesRes, guardianLinkRes, transportRes] =
+  // All data in parallel
+  const [studentRes, classesRes, busesRes, guardianLinkRes, transportRes] =
     await Promise.all([
-      getCurrentUserRole(),
       supabase
         .from('students')
         .select('*')
@@ -52,11 +50,6 @@ export default async function StudentEditPage({
         .eq('academic_year', '2025-2026')
         .maybeSingle(),
     ]);
-
-  // Unauthorized → redirect back to student detail
-  if (!currentUser || !isAdminOrOwner(currentUser.role)) {
-    redirect(`/${locale}/students/${id}`);
-  }
 
   const student = studentRes.data;
   if (!student) notFound();
