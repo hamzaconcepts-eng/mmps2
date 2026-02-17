@@ -81,6 +81,28 @@ export default async function StudentDetailPage({
         </div>
       </div>
 
+      {/* Print-only student banner: large photo + name + ID */}
+      <div className="print-student-banner hidden print:flex items-center gap-4 py-4 mb-4 border-b border-gray-200">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={student.photo_url || getDefaultStudentPhoto(student.gender, student.classes?.grade_level ?? 0, student.id)}
+          alt=""
+          className="print-student-photo rounded-lg object-cover"
+          width={100}
+          height={100}
+        />
+        <div>
+          <h2 className="print-student-name text-[16px] font-extrabold text-black leading-tight">
+            {formatStudentName(student, locale)}
+          </h2>
+          <p className="text-[9px] text-gray-500 mt-1">
+            {t('student.studentId')}: {student.student_id}
+            {student.national_id && ` · ${t('student.nationalId')}: ${student.national_id}`}
+            {` · ${student.is_active ? t('student.active') : t('student.inactive')}`}
+          </p>
+        </div>
+      </div>
+
       <PageHeader
         title={formatStudentName(student, locale)}
         subtitle={`${t('student.studentId')}: ${student.student_id}`}

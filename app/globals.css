@@ -201,18 +201,18 @@
   /* ── Print Header: school logo + name + date ── */
   .print-header {
     display: flex !important;
-    border-bottom: 1pt solid #999 !important;
-    padding-bottom: 4pt !important;
-    margin-bottom: 6pt !important;
+    border-bottom: 1.5pt solid #333 !important;
+    padding-bottom: 6pt !important;
+    margin-bottom: 0 !important;
   }
 
   .print-logo {
-    width: 40px !important;
-    height: 40px !important;
+    width: 36px !important;
+    height: 36px !important;
   }
 
   .print-school-name {
-    font-size: 12pt !important;
+    font-size: 13pt !important;
     font-weight: bold !important;
     color: #000 !important;
     margin-bottom: 0 !important;
@@ -224,40 +224,74 @@
     margin-bottom: 0 !important;
   }
 
-  /* ── Student Detail Page Print ── */
+  /* ── Print Student Banner: large photo + name ── */
+  .print-student-banner {
+    display: flex !important;
+    padding: 10pt 0 !important;
+    margin-bottom: 8pt !important;
+    border-bottom: 0.75pt solid #ccc !important;
+  }
+
+  .print-student-photo {
+    width: 90px !important;
+    height: 90px !important;
+    border-radius: 6pt !important;
+    object-fit: cover !important;
+  }
+
+  .print-student-name {
+    font-size: 16pt !important;
+    font-weight: 800 !important;
+    color: #000 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* ── Student Detail Page Grid ── */
   .student-detail-grid {
-    display: block !important;
-    columns: 2;
-    column-gap: 12pt;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10pt !important;
   }
 
   .student-detail-grid > * {
     break-inside: avoid !important;
     page-break-inside: avoid !important;
-    margin-bottom: 8pt !important;
   }
 
-  /* Give cards a light border for print readability */
+  /* Cards: bordered with padding for print */
   .student-detail-grid .glass {
-    border: 0.5pt solid #ddd !important;
-    padding: 6pt !important;
+    border: 0.75pt solid #ccc !important;
+    padding: 8pt !important;
     border-radius: 4pt !important;
+    background: white !important;
   }
 
-  /* Compact info rows for detail pages */
+  /* Card titles bigger */
+  .student-detail-grid h3 {
+    font-size: 9pt !important;
+    font-weight: bold !important;
+    margin-bottom: 4pt !important;
+  }
+
+  /* Info rows: readable size */
   .student-detail-grid span {
-    font-size: 7pt !important;
-    line-height: 1.3 !important;
+    font-size: 8pt !important;
+    line-height: 1.5 !important;
   }
 
   /* Finance section spans full width */
   .student-detail-grid .lg\:col-span-2 {
-    column-span: all !important;
+    grid-column: 1 / -1 !important;
   }
 
-  /* Smaller photo in print */
+  /* Hide the on-screen photo inside Personal Info card (banner photo replaces it) */
+  .student-detail-grid .flex.gap-4 > div:first-child {
+    display: none !important;
+  }
+
+  /* Remove photo constraint so only banner photo is shown */
   .student-detail-grid img {
-    width: 50px !important;
-    height: 50px !important;
+    width: auto !important;
+    height: auto !important;
   }
 }
