@@ -103,20 +103,22 @@ export default async function StudentDetailPage({
         </div>
       </div>
 
-      <PageHeader
-        title={formatStudentName(student, locale)}
-        subtitle={`${t('student.studentId')}: ${student.student_id}`}
-        actions={
-          <div className="flex items-center gap-2 print:hidden">
-            <PrintButton label={t('common.print')} />
-            <Link href={`/${locale}/students`}>
-              <Button variant="glass" size="sm" icon={<ArrowLeft size={14} />}>
-                {t('common.back')}
-              </Button>
-            </Link>
-          </div>
-        }
-      />
+      <div className="print:hidden">
+        <PageHeader
+          title={formatStudentName(student, locale)}
+          subtitle={`${t('student.studentId')}: ${student.student_id}`}
+          actions={
+            <div className="flex items-center gap-2">
+              <PrintButton label={t('common.print')} />
+              <Link href={`/${locale}/students`}>
+                <Button variant="glass" size="sm" icon={<ArrowLeft size={14} />}>
+                  {t('common.back')}
+                </Button>
+              </Link>
+            </div>
+          }
+        />
+      </div>
 
       <div className="student-detail-grid grid grid-cols-1 lg:grid-cols-2 gap-3">
         {/* Personal Info */}
