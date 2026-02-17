@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { CheckCircle, XCircle, User, GraduationCap, MapPin } from 'lucide-react';
+import { CheckCircle, XCircle, User, GraduationCap, Users, Bus } from 'lucide-react';
 import { Input } from '@/components/ui/Input';
 import { Select } from '@/components/ui/Select';
 import { Button } from '@/components/ui/Button';
@@ -11,52 +11,29 @@ import { updateStudent } from '../actions';
 
 interface StudentEditFormProps {
   student: any;
+  guardian: any;
+  guardianId: string | null;
+  transport: any;
   classes: any[];
+  buses: any[];
   locale: string;
-  labels: {
-    englishNames: string;
-    arabicNames: string;
-    personalInfo: string;
-    academicInfo: string;
-    locationMedical: string;
-    firstName: string;
-    fatherName: string;
-    grandfatherName: string;
-    familyName: string;
-    firstNameAr: string;
-    fatherNameAr: string;
-    grandfatherNameAr: string;
-    familyNameAr: string;
-    dateOfBirth: string;
-    gender: string;
-    male: string;
-    female: string;
-    nationality: string;
-    nationalId: string;
-    class: string;
-    enrollmentDate: string;
-    active: string;
-    inactive: string;
-    status: string;
-    gpsLocation: string;
-    medicalNotes: string;
-    save: string;
-    saving: string;
-    cancel: string;
-    updateSuccess: string;
-    updateFailed: string;
-  };
+  labels: Record<string, string>;
 }
 
 export default function StudentEditForm({
   student,
+  guardian,
+  guardianId,
+  transport,
   classes,
+  buses,
   locale,
   labels,
 }: StudentEditFormProps) {
   const router = useRouter();
   const isAr = locale === 'ar';
 
+  // Student fields
   const [form, setForm] = useState({
     first_name: student.first_name || '',
     father_name: student.father_name || '',
@@ -74,14 +51,50 @@ export default function StudentEditForm({
     enrollment_date: student.enrollment_date || '',
     is_active: student.is_active,
     gps_location: student.gps_location || '',
-    medical_notes: student.medical_notes || '',
   });
+
+  // Guardian fields
+  const [guardianForm, setGuardianForm] = useState({
+    first_name: guardian?.first_name || '',
+    first_name_ar: guardian?.first_name_ar || '',
+    father_name: guardian?.father_name || '',
+    father_name_ar: guardian?.father_name_ar || '',
+    family_name: guardian?.family_name || '',
+    family_name_ar: guardian?.family_name_ar || '',
+    relationship: guardian?.relationship || '',
+    relationship_ar: guardian?.relationship_ar || '',
+    phone: guardian?.phone || '',
+    email: guardian?.email || '',
+  });
+
+  // Transport (optional)
+  const [busId, setBusId] = useState(transport?.bus_id || '');
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
-  const handleChange = (field: string, value: string | boolean) => {
+  const handleStudent = (field: string, value: string | boolean) => {
     setForm((prev) => ({ ...prev, [field]: value }));
+    setMessage(null);
+  };
+
+  const handleGuardian = (field: string, value: string) => {
+    setGuardianForm((prev) => ({ ...prev, [field]: value }));
+    setMessage(null);
+  };
+
+  // When relationship changes, also set the Arabic equivalent
+  const handleRelationship = (value: string) => {
+    const arMap: Record<string, string> = {
+      Father: 'أب',
+      Mother: 'أم',
+      Guardian: 'ولي أمر',
+    };
+    setGuardianForm((prev) => ({
+      ...prev,
+      relationship: value,
+      relationship_ar: arMap[value] || value,
+    }));
     setMessage(null);
   };
 
@@ -90,32 +103,48 @@ export default function StudentEditForm({
     setLoading(true);
     setMessage(null);
 
-    // Build update payload — only send fields that have values
-    const data: Record<string, any> = {
-      first_name: form.first_name,
-      father_name: form.father_name,
-      grandfather_name: form.grandfather_name,
-      family_name: form.family_name,
-      first_name_ar: form.first_name_ar,
-      father_name_ar: form.father_name_ar,
-      grandfather_name_ar: form.grandfather_name_ar,
-      family_name_ar: form.family_name_ar,
-      date_of_birth: form.date_of_birth,
-      gender: form.gender,
-      nationality: form.nationality || null,
-      national_id: form.national_id || null,
-      class_id: form.class_id || null,
-      enrollment_date: form.enrollment_date,
-      is_active: form.is_active,
-      gps_location: form.gps_location || null,
-      medical_notes: form.medical_notes || null,
-    };
+    // Find the bus's transport_area_id
+    const selectedBus = busId ? buses.find((b: any) => b.id === busId) : null;
 
-    const result = await updateStudent(student.id, data);
+    const result = await updateStudent(student.id, {
+      student: {
+        first_name: form.first_name,
+        father_name: form.father_name,
+        grandfather_name: form.grandfather_name,
+        family_name: form.family_name,
+        first_name_ar: form.first_name_ar,
+        father_name_ar: form.father_name_ar,
+        grandfather_name_ar: form.grandfather_name_ar,
+        family_name_ar: form.family_name_ar,
+        date_of_birth: form.date_of_birth,
+        gender: form.gender,
+        nationality: form.nationality || null,
+        national_id: form.national_id || null,
+        class_id: form.class_id || null,
+        enrollment_date: form.enrollment_date,
+        is_active: form.is_active,
+        gps_location: form.gps_location || null,
+      },
+      guardian: {
+        id: guardianId,
+        first_name: guardianForm.first_name,
+        first_name_ar: guardianForm.first_name_ar,
+        father_name: guardianForm.father_name || null,
+        father_name_ar: guardianForm.father_name_ar || null,
+        family_name: guardianForm.family_name,
+        family_name_ar: guardianForm.family_name_ar,
+        relationship: guardianForm.relationship,
+        relationship_ar: guardianForm.relationship_ar || null,
+        phone: guardianForm.phone,
+        email: guardianForm.email || null,
+      },
+      transport: selectedBus
+        ? { bus_id: selectedBus.id, transport_area_id: selectedBus.transport_area_id }
+        : null,
+    });
 
     if (result.success) {
       setMessage({ type: 'success', text: labels.updateSuccess });
-      // Redirect back to student detail after a short delay
       setTimeout(() => {
         router.push(`/${locale}/students/${student.id}`);
         router.refresh();
@@ -129,6 +158,11 @@ export default function StudentEditForm({
   const formatClassName = (cls: any) => {
     if (isAr) return `${cls.name_ar} - ${cls.section}`;
     return `${cls.name} - ${cls.section}`;
+  };
+
+  const formatBusLabel = (bus: any) => {
+    const area = isAr ? bus.transport_areas?.name_ar : bus.transport_areas?.name;
+    return `${bus.bus_number} — ${area || ''}`;
   };
 
   return (
@@ -147,8 +181,14 @@ export default function StudentEditForm({
         </div>
       )}
 
+      {/* Required field note */}
+      <p className="text-xs text-text-tertiary">
+        <span className="text-danger">*</span> {labels.requiredField}
+      </p>
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* English Names */}
+
+        {/* ── Student English Names ── */}
         <Card>
           <Card.Header>
             <div className="flex items-center gap-2">
@@ -157,42 +197,14 @@ export default function StudentEditForm({
             </div>
           </Card.Header>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <Input
-              label={labels.firstName}
-              value={form.first_name}
-              onChange={(e) => handleChange('first_name', e.target.value)}
-              required
-              disabled={loading}
-              locale={locale}
-            />
-            <Input
-              label={labels.fatherName}
-              value={form.father_name}
-              onChange={(e) => handleChange('father_name', e.target.value)}
-              required
-              disabled={loading}
-              locale={locale}
-            />
-            <Input
-              label={labels.grandfatherName}
-              value={form.grandfather_name}
-              onChange={(e) => handleChange('grandfather_name', e.target.value)}
-              required
-              disabled={loading}
-              locale={locale}
-            />
-            <Input
-              label={labels.familyName}
-              value={form.family_name}
-              onChange={(e) => handleChange('family_name', e.target.value)}
-              required
-              disabled={loading}
-              locale={locale}
-            />
+            <Input label={labels.firstName} value={form.first_name} onChange={(e) => handleStudent('first_name', e.target.value)} required disabled={loading} locale={locale} />
+            <Input label={labels.fatherName} value={form.father_name} onChange={(e) => handleStudent('father_name', e.target.value)} required disabled={loading} locale={locale} />
+            <Input label={labels.grandfatherName} value={form.grandfather_name} onChange={(e) => handleStudent('grandfather_name', e.target.value)} required disabled={loading} locale={locale} />
+            <Input label={labels.familyName} value={form.family_name} onChange={(e) => handleStudent('family_name', e.target.value)} required disabled={loading} locale={locale} />
           </div>
         </Card>
 
-        {/* Arabic Names */}
+        {/* ── Student Arabic Names ── */}
         <Card>
           <Card.Header>
             <div className="flex items-center gap-2">
@@ -201,46 +213,14 @@ export default function StudentEditForm({
             </div>
           </Card.Header>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <Input
-              label={labels.firstNameAr}
-              value={form.first_name_ar}
-              onChange={(e) => handleChange('first_name_ar', e.target.value)}
-              required
-              disabled={loading}
-              locale={locale}
-              dir="rtl"
-            />
-            <Input
-              label={labels.fatherNameAr}
-              value={form.father_name_ar}
-              onChange={(e) => handleChange('father_name_ar', e.target.value)}
-              required
-              disabled={loading}
-              locale={locale}
-              dir="rtl"
-            />
-            <Input
-              label={labels.grandfatherNameAr}
-              value={form.grandfather_name_ar}
-              onChange={(e) => handleChange('grandfather_name_ar', e.target.value)}
-              required
-              disabled={loading}
-              locale={locale}
-              dir="rtl"
-            />
-            <Input
-              label={labels.familyNameAr}
-              value={form.family_name_ar}
-              onChange={(e) => handleChange('family_name_ar', e.target.value)}
-              required
-              disabled={loading}
-              locale={locale}
-              dir="rtl"
-            />
+            <Input label={labels.firstNameAr} value={form.first_name_ar} onChange={(e) => handleStudent('first_name_ar', e.target.value)} required disabled={loading} locale={locale} dir="rtl" />
+            <Input label={labels.fatherNameAr} value={form.father_name_ar} onChange={(e) => handleStudent('father_name_ar', e.target.value)} required disabled={loading} locale={locale} dir="rtl" />
+            <Input label={labels.grandfatherNameAr} value={form.grandfather_name_ar} onChange={(e) => handleStudent('grandfather_name_ar', e.target.value)} required disabled={loading} locale={locale} dir="rtl" />
+            <Input label={labels.familyNameAr} value={form.family_name_ar} onChange={(e) => handleStudent('family_name_ar', e.target.value)} required disabled={loading} locale={locale} dir="rtl" />
           </div>
         </Card>
 
-        {/* Personal Info */}
+        {/* ── Personal Info ── */}
         <Card>
           <Card.Header>
             <div className="flex items-center gap-2">
@@ -249,44 +229,17 @@ export default function StudentEditForm({
             </div>
           </Card.Header>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <Input
-              label={labels.dateOfBirth}
-              type="date"
-              value={form.date_of_birth}
-              onChange={(e) => handleChange('date_of_birth', e.target.value)}
-              required
-              disabled={loading}
-              locale={locale}
-            />
-            <Select
-              label={labels.gender}
-              value={form.gender}
-              onChange={(e) => handleChange('gender', e.target.value)}
-              required
-              disabled={loading}
-              locale={locale}
-            >
+            <Input label={labels.dateOfBirth} type="date" value={form.date_of_birth} onChange={(e) => handleStudent('date_of_birth', e.target.value)} required disabled={loading} locale={locale} />
+            <Select label={labels.gender} value={form.gender} onChange={(e) => handleStudent('gender', e.target.value)} required disabled={loading} locale={locale}>
               <option value="male">{labels.male}</option>
               <option value="female">{labels.female}</option>
             </Select>
-            <Input
-              label={labels.nationality}
-              value={form.nationality}
-              onChange={(e) => handleChange('nationality', e.target.value)}
-              disabled={loading}
-              locale={locale}
-            />
-            <Input
-              label={labels.nationalId}
-              value={form.national_id}
-              onChange={(e) => handleChange('national_id', e.target.value)}
-              disabled={loading}
-              locale={locale}
-            />
+            <Input label={labels.nationality} value={form.nationality} onChange={(e) => handleStudent('nationality', e.target.value)} required disabled={loading} locale={locale} />
+            <Input label={labels.nationalId} value={form.national_id} onChange={(e) => handleStudent('national_id', e.target.value)} required disabled={loading} locale={locale} />
           </div>
         </Card>
 
-        {/* Academic Info */}
+        {/* ── Academic Info ── */}
         <Card>
           <Card.Header>
             <div className="flex items-center gap-2">
@@ -295,13 +248,7 @@ export default function StudentEditForm({
             </div>
           </Card.Header>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <Select
-              label={labels.class}
-              value={form.class_id}
-              onChange={(e) => handleChange('class_id', e.target.value)}
-              disabled={loading}
-              locale={locale}
-            >
+            <Select label={labels.class} value={form.class_id} onChange={(e) => handleStudent('class_id', e.target.value)} required disabled={loading} locale={locale}>
               <option value="">—</option>
               {classes.map((cls) => (
                 <option key={cls.id} value={cls.id}>
@@ -309,80 +256,69 @@ export default function StudentEditForm({
                 </option>
               ))}
             </Select>
-            <Input
-              label={labels.enrollmentDate}
-              type="date"
-              value={form.enrollment_date}
-              onChange={(e) => handleChange('enrollment_date', e.target.value)}
-              required
-              disabled={loading}
-              locale={locale}
-            />
-            <Select
-              label={labels.status}
-              value={form.is_active ? 'active' : 'inactive'}
-              onChange={(e) => handleChange('is_active', e.target.value === 'active')}
-              disabled={loading}
-              locale={locale}
-            >
+            <Input label={labels.enrollmentDate} type="date" value={form.enrollment_date} onChange={(e) => handleStudent('enrollment_date', e.target.value)} required disabled={loading} locale={locale} />
+            <Select label={labels.status} value={form.is_active ? 'active' : 'inactive'} onChange={(e) => handleStudent('is_active', e.target.value === 'active')} disabled={loading} locale={locale}>
               <option value="active">{labels.active}</option>
               <option value="inactive">{labels.inactive}</option>
             </Select>
           </div>
         </Card>
 
-        {/* Location & Medical — full width */}
-        <div className="lg:col-span-2">
-          <Card>
-            <Card.Header>
-              <div className="flex items-center gap-2">
-                <MapPin size={15} className="text-danger" />
-                <Card.Title>{labels.locationMedical}</Card.Title>
-              </div>
-            </Card.Header>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <Input
-                label={labels.gpsLocation}
-                value={form.gps_location}
-                onChange={(e) => handleChange('gps_location', e.target.value)}
-                placeholder="https://maps.google.com/..."
-                disabled={loading}
-                locale={locale}
-              />
-              <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-text-secondary">
-                  {labels.medicalNotes}
-                </label>
-                <textarea
-                  value={form.medical_notes}
-                  onChange={(e) => handleChange('medical_notes', e.target.value)}
-                  disabled={loading}
-                  rows={3}
-                  className="w-full glass-input rounded-md py-2.5 px-3 text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none transition-all resize-none"
-                />
-              </div>
+        {/* ── Guardian Info ── */}
+        <Card>
+          <Card.Header>
+            <div className="flex items-center gap-2">
+              <Users size={15} className="text-brand-teal" />
+              <Card.Title>{labels.guardianInfo}</Card.Title>
             </div>
-          </Card>
-        </div>
+          </Card.Header>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <Input label={labels.guardianFirstName} value={guardianForm.first_name} onChange={(e) => handleGuardian('first_name', e.target.value)} required disabled={loading} locale={locale} />
+            <Input label={labels.guardianFirstNameAr} value={guardianForm.first_name_ar} onChange={(e) => handleGuardian('first_name_ar', e.target.value)} required disabled={loading} locale={locale} dir="rtl" />
+            <Input label={labels.guardianFatherName} value={guardianForm.father_name} onChange={(e) => handleGuardian('father_name', e.target.value)} disabled={loading} locale={locale} />
+            <Input label={labels.guardianFatherNameAr} value={guardianForm.father_name_ar} onChange={(e) => handleGuardian('father_name_ar', e.target.value)} disabled={loading} locale={locale} dir="rtl" />
+            <Input label={labels.guardianFamilyName} value={guardianForm.family_name} onChange={(e) => handleGuardian('family_name', e.target.value)} required disabled={loading} locale={locale} />
+            <Input label={labels.guardianFamilyNameAr} value={guardianForm.family_name_ar} onChange={(e) => handleGuardian('family_name_ar', e.target.value)} required disabled={loading} locale={locale} dir="rtl" />
+            <Select label={labels.relationship} value={guardianForm.relationship} onChange={(e) => handleRelationship(e.target.value)} required disabled={loading} locale={locale}>
+              <option value="">{labels.selectRelationship}</option>
+              <option value="Father">{labels.father}</option>
+              <option value="Mother">{labels.mother}</option>
+              <option value="Guardian">{labels.guardianRelative}</option>
+            </Select>
+            <Input label={labels.guardianPhone} value={guardianForm.phone} onChange={(e) => handleGuardian('phone', e.target.value)} required disabled={loading} locale={locale} placeholder="91234567" />
+            <Input label={labels.guardianEmail} value={guardianForm.email} onChange={(e) => handleGuardian('email', e.target.value)} disabled={loading} locale={locale} type="email" />
+          </div>
+        </Card>
+
+        {/* ── Transport + Location (optional) ── */}
+        <Card>
+          <Card.Header>
+            <div className="flex items-center gap-2">
+              <Bus size={15} className="text-warning" />
+              <Card.Title>{labels.transportSection}</Card.Title>
+            </div>
+          </Card.Header>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <Select label={labels.selectBus} value={busId} onChange={(e) => setBusId(e.target.value)} disabled={loading} locale={locale}>
+              <option value="">{labels.noTransportAssigned}</option>
+              {buses.map((bus: any) => (
+                <option key={bus.id} value={bus.id}>
+                  {formatBusLabel(bus)}
+                </option>
+              ))}
+            </Select>
+            <Input label={labels.gpsLocation} value={form.gps_location} onChange={(e) => handleStudent('gps_location', e.target.value)} placeholder="https://maps.google.com/..." disabled={loading} locale={locale} />
+          </div>
+        </Card>
+
       </div>
 
       {/* Action buttons */}
       <div className="flex items-center justify-end gap-3 pt-2">
-        <Button
-          type="button"
-          variant="glass"
-          size="sm"
-          onClick={() => router.push(`/${locale}/students/${student.id}`)}
-          disabled={loading}
-        >
+        <Button type="button" variant="glass" size="sm" onClick={() => router.push(`/${locale}/students/${student.id}`)} disabled={loading}>
           {labels.cancel}
         </Button>
-        <Button
-          type="submit"
-          variant="accent"
-          size="sm"
-          loading={loading}
-        >
+        <Button type="submit" variant="accent" size="sm" loading={loading}>
           {loading ? labels.saving : labels.save}
         </Button>
       </div>
