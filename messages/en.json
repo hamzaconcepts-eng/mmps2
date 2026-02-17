@@ -231,7 +231,22 @@
     "addStudent": "Add Student",
     "createSuccess": "Student created successfully",
     "createFailed": "Failed to create student",
-    "unauthorized": "Unauthorized"
+    "unauthorized": "Unauthorized",
+    "guardianFirstName": "Guardian First Name",
+    "guardianFirstNameAr": "Guardian First Name (Arabic)",
+    "guardianFatherName": "Guardian Father Name",
+    "guardianFatherNameAr": "Guardian Father Name (Arabic)",
+    "guardianFamilyName": "Guardian Family Name",
+    "guardianFamilyNameAr": "Guardian Family Name (Arabic)",
+    "guardianPhone": "Guardian Phone",
+    "guardianEmail": "Guardian Email",
+    "father": "Father",
+    "mother": "Mother",
+    "guardianRelative": "Guardian",
+    "selectRelationship": "Select Relationship",
+    "transportSection": "Transport (Optional)",
+    "selectBus": "Select Bus",
+    "noTransportAssigned": "No transport"
   },
   "teacher": {
     "employeeId": "Employee ID",

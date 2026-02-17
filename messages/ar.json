@@ -231,7 +231,22 @@
     "addStudent": "إضافة طالب",
     "createSuccess": "تم إضافة الطالب بنجاح",
     "createFailed": "فشل إضافة الطالب",
-    "unauthorized": "غير مصرح"
+    "unauthorized": "غير مصرح",
+    "guardianFirstName": "اسم ولي الأمر",
+    "guardianFirstNameAr": "اسم ولي الأمر (عربي)",
+    "guardianFatherName": "اسم والد ولي الأمر",
+    "guardianFatherNameAr": "اسم والد ولي الأمر (عربي)",
+    "guardianFamilyName": "اسم عائلة ولي الأمر",
+    "guardianFamilyNameAr": "اسم عائلة ولي الأمر (عربي)",
+    "guardianPhone": "هاتف ولي الأمر",
+    "guardianEmail": "بريد ولي الأمر",
+    "father": "أب",
+    "mother": "أم",
+    "guardianRelative": "ولي أمر",
+    "selectRelationship": "اختر صلة القرابة",
+    "transportSection": "النقل (اختياري)",
+    "selectBus": "اختر الحافلة",
+    "noTransportAssigned": "بدون نقل"
   },
   "teacher": {
     "employeeId": "رقم الموظف",
