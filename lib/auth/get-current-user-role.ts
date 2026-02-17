@@ -23,19 +23,36 @@ export async function getCurrentUserRole(): Promise<{
     const supabase = await createClient();
     const {
       data: { user },
+      error: authError,
     } = await supabase.auth.getUser();
-    if (!user) return null;
+
+    if (authError) {
+      console.log('[getCurrentUserRole] auth error:', authError.message);
+    }
+    if (!user) {
+      console.log('[getCurrentUserRole] no user found (not authenticated)');
+      return null;
+    }
+    console.log('[getCurrentUserRole] user:', user.id);
 
     const admin = createAdminClient();
-    const { data: profile } = await admin
+    const { data: profile, error: profileError } = await admin
       .from('profiles')
       .select('role')
       .eq('id', user.id)
       .single();
 
-    if (!profile) return null;
+    if (profileError) {
+      console.log('[getCurrentUserRole] profile query error:', profileError.message);
+    }
+    if (!profile) {
+      console.log('[getCurrentUserRole] no profile found for user:', user.id);
+      return null;
+    }
+    console.log('[getCurrentUserRole] role:', profile.role);
     return { userId: user.id, role: profile.role as UserRole };
-  } catch {
+  } catch (err: any) {
+    console.log('[getCurrentUserRole] caught error:', err?.message || err);
     return null;
   }
 }

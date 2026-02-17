@@ -4,7 +4,6 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { ArrowLeft, User, Users, Bus, Receipt, Phone, Mail, MapPin, MessageCircle } from 'lucide-react';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { getCurrentUserRole, isAdminOrOwner } from '@/lib/auth/get-current-user-role';
 import { formatStudentName, formatGuardianName, formatDriverName, formatGradeLevel, formatCurrency, formatDate, formatClassName, formatPhone } from '@/lib/utils/format';
 import { getDefaultStudentPhoto } from '@/lib/utils/student-photo';
 import PageHeader from '@/components/PageHeader';
@@ -31,8 +30,8 @@ export default async function StudentDetailPage({
   const supabase = createAdminClient();
   const isPrint = sp?.print === '1';
 
-  // All 5 queries in parallel — no sequential blocking
-  const [studentRes, guardianRes, transportRes, invoiceRes, currentUser] = await Promise.all([
+  // All 4 queries in parallel — no sequential blocking
+  const [studentRes, guardianRes, transportRes, invoiceRes] = await Promise.all([
     supabase
       .from('students')
       .select('*, classes(id, name, name_ar, grade_level, section, capacity)')
@@ -54,7 +53,6 @@ export default async function StudentDetailPage({
       .eq('student_id', id)
       .eq('academic_year', '2025-2026')
       .order('created_at', { ascending: false }),
-    getCurrentUserRole(),
   ]);
 
   const student = studentRes.data;
@@ -63,7 +61,6 @@ export default async function StudentDetailPage({
   const guardians = guardianRes.data || [];
   const transport = transportRes.data;
   const invoices = invoiceRes.data || [];
-  const canManage = currentUser ? isAdminOrOwner(currentUser.role) : false;
 
   const isAr = locale === 'ar';
   const printDate = new Date().toLocaleDateString(isAr ? 'ar-OM' : 'en-GB', {
@@ -113,20 +110,18 @@ export default async function StudentDetailPage({
           subtitle={`${t('student.studentId')}: ${student.student_id}`}
           actions={
             <div className="flex items-center gap-2">
-              {canManage && (
-                <StudentActions
-                  studentId={id}
-                  locale={locale}
-                  labels={{
-                    edit: t('student.editStudent'),
-                    delete: t('student.deleteStudent'),
-                    confirmTitle: t('common.confirmDelete'),
-                    confirmMessage: t('common.confirmDeleteMessage'),
-                    cancel: t('common.cancel'),
-                    deleting: t('student.deleting'),
-                  }}
-                />
-              )}
+              <StudentActions
+                studentId={id}
+                locale={locale}
+                labels={{
+                  edit: t('student.editStudent'),
+                  delete: t('student.deleteStudent'),
+                  confirmTitle: t('common.confirmDelete'),
+                  confirmMessage: t('common.confirmDeleteMessage'),
+                  cancel: t('common.cancel'),
+                  deleting: t('student.deleting'),
+                }}
+              />
               <PrintButton label={t('common.print')} />
               <Link href={`/${locale}/students`}>
                 <Button variant="glass" size="sm" icon={<ArrowLeft size={14} />}>
