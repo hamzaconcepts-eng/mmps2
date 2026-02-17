@@ -48,7 +48,8 @@
     "deleteStudent": "حذف الطالب",
     "saving": "جاري الحفظ...",
     "updateSuccess": "تم التحديث بنجاح",
-    "updateFailed": "فشل التحديث"
+    "updateFailed": "فشل التحديث",
+    "requiredField": "حقل مطلوب"
   },
   "navigation": {
     "home": "الرئيسية",

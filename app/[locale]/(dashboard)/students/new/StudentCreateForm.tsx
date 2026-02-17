@@ -154,6 +154,11 @@ export default function StudentCreateForm({
         </div>
       )}
 
+      {/* Required field note */}
+      <p className="text-xs text-text-tertiary">
+        <span className="text-danger">*</span> {labels.requiredField}
+      </p>
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
 
         {/* ── Student English Names (mandatory) ── */}

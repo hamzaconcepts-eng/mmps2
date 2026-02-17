@@ -99,6 +99,7 @@ export default async function NewStudentPage({
           cancel: t('common.cancel'),
           createSuccess: t('student.createSuccess'),
           createFailed: t('student.createFailed'),
+          requiredField: t('common.requiredField'),
         }}
       />
     </div>

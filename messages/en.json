@@ -48,7 +48,8 @@
     "deleteStudent": "Delete Student",
     "saving": "Saving...",
     "updateSuccess": "Updated successfully",
-    "updateFailed": "Failed to update"
+    "updateFailed": "Failed to update",
+    "requiredField": "Required field"
   },
   "navigation": {
     "home": "Home",
