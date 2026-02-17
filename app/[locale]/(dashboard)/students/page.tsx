@@ -148,10 +148,12 @@ export default async function StudentsPage({
         title={t('student.allStudents')}
         subtitle={`${totalCount} ${t('navigation.students')}`}
         actions={
-          <Link href={`/${locale}/students/new`}>
-            <Button variant="accent" size="sm" icon={<Plus size={14} />}>
-              {t('student.addStudent')}
-            </Button>
+          <Link
+            href={`/${locale}/students/new`}
+            className="inline-flex items-center justify-center font-bold rounded-md transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.97] bg-accent-orange text-white shadow-[0_4px_20px_rgba(240,144,33,0.3)] hover:shadow-[0_8px_30px_rgba(240,144,33,0.4)] px-3 py-1.5 text-[11px] gap-1.5"
+          >
+            <Plus size={14} />
+            {t('student.addStudent')}
           </Link>
         }
       />
