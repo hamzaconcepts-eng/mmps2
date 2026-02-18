@@ -202,6 +202,30 @@ export const getInvoiceStats = unstable_cache(
   { revalidate: 300, tags: ['invoices'] }
 );
 
+// ── Rooms (facilities) with class assignments ───────────────────
+
+export const getRoomsWithAssignments = unstable_cache(
+  async () => {
+    const supabase = createAdminClient();
+    const [facilitiesRes, classesRes] = await Promise.all([
+      supabase.from('facilities').select('*').eq('is_active', true).order('type').order('code'),
+      supabase.from('classes').select('id, name, name_ar, grade_level, section, facility_id').eq('is_active', true).eq('academic_year', '2025-2026'),
+    ]);
+    const facilities = facilitiesRes.data || [];
+    const classes = classesRes.data || [];
+    const classByFacility: Record<string, any[]> = {};
+    classes.forEach((cls: any) => {
+      if (cls.facility_id) {
+        if (!classByFacility[cls.facility_id]) classByFacility[cls.facility_id] = [];
+        classByFacility[cls.facility_id].push(cls);
+      }
+    });
+    return { facilities, classByFacility };
+  },
+  ['rooms-with-assignments'],
+  { revalidate: 300, tags: ['facilities', 'classes'] }
+);
+
 // ── Classes list for filter dropdowns ──────────────────────────
 
 export const getClassesList = unstable_cache(

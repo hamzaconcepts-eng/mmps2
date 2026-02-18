@@ -10,7 +10,7 @@ import {
   Home, Users, GraduationCap, BookOpen, School,
   ClipboardCheck, FileText, Calendar, DollarSign,
   CreditCard, Receipt, MessageSquare, Megaphone,
-  BarChart3, Settings, ChevronLeft, ChevronRight, Bus,
+  BarChart3, Settings, ChevronLeft, ChevronRight, Bus, DoorOpen,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -37,6 +37,7 @@ export default function Sidebar({ locale, userRole = 'admin' }: SidebarProps) {
         { key: 'classes', icon: School, href: `/${locale}/classes`, roles: ['owner','admin','teacher','class_supervisor'] },
         { key: 'subjects', icon: BookOpen, href: `/${locale}/subjects`, roles: ['owner','admin','teacher'] },
         { key: 'transport', icon: Bus, href: `/${locale}/transport`, roles: ['owner','admin'] },
+        { key: 'rooms', icon: DoorOpen, href: `/${locale}/rooms`, roles: ['owner','admin'] },
       ],
     },
     {

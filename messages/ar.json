@@ -68,7 +68,8 @@
     "announcements": "الإعلانات",
     "reports": "التقارير",
     "administration": "الإدارة",
-    "transport": "النقل"
+    "transport": "النقل",
+    "rooms": "الغرف"
   },
   "roles": {
     "owner": "المالك",
@@ -375,6 +376,37 @@
     "updateSuccess": "تم التحديث بنجاح",
     "updateFailed": "فشل التحديث",
     "searchPlaceholder": "ابحث بالمنطقة أو رقم الحافلة..."
+  },
+  "room": {
+    "allRooms": "جميع الغرف",
+    "addRoom": "إضافة غرفة",
+    "editRoom": "تعديل الغرفة",
+    "deleteRoom": "حذف الغرفة",
+    "roomInfo": "معلومات الغرفة",
+    "roomName": "اسم الغرفة",
+    "roomNameEn": "اسم الغرفة (إنجليزي)",
+    "roomNameAr": "اسم الغرفة (عربي)",
+    "code": "الرمز",
+    "type": "النوع",
+    "capacity": "السعة",
+    "shared": "مشتركة",
+    "sharedYes": "مشتركة",
+    "sharedNo": "خاصة",
+    "assignedClass": "الفصل المخصص",
+    "selectClass": "اختر الفصل (اختياري)",
+    "searchPlaceholder": "ابحث بالاسم أو الرمز أو النوع...",
+    "saving": "جاري الحفظ...",
+    "deleting": "جاري الحذف...",
+    "createSuccess": "تم إضافة الغرفة بنجاح",
+    "createFailed": "فشل إضافة الغرفة",
+    "updateSuccess": "تم تحديث الغرفة بنجاح",
+    "updateFailed": "فشل تحديث الغرفة",
+    "type_classroom": "فصل دراسي",
+    "type_lab": "مختبر",
+    "type_sports": "قاعة رياضية",
+    "type_music_room": "غرفة موسيقى",
+    "type_library": "مكتبة",
+    "type_other": "أخرى"
   },
   "attendance": {
     "date": "التاريخ",

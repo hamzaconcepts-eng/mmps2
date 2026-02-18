@@ -68,7 +68,8 @@
     "announcements": "Announcements",
     "reports": "Reports",
     "administration": "Administration",
-    "transport": "Transport"
+    "transport": "Transport",
+    "rooms": "Rooms"
   },
   "roles": {
     "owner": "Owner",
@@ -375,6 +376,37 @@
     "updateSuccess": "Updated successfully",
     "updateFailed": "Failed to update",
     "searchPlaceholder": "Search by area or bus number..."
+  },
+  "room": {
+    "allRooms": "All Rooms",
+    "addRoom": "Add Room",
+    "editRoom": "Edit Room",
+    "deleteRoom": "Delete Room",
+    "roomInfo": "Room Information",
+    "roomName": "Room Name",
+    "roomNameEn": "Room Name (English)",
+    "roomNameAr": "Room Name (Arabic)",
+    "code": "Code",
+    "type": "Type",
+    "capacity": "Capacity",
+    "shared": "Shared",
+    "sharedYes": "Shared",
+    "sharedNo": "Private",
+    "assignedClass": "Assigned Class",
+    "selectClass": "Select Class (Optional)",
+    "searchPlaceholder": "Search by name, code, or type...",
+    "saving": "Saving...",
+    "deleting": "Deleting...",
+    "createSuccess": "Room created successfully",
+    "createFailed": "Failed to create room",
+    "updateSuccess": "Room updated successfully",
+    "updateFailed": "Failed to update room",
+    "type_classroom": "Classroom",
+    "type_lab": "Laboratory",
+    "type_sports": "Sports Hall",
+    "type_music_room": "Music Room",
+    "type_library": "Library",
+    "type_other": "Other"
   },
   "attendance": {
     "date": "Date",
