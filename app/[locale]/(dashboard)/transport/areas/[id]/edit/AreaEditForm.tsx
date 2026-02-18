@@ -58,12 +58,12 @@ export default function AreaEditForm({ area, locale, labels }: AreaEditFormProps
         <Card.Header>
           <div className="flex items-center gap-2">
             <MapPin size={15} className="text-brand-teal" />
-            <Card.Title>{labels.areaName}</Card.Title>
+            <Card.Title>{labels.areaInfo}</Card.Title>
           </div>
         </Card.Header>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <Input label={labels.areaName} value={form.name} onChange={(e) => handleChange('name', e.target.value)} required disabled={loading} locale={locale} />
-          <Input label={labels.areaNameAr} value={form.name_ar} onChange={(e) => handleChange('name_ar', e.target.value)} required disabled={loading} locale={locale} dir="rtl" />
+          <Input label={labels.areaNameEn} value={form.name} onChange={(e) => handleChange('name', e.target.value)} required disabled={loading} locale={locale} lang="en" inputMode="text" />
+          <Input label={labels.areaNameAr} value={form.name_ar} onChange={(e) => handleChange('name_ar', e.target.value)} required disabled={loading} locale={locale} dir="rtl" lang="ar" inputMode="text" />
           <Input label={labels.annualFee} type="number" step="0.001" value={form.annual_fee} onChange={(e) => handleChange('annual_fee', e.target.value)} required disabled={loading} locale={locale} />
           <Select label={labels.status} value={form.is_active ? 'active' : 'inactive'} onChange={(e) => handleChange('is_active', e.target.value === 'active')} disabled={loading} locale={locale}>
             <option value="active">{labels.active}</option>

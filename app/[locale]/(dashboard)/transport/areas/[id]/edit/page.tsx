@@ -31,7 +31,8 @@ export default async function AreaEditPage({ params }: { params: Promise<{ local
         area={area}
         locale={locale}
         labels={{
-          areaName: t('transport.areaName'),
+          areaInfo: t('transport.areaInfo'),
+          areaNameEn: t('transport.areaNameEn'),
           areaNameAr: t('transport.areaNameAr'),
           annualFee: t('transport.annualFee'),
           status: t('common.status'),

@@ -100,12 +100,12 @@ export default function BusEditForm({ bus, areas, locale, labels }: BusEditFormP
             </div>
           </Card.Header>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <Input label={labels.driverName} value={form.driver_name} onChange={(e) => handleChange('driver_name', e.target.value)} disabled={loading} locale={locale} />
-            <Input label={labels.driverNameAr} value={form.driver_name_ar} onChange={(e) => handleChange('driver_name_ar', e.target.value)} disabled={loading} locale={locale} dir="rtl" />
-            <Input label={labels.driverFatherName} value={form.driver_father_name} onChange={(e) => handleChange('driver_father_name', e.target.value)} disabled={loading} locale={locale} />
-            <Input label={labels.driverFatherNameAr} value={form.driver_father_name_ar} onChange={(e) => handleChange('driver_father_name_ar', e.target.value)} disabled={loading} locale={locale} dir="rtl" />
-            <Input label={labels.driverFamilyName} value={form.driver_family_name} onChange={(e) => handleChange('driver_family_name', e.target.value)} disabled={loading} locale={locale} />
-            <Input label={labels.driverFamilyNameAr} value={form.driver_family_name_ar} onChange={(e) => handleChange('driver_family_name_ar', e.target.value)} disabled={loading} locale={locale} dir="rtl" />
+            <Input label={labels.driverName} value={form.driver_name} onChange={(e) => handleChange('driver_name', e.target.value)} disabled={loading} locale={locale} lang="en" inputMode="text" pattern="[A-Za-z\s\-']+" />
+            <Input label={labels.driverNameAr} value={form.driver_name_ar} onChange={(e) => handleChange('driver_name_ar', e.target.value)} disabled={loading} locale={locale} dir="rtl" lang="ar" inputMode="text" />
+            <Input label={labels.driverFatherName} value={form.driver_father_name} onChange={(e) => handleChange('driver_father_name', e.target.value)} disabled={loading} locale={locale} lang="en" inputMode="text" pattern="[A-Za-z\s\-']+" />
+            <Input label={labels.driverFatherNameAr} value={form.driver_father_name_ar} onChange={(e) => handleChange('driver_father_name_ar', e.target.value)} disabled={loading} locale={locale} dir="rtl" lang="ar" inputMode="text" />
+            <Input label={labels.driverFamilyName} value={form.driver_family_name} onChange={(e) => handleChange('driver_family_name', e.target.value)} disabled={loading} locale={locale} lang="en" inputMode="text" pattern="[A-Za-z\s\-']+" />
+            <Input label={labels.driverFamilyNameAr} value={form.driver_family_name_ar} onChange={(e) => handleChange('driver_family_name_ar', e.target.value)} disabled={loading} locale={locale} dir="rtl" lang="ar" inputMode="text" />
             <Input label={labels.driverPhone} value={form.driver_phone} onChange={(e) => handleChange('driver_phone', e.target.value)} disabled={loading} locale={locale} placeholder="91234567" />
           </div>
         </Card>

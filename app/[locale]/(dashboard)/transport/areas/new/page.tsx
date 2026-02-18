@@ -23,7 +23,8 @@ export default async function AreaNewPage({ params }: { params: Promise<{ locale
       <AreaForm
         locale={locale}
         labels={{
-          areaName: t('transport.areaName'),
+          areaInfo: t('transport.areaInfo'),
+          areaNameEn: t('transport.areaNameEn'),
           areaNameAr: t('transport.areaNameAr'),
           annualFee: t('transport.annualFee'),
           save: t('common.save'),
