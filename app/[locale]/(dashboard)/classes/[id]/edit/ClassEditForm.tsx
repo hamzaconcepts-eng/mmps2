@@ -13,6 +13,7 @@ import { updateClass } from '../actions';
 interface ClassEditFormProps {
   cls: any;
   teachers: any[];
+  rooms: any[];
   locale: string;
   labels: Record<string, string>;
 }
@@ -33,6 +34,7 @@ const GRADE_LEVELS = [
 export default function ClassEditForm({
   cls,
   teachers,
+  rooms,
   locale,
   labels,
 }: ClassEditFormProps) {
@@ -45,7 +47,7 @@ export default function ClassEditForm({
     grade_level: String(cls.grade_level ?? ''),
     section: cls.section || '',
     capacity: String(cls.capacity || 30),
-    room_number: cls.room_number || '',
+    facility_id: cls.facility_id || '',
     class_supervisor_id: cls.class_supervisor_id || '',
     is_active: cls.is_active ?? true,
   });
@@ -120,7 +122,14 @@ export default function ClassEditForm({
           </Select>
           <Input label={labels.section} value={form.section} onChange={(e) => handleChange('section', e.target.value)} required disabled={loading} locale={locale} placeholder="A" />
           <Input label={labels.capacity} type="number" value={form.capacity} onChange={(e) => handleChange('capacity', e.target.value)} required disabled={loading} locale={locale} />
-          <Input label={labels.roomNumber} value={form.room_number} onChange={(e) => handleChange('room_number', e.target.value)} disabled={loading} locale={locale} />
+          <Select label={labels.roomNumber} value={form.facility_id} onChange={(e) => handleChange('facility_id', e.target.value)} disabled={loading} locale={locale}>
+            <option value="">{labels.selectRoom}</option>
+            {rooms.map((r: any) => (
+              <option key={r.id} value={r.id}>
+                {isAr ? r.name_ar : r.name} ({r.code})
+              </option>
+            ))}
+          </Select>
           <Select label={labels.supervisor} value={form.class_supervisor_id} onChange={(e) => handleChange('class_supervisor_id', e.target.value)} disabled={loading} locale={locale}>
             <option value="">{labels.selectSupervisor}</option>
             {teachers.map((t: any) => (

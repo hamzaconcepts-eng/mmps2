@@ -312,6 +312,7 @@
     "classNameEn": "اسم الفصل (إنجليزي)",
     "classNameAr": "اسم الفصل (عربي)",
     "selectSupervisor": "اختر المشرف",
+    "selectRoom": "اختر الغرفة (اختياري)",
     "searchPlaceholder": "ابحث باسم الفصل أو المرحلة..."
   },
   "subject": {

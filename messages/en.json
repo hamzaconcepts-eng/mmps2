@@ -312,6 +312,7 @@
     "classNameEn": "Class Name (English)",
     "classNameAr": "Class Name (Arabic)",
     "selectSupervisor": "Select Supervisor",
+    "selectRoom": "Select Room (Optional)",
     "searchPlaceholder": "Search by class name or grade..."
   },
   "subject": {

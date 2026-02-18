@@ -58,7 +58,7 @@ export async function updateClass(
         grade_level: data.grade_level,
         section: data.section,
         capacity: data.capacity,
-        room_number: data.room_number || null,
+        facility_id: data.facility_id || null,
         class_supervisor_id: data.class_supervisor_id || null,
         is_active: data.is_active ?? true,
       })
@@ -70,6 +70,7 @@ export async function updateClass(
     revalidatePath('/[locale]/classes', 'page');
     revalidateTag('classes');
     revalidateTag('classes-with-counts');
+    revalidateTag('rooms-with-assignments');
 
     return { success: true };
   } catch (error: any) {

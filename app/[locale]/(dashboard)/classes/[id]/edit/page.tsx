@@ -18,13 +18,19 @@ export default async function ClassEditPage({
   const t = await getTranslations();
   const supabase = createAdminClient();
 
-  const [classRes, teachersRes] = await Promise.all([
+  const [classRes, teachersRes, roomsRes] = await Promise.all([
     supabase.from('classes').select('*').eq('id', id).single(),
     supabase
       .from('teachers')
       .select('id, first_name, first_name_ar, father_name, father_name_ar, grandfather_name, grandfather_name_ar, family_name, family_name_ar, last_name, last_name_ar, gender')
       .eq('is_active', true)
       .order('first_name'),
+    supabase
+      .from('facilities')
+      .select('id, name, name_ar, code')
+      .eq('is_active', true)
+      .eq('type', 'classroom')
+      .order('code'),
   ]);
 
   const cls = classRes.data;
@@ -46,6 +52,7 @@ export default async function ClassEditPage({
       <ClassEditForm
         cls={cls}
         teachers={teachersRes.data || []}
+        rooms={roomsRes.data || []}
         locale={locale}
         labels={{
           classInfo: t('class.classInfo'),
@@ -55,6 +62,7 @@ export default async function ClassEditPage({
           section: t('class.section'),
           capacity: t('class.capacity'),
           roomNumber: t('class.roomNumber'),
+          selectRoom: t('class.selectRoom'),
           supervisor: t('class.supervisor'),
           selectSupervisor: t('class.selectSupervisor'),
           status: t('common.status'),

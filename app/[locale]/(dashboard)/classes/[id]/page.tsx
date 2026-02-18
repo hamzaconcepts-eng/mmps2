@@ -2,7 +2,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { ArrowLeft, School, Users, BookOpen, GraduationCap } from 'lucide-react';
+import { ArrowLeft, School, Users, BookOpen, GraduationCap, DoorOpen } from 'lucide-react';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { formatGradeLevel, formatTeacherName, formatStudentName, formatClassName, formatSubjectName } from '@/lib/utils/format';
 import PageHeader from '@/components/PageHeader';
@@ -34,7 +34,7 @@ export default async function ClassDetailPage({
   const [clsRes, studentsRes, subjectsRes] = await Promise.all([
     supabase
       .from('classes')
-      .select('*, teachers!classes_class_supervisor_id_fkey(id, first_name, first_name_ar, father_name, father_name_ar, grandfather_name, grandfather_name_ar, family_name, family_name_ar, last_name, last_name_ar, gender)')
+      .select('*, teachers!classes_class_supervisor_id_fkey(id, first_name, first_name_ar, father_name, father_name_ar, grandfather_name, grandfather_name_ar, family_name, family_name_ar, last_name, last_name_ar, gender), facilities(id, name, name_ar, code)')
       .eq('id', id)
       .single(),
     supabase
@@ -130,7 +130,17 @@ export default async function ClassDetailPage({
             <InfoRow label={t('class.className')} value={formatClassName(cls, locale)} />
             <InfoRow label={t('class.gradeLevel')} value={formatGradeLevel(cls.grade_level, locale)} />
             <InfoRow label={t('class.section')} value={cls.section} />
-            <InfoRow label={t('class.roomNumber')} value={cls.room_number || '—'} />
+            <InfoRow label={t('class.roomNumber')}>
+              {cls.facilities ? (
+                <Link href={`/${locale}/rooms/${cls.facilities.id}`} className="flex items-center gap-1 text-[12px] font-semibold text-brand-teal hover:opacity-80 transition-opacity print:text-black print:no-underline">
+                  <DoorOpen size={12} />
+                  {isAr ? cls.facilities.name_ar : cls.facilities.name}
+                  <span className="text-text-tertiary font-normal">({cls.facilities.code})</span>
+                </Link>
+              ) : (
+                <span className="text-[12px] text-text-primary font-semibold">—</span>
+              )}
+            </InfoRow>
             <InfoRow label={t('class.capacity')} value={cls.capacity?.toString() || '—'} />
             <InfoRow label={t('class.studentCount')}>
               <Badge variant={students.length >= cls.capacity ? 'danger' : students.length > cls.capacity * 0.8 ? 'warning' : 'success'}>

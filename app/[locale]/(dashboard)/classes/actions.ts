@@ -19,7 +19,7 @@ export async function createClass(data: Record<string, any>) {
         grade_level: data.grade_level,
         section: data.section,
         capacity: data.capacity,
-        room_number: data.room_number || null,
+        facility_id: data.facility_id || null,
         class_supervisor_id: data.class_supervisor_id || null,
         academic_year: '2025-2026',
         is_active: true,
