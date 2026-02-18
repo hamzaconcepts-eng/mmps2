@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { CheckCircle, XCircle, User, GraduationCap, MapPin, Users, Bus } from 'lucide-react';
+import { CheckCircle, XCircle, User, GraduationCap, MapPin, Users, Bus, Fingerprint } from 'lucide-react';
 import { Input } from '@/components/ui/Input';
 import { Select } from '@/components/ui/Select';
 import { Button } from '@/components/ui/Button';
@@ -161,12 +161,15 @@ export default function StudentCreateForm({
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
 
-        {/* ── Student English Names (mandatory) ── */}
+        {/* ── Row 1: English Names (left) + Arabic Names (right) ── */}
         <Card>
           <Card.Header>
             <div className="flex items-center gap-2">
               <User size={15} className="text-brand-teal" />
-              <Card.Title>{labels.englishNames}</Card.Title>
+              <div>
+                <Card.Title>{labels.englishNames}</Card.Title>
+                <p className="text-[10px] text-text-tertiary mt-0.5">{isAr ? 'بالإنجليزية' : 'As in passport'}</p>
+              </div>
             </div>
           </Card.Header>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -177,12 +180,17 @@ export default function StudentCreateForm({
           </div>
         </Card>
 
-        {/* ── Student Arabic Names (mandatory) ── */}
         <Card>
           <Card.Header>
             <div className="flex items-center gap-2">
               <User size={15} className="text-accent-orange" />
-              <Card.Title>{labels.arabicNames}</Card.Title>
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <Card.Title>{labels.arabicNames}</Card.Title>
+                  <span className="text-[10px] font-bold text-accent-orange bg-accent-orange/10 px-1.5 py-0.5 rounded">ع</span>
+                </div>
+                <p className="text-[10px] text-text-tertiary mt-0.5">{isAr ? 'كما في البطاقة المدنية' : 'As in civil ID'}</p>
+              </div>
             </div>
           </Card.Header>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -193,31 +201,70 @@ export default function StudentCreateForm({
           </div>
         </Card>
 
-        {/* ── Personal Info (DOB, gender, nationality, ID mandatory) ── */}
-        <Card>
-          <Card.Header>
-            <div className="flex items-center gap-2">
-              <User size={15} className="text-success" />
-              <Card.Title>{labels.personalInfo}</Card.Title>
+        {/* ── Row 2: Personal Info — full width, 4-col grid ── */}
+        <div className="lg:col-span-2">
+          <Card>
+            <Card.Header>
+              <div className="flex items-center gap-2">
+                <Fingerprint size={15} className="text-success" />
+                <div>
+                  <Card.Title>{labels.personalInfo}</Card.Title>
+                  <p className="text-[10px] text-text-tertiary mt-0.5">{isAr ? 'المعلومات الشخصية الأساسية' : 'Identity & demographic details'}</p>
+                </div>
+              </div>
+            </Card.Header>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+              <Input label={labels.dateOfBirth} type="date" value={student.date_of_birth} onChange={(e) => handleStudent('date_of_birth', e.target.value)} required disabled={loading} locale={locale} />
+              <Select label={labels.gender} value={student.gender} onChange={(e) => handleStudent('gender', e.target.value)} required disabled={loading} locale={locale}>
+                <option value="male">{labels.male}</option>
+                <option value="female">{labels.female}</option>
+              </Select>
+              <Input label={labels.nationality} value={student.nationality} onChange={(e) => handleStudent('nationality', e.target.value)} required disabled={loading} locale={locale} />
+              <Input label={labels.nationalId} value={student.national_id} onChange={(e) => handleStudent('national_id', e.target.value)} required disabled={loading} locale={locale} />
             </div>
-          </Card.Header>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <Input label={labels.dateOfBirth} type="date" value={student.date_of_birth} onChange={(e) => handleStudent('date_of_birth', e.target.value)} required disabled={loading} locale={locale} />
-            <Select label={labels.gender} value={student.gender} onChange={(e) => handleStudent('gender', e.target.value)} required disabled={loading} locale={locale}>
-              <option value="male">{labels.male}</option>
-              <option value="female">{labels.female}</option>
-            </Select>
-            <Input label={labels.nationality} value={student.nationality} onChange={(e) => handleStudent('nationality', e.target.value)} required disabled={loading} locale={locale} />
-            <Input label={labels.nationalId} value={student.national_id} onChange={(e) => handleStudent('national_id', e.target.value)} required disabled={loading} locale={locale} />
-          </div>
-        </Card>
+          </Card>
+        </div>
 
-        {/* ── Academic Info (grade mandatory, classroom optional) ── */}
+        {/* ── Row 3: Guardian Info — full width, 3-col grid ── */}
+        <div className="lg:col-span-2">
+          <Card>
+            <Card.Header>
+              <div className="flex items-center gap-2">
+                <Users size={15} className="text-brand-teal" />
+                <div>
+                  <Card.Title>{labels.guardianInfo}</Card.Title>
+                  <p className="text-[10px] text-text-tertiary mt-0.5">{isAr ? 'ولي الأمر المسؤول عن الطالب' : 'Parent or legal guardian details'}</p>
+                </div>
+              </div>
+            </Card.Header>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              <Input label={labels.guardianFirstName} value={guardian.first_name} onChange={(e) => handleGuardian('first_name', e.target.value)} required disabled={loading} locale={locale} />
+              <Input label={labels.guardianFatherName} value={guardian.father_name} onChange={(e) => handleGuardian('father_name', e.target.value)} disabled={loading} locale={locale} />
+              <Input label={labels.guardianFamilyName} value={guardian.family_name} onChange={(e) => handleGuardian('family_name', e.target.value)} required disabled={loading} locale={locale} />
+              <Input label={labels.guardianFirstNameAr} value={guardian.first_name_ar} onChange={(e) => handleGuardian('first_name_ar', e.target.value)} required disabled={loading} locale={locale} dir="rtl" />
+              <Input label={labels.guardianFatherNameAr} value={guardian.father_name_ar} onChange={(e) => handleGuardian('father_name_ar', e.target.value)} disabled={loading} locale={locale} dir="rtl" />
+              <Input label={labels.guardianFamilyNameAr} value={guardian.family_name_ar} onChange={(e) => handleGuardian('family_name_ar', e.target.value)} required disabled={loading} locale={locale} dir="rtl" />
+              <Select label={labels.relationship} value={guardian.relationship} onChange={(e) => handleRelationship(e.target.value)} required disabled={loading} locale={locale}>
+                <option value="">{labels.selectRelationship}</option>
+                <option value="Father">{labels.father}</option>
+                <option value="Mother">{labels.mother}</option>
+                <option value="Guardian">{labels.guardianRelative}</option>
+              </Select>
+              <Input label={labels.guardianPhone} value={guardian.phone} onChange={(e) => handleGuardian('phone', e.target.value)} required disabled={loading} locale={locale} placeholder="91234567" />
+              <Input label={labels.guardianEmail} value={guardian.email} onChange={(e) => handleGuardian('email', e.target.value)} disabled={loading} locale={locale} type="email" />
+            </div>
+          </Card>
+        </div>
+
+        {/* ── Row 4: Academic Info (left) + Transport & Location (right) ── */}
         <Card>
           <Card.Header>
             <div className="flex items-center gap-2">
               <GraduationCap size={15} className="text-warning" />
-              <Card.Title>{labels.academicInfo}</Card.Title>
+              <div>
+                <Card.Title>{labels.academicInfo}</Card.Title>
+                <p className="text-[10px] text-text-tertiary mt-0.5">{isAr ? 'الفصل وتاريخ القبول' : 'Class & enrollment date'}</p>
+              </div>
             </div>
           </Card.Header>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -233,38 +280,19 @@ export default function StudentCreateForm({
           </div>
         </Card>
 
-        {/* ── Guardian Info (mandatory) ── */}
-        <Card>
-          <Card.Header>
-            <div className="flex items-center gap-2">
-              <Users size={15} className="text-brand-teal" />
-              <Card.Title>{labels.guardianInfo}</Card.Title>
-            </div>
-          </Card.Header>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <Input label={labels.guardianFirstName} value={guardian.first_name} onChange={(e) => handleGuardian('first_name', e.target.value)} required disabled={loading} locale={locale} />
-            <Input label={labels.guardianFirstNameAr} value={guardian.first_name_ar} onChange={(e) => handleGuardian('first_name_ar', e.target.value)} required disabled={loading} locale={locale} dir="rtl" />
-            <Input label={labels.guardianFatherName} value={guardian.father_name} onChange={(e) => handleGuardian('father_name', e.target.value)} disabled={loading} locale={locale} />
-            <Input label={labels.guardianFatherNameAr} value={guardian.father_name_ar} onChange={(e) => handleGuardian('father_name_ar', e.target.value)} disabled={loading} locale={locale} dir="rtl" />
-            <Input label={labels.guardianFamilyName} value={guardian.family_name} onChange={(e) => handleGuardian('family_name', e.target.value)} required disabled={loading} locale={locale} />
-            <Input label={labels.guardianFamilyNameAr} value={guardian.family_name_ar} onChange={(e) => handleGuardian('family_name_ar', e.target.value)} required disabled={loading} locale={locale} dir="rtl" />
-            <Select label={labels.relationship} value={guardian.relationship} onChange={(e) => handleRelationship(e.target.value)} required disabled={loading} locale={locale}>
-              <option value="">{labels.selectRelationship}</option>
-              <option value="Father">{labels.father}</option>
-              <option value="Mother">{labels.mother}</option>
-              <option value="Guardian">{labels.guardianRelative}</option>
-            </Select>
-            <Input label={labels.guardianPhone} value={guardian.phone} onChange={(e) => handleGuardian('phone', e.target.value)} required disabled={loading} locale={locale} placeholder="91234567" />
-            <Input label={labels.guardianEmail} value={guardian.email} onChange={(e) => handleGuardian('email', e.target.value)} disabled={loading} locale={locale} type="email" />
-          </div>
-        </Card>
-
-        {/* ── Transport + Location (optional) ── */}
         <Card>
           <Card.Header>
             <div className="flex items-center gap-2">
               <Bus size={15} className="text-warning" />
-              <Card.Title>{labels.transportSection}</Card.Title>
+              <div>
+                <div className="flex items-center gap-2">
+                  <Card.Title>{labels.transportSection}</Card.Title>
+                  <span className="text-[9px] font-semibold text-text-tertiary bg-surface-secondary px-1.5 py-0.5 rounded-full border border-border">
+                    {isAr ? 'اختياري' : 'Optional'}
+                  </span>
+                </div>
+                <p className="text-[10px] text-text-tertiary mt-0.5">{isAr ? 'الحافلة والموقع الجغرافي' : 'Bus assignment & GPS location'}</p>
+              </div>
             </div>
           </Card.Header>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -276,7 +304,7 @@ export default function StudentCreateForm({
                 </option>
               ))}
             </Select>
-            <Input label={labels.gpsLocation} value={student.gps_location} onChange={(e) => handleStudent('gps_location', e.target.value)} placeholder="https://maps.google.com/..." disabled={loading} locale={locale} />
+            <Input label={labels.gpsLocation} value={student.gps_location} onChange={(e) => handleStudent('gps_location', e.target.value)} placeholder="https://maps.google.com/..." disabled={loading} locale={locale} icon={<MapPin size={13} />} />
           </div>
         </Card>
 
