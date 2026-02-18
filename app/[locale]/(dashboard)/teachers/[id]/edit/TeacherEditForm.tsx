@@ -127,13 +127,13 @@ export default function TeacherEditForm({
                 <option value="male">{labels.male}</option>
                 <option value="female">{labels.female}</option>
               </Select>
-              <Input label={labels.phone} value={form.phone} onChange={(e) => handleChange('phone', e.target.value)} disabled={loading} locale={locale} placeholder="91234567" />
-              <Input label={labels.email} value={form.email} onChange={(e) => handleChange('email', e.target.value)} required disabled={loading} locale={locale} type="email" />
+              <Input label={labels.phone} value={form.phone} onChange={(e) => handleChange('phone', e.target.value)} required disabled={loading} locale={locale} placeholder="91234567" />
+              <Input label={labels.email} value={form.email} onChange={(e) => handleChange('email', e.target.value)} disabled={loading} locale={locale} type="email" />
               <Input label={labels.specialization} value={form.specialization} onChange={(e) => handleChange('specialization', e.target.value)} disabled={loading} locale={locale} />
               <Input label={labels.specializationAr} value={form.specialization_ar} onChange={(e) => handleChange('specialization_ar', e.target.value)} disabled={loading} locale={locale} dir="rtl" />
               <Input label={labels.qualifications} value={form.qualifications} onChange={(e) => handleChange('qualifications', e.target.value)} disabled={loading} locale={locale} />
               <Input label={labels.hireDate} type="date" value={form.hire_date} onChange={(e) => handleChange('hire_date', e.target.value)} required disabled={loading} locale={locale} />
-              <Input label={labels.nationalId} value={form.national_id} onChange={(e) => handleChange('national_id', e.target.value)} disabled={loading} locale={locale} />
+              <Input label={labels.nationalId} value={form.national_id} onChange={(e) => handleChange('national_id', e.target.value)} required disabled={loading} locale={locale} />
               <Select label={labels.status} value={form.is_active ? 'active' : 'inactive'} onChange={(e) => handleChange('is_active', e.target.value === 'active')} disabled={loading} locale={locale}>
                 <option value="active">{labels.active}</option>
                 <option value="inactive">{labels.inactive}</option>

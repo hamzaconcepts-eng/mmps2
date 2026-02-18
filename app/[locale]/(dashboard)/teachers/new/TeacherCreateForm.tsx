@@ -125,13 +125,13 @@ export default function TeacherCreateForm({
                 <option value="male">{labels.male}</option>
                 <option value="female">{labels.female}</option>
               </Select>
-              <Input label={labels.phone} value={teacher.phone} onChange={(e) => handleChange('phone', e.target.value)} disabled={loading} locale={locale} placeholder="91234567" />
-              <Input label={labels.email} value={teacher.email} onChange={(e) => handleChange('email', e.target.value)} required disabled={loading} locale={locale} type="email" />
+              <Input label={labels.phone} value={teacher.phone} onChange={(e) => handleChange('phone', e.target.value)} required disabled={loading} locale={locale} placeholder="91234567" />
+              <Input label={labels.email} value={teacher.email} onChange={(e) => handleChange('email', e.target.value)} disabled={loading} locale={locale} type="email" />
               <Input label={labels.specialization} value={teacher.specialization} onChange={(e) => handleChange('specialization', e.target.value)} disabled={loading} locale={locale} />
               <Input label={labels.specializationAr} value={teacher.specialization_ar} onChange={(e) => handleChange('specialization_ar', e.target.value)} disabled={loading} locale={locale} dir="rtl" />
               <Input label={labels.qualifications} value={teacher.qualifications} onChange={(e) => handleChange('qualifications', e.target.value)} disabled={loading} locale={locale} />
               <Input label={labels.hireDate} type="date" value={teacher.hire_date} onChange={(e) => handleChange('hire_date', e.target.value)} required disabled={loading} locale={locale} />
-              <Input label={labels.nationalId} value={teacher.national_id} onChange={(e) => handleChange('national_id', e.target.value)} disabled={loading} locale={locale} />
+              <Input label={labels.nationalId} value={teacher.national_id} onChange={(e) => handleChange('national_id', e.target.value)} required disabled={loading} locale={locale} />
             </div>
           </Card>
         </div>
