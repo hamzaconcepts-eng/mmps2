@@ -92,8 +92,8 @@ export default function TeacherCreateForm({
             </div>
           </Card.Header>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <Input label={labels.firstName} value={teacher.first_name} onChange={(e) => handleChange('first_name', e.target.value)} required disabled={loading} locale={locale} />
-            <Input label={labels.lastName} value={teacher.last_name} onChange={(e) => handleChange('last_name', e.target.value)} required disabled={loading} locale={locale} />
+            <Input label={labels.firstName} value={teacher.first_name} onChange={(e) => handleChange('first_name', e.target.value)} required disabled={loading} locale={locale} lang="en" inputMode="text" pattern="[A-Za-z\s\-']+" />
+            <Input label={labels.lastName} value={teacher.last_name} onChange={(e) => handleChange('last_name', e.target.value)} required disabled={loading} locale={locale} lang="en" inputMode="text" pattern="[A-Za-z\s\-']+" />
           </div>
         </Card>
 
@@ -106,8 +106,8 @@ export default function TeacherCreateForm({
             </div>
           </Card.Header>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <Input label={labels.firstNameAr} value={teacher.first_name_ar} onChange={(e) => handleChange('first_name_ar', e.target.value)} required disabled={loading} locale={locale} dir="rtl" />
-            <Input label={labels.lastNameAr} value={teacher.last_name_ar} onChange={(e) => handleChange('last_name_ar', e.target.value)} required disabled={loading} locale={locale} dir="rtl" />
+            <Input label={labels.firstNameAr} value={teacher.first_name_ar} onChange={(e) => handleChange('first_name_ar', e.target.value)} required disabled={loading} locale={locale} dir="rtl" lang="ar" inputMode="text" />
+            <Input label={labels.lastNameAr} value={teacher.last_name_ar} onChange={(e) => handleChange('last_name_ar', e.target.value)} required disabled={loading} locale={locale} dir="rtl" lang="ar" inputMode="text" />
           </div>
         </Card>
 

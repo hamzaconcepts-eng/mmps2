@@ -48,7 +48,8 @@ export default async function ClassEditPage({
         teachers={teachersRes.data || []}
         locale={locale}
         labels={{
-          className: t('class.className'),
+          classInfo: t('class.classInfo'),
+          classNameEn: t('class.classNameEn'),
           classNameAr: t('class.classNameAr'),
           gradeLevel: t('class.gradeLevel'),
           section: t('class.section'),

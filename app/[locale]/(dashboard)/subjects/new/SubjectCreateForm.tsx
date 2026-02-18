@@ -83,8 +83,8 @@ export default function SubjectCreateForm({
         </Card.Header>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           <Input label={labels.subjectCode} value={form.code} onChange={(e) => handleChange('code', e.target.value)} required disabled={loading} locale={locale} placeholder="MATH" />
-          <Input label={labels.subjectName} value={form.name} onChange={(e) => handleChange('name', e.target.value)} required disabled={loading} locale={locale} />
-          <Input label={labels.subjectNameAr} value={form.name_ar} onChange={(e) => handleChange('name_ar', e.target.value)} required disabled={loading} locale={locale} dir="rtl" />
+          <Input label={labels.subjectName} value={form.name} onChange={(e) => handleChange('name', e.target.value)} required disabled={loading} locale={locale} lang="en" inputMode="text" />
+          <Input label={labels.subjectNameAr} value={form.name_ar} onChange={(e) => handleChange('name_ar', e.target.value)} required disabled={loading} locale={locale} dir="rtl" lang="ar" inputMode="text" />
           <Select label={labels.subjectType} value={form.is_activity ? 'activity' : 'academic'} onChange={(e) => handleChange('is_activity', e.target.value === 'activity')} required disabled={loading} locale={locale}>
             <option value="academic">{labels.academic}</option>
             <option value="activity">{labels.activity}</option>

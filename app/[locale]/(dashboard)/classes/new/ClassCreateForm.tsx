@@ -101,12 +101,12 @@ export default function ClassCreateForm({
         <Card.Header>
           <div className="flex items-center gap-2">
             <School size={15} className="text-brand-teal" />
-            <Card.Title>{labels.className}</Card.Title>
+            <Card.Title>{labels.classInfo}</Card.Title>
           </div>
         </Card.Header>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          <Input label={labels.className} value={form.name} onChange={(e) => handleChange('name', e.target.value)} required disabled={loading} locale={locale} />
-          <Input label={labels.classNameAr} value={form.name_ar} onChange={(e) => handleChange('name_ar', e.target.value)} required disabled={loading} locale={locale} dir="rtl" />
+          <Input label={labels.classNameEn} value={form.name} onChange={(e) => handleChange('name', e.target.value)} required disabled={loading} locale={locale} lang="en" inputMode="text" />
+          <Input label={labels.classNameAr} value={form.name_ar} onChange={(e) => handleChange('name_ar', e.target.value)} required disabled={loading} locale={locale} dir="rtl" lang="ar" inputMode="text" />
           <Select label={labels.gradeLevel} value={form.grade_level} onChange={(e) => handleChange('grade_level', e.target.value)} required disabled={loading} locale={locale}>
             <option value="">—</option>
             {GRADE_LEVELS.map((gl) => (
