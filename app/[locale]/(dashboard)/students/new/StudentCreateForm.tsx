@@ -167,16 +167,19 @@ export default function StudentCreateForm({
             <div className="flex items-center gap-2">
               <User size={15} className="text-brand-teal" />
               <div>
-                <Card.Title>{labels.englishNames}</Card.Title>
+                <div className="flex items-center gap-1.5">
+                  <Card.Title>{labels.englishNames}</Card.Title>
+                  <span className="text-[10px] font-bold text-brand-teal bg-brand-teal/10 px-1.5 py-0.5 rounded">EN</span>
+                </div>
                 <p className="text-[10px] text-text-tertiary mt-0.5">{isAr ? 'بالإنجليزية' : 'As in passport'}</p>
               </div>
             </div>
           </Card.Header>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <Input label={labels.firstName} value={student.first_name} onChange={(e) => handleStudent('first_name', e.target.value)} required disabled={loading} locale={locale} />
-            <Input label={labels.fatherName} value={student.father_name} onChange={(e) => handleStudent('father_name', e.target.value)} required disabled={loading} locale={locale} />
-            <Input label={labels.grandfatherName} value={student.grandfather_name} onChange={(e) => handleStudent('grandfather_name', e.target.value)} required disabled={loading} locale={locale} />
-            <Input label={labels.familyName} value={student.family_name} onChange={(e) => handleStudent('family_name', e.target.value)} required disabled={loading} locale={locale} />
+            <Input label={labels.firstName} value={student.first_name} onChange={(e) => handleStudent('first_name', e.target.value)} required disabled={loading} locale={locale} lang="en" inputMode="text" pattern="[A-Za-z\s\-']+" />
+            <Input label={labels.fatherName} value={student.father_name} onChange={(e) => handleStudent('father_name', e.target.value)} required disabled={loading} locale={locale} lang="en" inputMode="text" pattern="[A-Za-z\s\-']+" />
+            <Input label={labels.grandfatherName} value={student.grandfather_name} onChange={(e) => handleStudent('grandfather_name', e.target.value)} required disabled={loading} locale={locale} lang="en" inputMode="text" pattern="[A-Za-z\s\-']+" />
+            <Input label={labels.familyName} value={student.family_name} onChange={(e) => handleStudent('family_name', e.target.value)} required disabled={loading} locale={locale} lang="en" inputMode="text" pattern="[A-Za-z\s\-']+" />
           </div>
         </Card>
 
@@ -194,10 +197,10 @@ export default function StudentCreateForm({
             </div>
           </Card.Header>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <Input label={labels.firstNameAr} value={student.first_name_ar} onChange={(e) => handleStudent('first_name_ar', e.target.value)} required disabled={loading} locale={locale} dir="rtl" />
-            <Input label={labels.fatherNameAr} value={student.father_name_ar} onChange={(e) => handleStudent('father_name_ar', e.target.value)} required disabled={loading} locale={locale} dir="rtl" />
-            <Input label={labels.grandfatherNameAr} value={student.grandfather_name_ar} onChange={(e) => handleStudent('grandfather_name_ar', e.target.value)} required disabled={loading} locale={locale} dir="rtl" />
-            <Input label={labels.familyNameAr} value={student.family_name_ar} onChange={(e) => handleStudent('family_name_ar', e.target.value)} required disabled={loading} locale={locale} dir="rtl" />
+            <Input label={labels.firstNameAr} value={student.first_name_ar} onChange={(e) => handleStudent('first_name_ar', e.target.value)} required disabled={loading} locale={locale} dir="rtl" lang="ar" inputMode="text" />
+            <Input label={labels.fatherNameAr} value={student.father_name_ar} onChange={(e) => handleStudent('father_name_ar', e.target.value)} required disabled={loading} locale={locale} dir="rtl" lang="ar" inputMode="text" />
+            <Input label={labels.grandfatherNameAr} value={student.grandfather_name_ar} onChange={(e) => handleStudent('grandfather_name_ar', e.target.value)} required disabled={loading} locale={locale} dir="rtl" lang="ar" inputMode="text" />
+            <Input label={labels.familyNameAr} value={student.family_name_ar} onChange={(e) => handleStudent('family_name_ar', e.target.value)} required disabled={loading} locale={locale} dir="rtl" lang="ar" inputMode="text" />
           </div>
         </Card>
 
@@ -238,12 +241,12 @@ export default function StudentCreateForm({
               </div>
             </Card.Header>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              <Input label={labels.guardianFirstName} value={guardian.first_name} onChange={(e) => handleGuardian('first_name', e.target.value)} required disabled={loading} locale={locale} />
-              <Input label={labels.guardianFatherName} value={guardian.father_name} onChange={(e) => handleGuardian('father_name', e.target.value)} disabled={loading} locale={locale} />
-              <Input label={labels.guardianFamilyName} value={guardian.family_name} onChange={(e) => handleGuardian('family_name', e.target.value)} required disabled={loading} locale={locale} />
-              <Input label={labels.guardianFirstNameAr} value={guardian.first_name_ar} onChange={(e) => handleGuardian('first_name_ar', e.target.value)} required disabled={loading} locale={locale} dir="rtl" />
-              <Input label={labels.guardianFatherNameAr} value={guardian.father_name_ar} onChange={(e) => handleGuardian('father_name_ar', e.target.value)} disabled={loading} locale={locale} dir="rtl" />
-              <Input label={labels.guardianFamilyNameAr} value={guardian.family_name_ar} onChange={(e) => handleGuardian('family_name_ar', e.target.value)} required disabled={loading} locale={locale} dir="rtl" />
+              <Input label={labels.guardianFirstName} value={guardian.first_name} onChange={(e) => handleGuardian('first_name', e.target.value)} required disabled={loading} locale={locale} lang="en" inputMode="text" pattern="[A-Za-z\s\-']+" />
+              <Input label={labels.guardianFatherName} value={guardian.father_name} onChange={(e) => handleGuardian('father_name', e.target.value)} disabled={loading} locale={locale} lang="en" inputMode="text" pattern="[A-Za-z\s\-']+" />
+              <Input label={labels.guardianFamilyName} value={guardian.family_name} onChange={(e) => handleGuardian('family_name', e.target.value)} required disabled={loading} locale={locale} lang="en" inputMode="text" pattern="[A-Za-z\s\-']+" />
+              <Input label={labels.guardianFirstNameAr} value={guardian.first_name_ar} onChange={(e) => handleGuardian('first_name_ar', e.target.value)} required disabled={loading} locale={locale} dir="rtl" lang="ar" inputMode="text" />
+              <Input label={labels.guardianFatherNameAr} value={guardian.father_name_ar} onChange={(e) => handleGuardian('father_name_ar', e.target.value)} disabled={loading} locale={locale} dir="rtl" lang="ar" inputMode="text" />
+              <Input label={labels.guardianFamilyNameAr} value={guardian.family_name_ar} onChange={(e) => handleGuardian('family_name_ar', e.target.value)} required disabled={loading} locale={locale} dir="rtl" lang="ar" inputMode="text" />
               <Select label={labels.relationship} value={guardian.relationship} onChange={(e) => handleRelationship(e.target.value)} required disabled={loading} locale={locale}>
                 <option value="">{labels.selectRelationship}</option>
                 <option value="Father">{labels.father}</option>
