@@ -9,17 +9,20 @@ import AutoPrint from '@/components/AutoPrint';
 import ClickableRow from '@/components/ClickableRow';
 import SortableHead from '@/components/SortableHead';
 import SearchBar from '@/components/SearchBar';
+import Pagination from '@/components/Pagination';
 import { Card } from '@/components/ui/Card';
 import { Table } from '@/components/ui/Table';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
+
+const PER_PAGE = 25;
 
 export default async function ClassesPage({
   params,
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ sort?: string; dir?: string; print?: string; search?: string }>;
+  searchParams: Promise<{ sort?: string; dir?: string; print?: string; search?: string; page?: string }>;
 }) {
   const { locale } = await params;
   const sp = await searchParams;
@@ -27,9 +30,10 @@ export default async function ClassesPage({
   const t = await getTranslations();
   const isPrint = sp?.print === '1';
   const search = sp?.search?.toLowerCase() || '';
+  const page = isPrint ? 1 : Math.max(1, Number(sp?.page || 1));
 
   const { classes: allClasses, countMap } = await getClassesWithCounts();
-  const classes = search
+  const filtered = search
     ? allClasses.filter((cls: any) =>
         cls.name?.toLowerCase().includes(search) ||
         cls.name_ar?.includes(search) ||
@@ -38,12 +42,22 @@ export default async function ClassesPage({
       )
     : allClasses;
 
+  const totalCount = filtered.length;
+  const totalPages = Math.ceil(totalCount / PER_PAGE);
+  const from = (page - 1) * PER_PAGE;
+  const classes = isPrint ? filtered : filtered.slice(from, from + PER_PAGE);
+
+  // Build base path for pagination (preserve search)
+  const searchParamsStr = new URLSearchParams();
+  if (search) searchParamsStr.set('search', sp?.search || '');
+  const basePath = `/${locale}/classes${searchParamsStr.toString() ? `?${searchParamsStr.toString()}` : ''}`;
+
   return (
     <div className="max-w-[1200px]">
       {isPrint && <AutoPrint />}
       <PageHeader
         title={t('class.allClasses')}
-        subtitle={`${classes.length} ${t('navigation.classes')} · ${t('class.academicYear')} 2025-2026`}
+        subtitle={`${totalCount} ${t('navigation.classes')} · ${t('class.academicYear')} 2025-2026`}
         actions={
           <Link href={`/${locale}/classes/new`}>
             <Button variant="accent" size="sm" icon={<Plus size={14} />}>
@@ -61,7 +75,9 @@ export default async function ClassesPage({
           </div>
           <div className="flex items-center gap-3">
             <p className="text-[11px] text-text-tertiary">
-              {classes.length} {t('navigation.classes')}
+              {isPrint
+                ? `${totalCount} ${t('navigation.classes')}`
+                : `${t('common.showing')} ${classes.length > 0 ? from + 1 : 0}–${Math.min(from + PER_PAGE, totalCount)} ${t('common.of')} ${totalCount}`}
             </p>
             <PrintButton label={t('common.print')} />
           </div>
@@ -95,7 +111,7 @@ export default async function ClassesPage({
               return (
                 <ClickableRow key={cls.id} href={`/${locale}/classes/${cls.id}`}>
                   <Table.Cell className="text-text-tertiary text-[11px] font-mono">
-                    {index + 1}
+                    {isPrint ? index + 1 : from + index + 1}
                   </Table.Cell>
                   <Table.Cell>
                     <span className="font-semibold text-text-primary">
@@ -118,6 +134,17 @@ export default async function ClassesPage({
             })}
           </Table.Body>
         </Table>
+
+        {!isPrint && totalPages > 1 && (
+          <div className="flex items-center justify-center px-2 pt-3 border-t border-gray-100 print:hidden">
+            <Pagination
+              currentPage={page}
+              totalPages={totalPages}
+              basePath={basePath}
+              locale={locale}
+            />
+          </div>
+        )}
       </Card>
     </div>
   );

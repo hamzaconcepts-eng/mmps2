@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
 
 interface PaginationProps {
   currentPage: number;
@@ -14,6 +14,8 @@ export default function Pagination({ currentPage, totalPages, basePath, locale =
   const isRTL = locale === 'ar';
   const PrevIcon = isRTL ? ChevronRight : ChevronLeft;
   const NextIcon = isRTL ? ChevronLeft : ChevronRight;
+  const FirstIcon = isRTL ? ChevronsRight : ChevronsLeft;
+  const LastIcon = isRTL ? ChevronsLeft : ChevronsRight;
 
   // Show max 5 page numbers around current
   const getPages = () => {
@@ -33,20 +35,27 @@ export default function Pagination({ currentPage, totalPages, basePath, locale =
     return `${url.pathname}${url.search}`;
   };
 
+  const btnBase = 'p-2 rounded-lg glass hover:bg-black/[0.04] transition-all text-text-secondary hover:text-text-primary';
+  const btnDisabled = 'p-2 rounded-lg text-text-tertiary/30 cursor-not-allowed';
+
   return (
     <div className="flex items-center justify-center gap-1 mt-4">
+      {/* First */}
+      {currentPage > 1 ? (
+        <Link href={buildHref(1)} className={btnBase} title="First page">
+          <FirstIcon size={14} />
+        </Link>
+      ) : (
+        <span className={btnDisabled}><FirstIcon size={14} /></span>
+      )}
+
       {/* Previous */}
       {currentPage > 1 ? (
-        <Link
-          href={buildHref(currentPage - 1)}
-          className="p-2 rounded-lg glass hover:bg-black/[0.04] transition-all text-text-secondary hover:text-text-primary"
-        >
+        <Link href={buildHref(currentPage - 1)} className={btnBase}>
           <PrevIcon size={14} />
         </Link>
       ) : (
-        <span className="p-2 rounded-lg text-text-tertiary/30 cursor-not-allowed">
-          <PrevIcon size={14} />
-        </span>
+        <span className={btnDisabled}><PrevIcon size={14} /></span>
       )}
 
       {/* Page Numbers */}
@@ -66,16 +75,20 @@ export default function Pagination({ currentPage, totalPages, basePath, locale =
 
       {/* Next */}
       {currentPage < totalPages ? (
-        <Link
-          href={buildHref(currentPage + 1)}
-          className="p-2 rounded-lg glass hover:bg-black/[0.04] transition-all text-text-secondary hover:text-text-primary"
-        >
+        <Link href={buildHref(currentPage + 1)} className={btnBase}>
           <NextIcon size={14} />
         </Link>
       ) : (
-        <span className="p-2 rounded-lg text-text-tertiary/30 cursor-not-allowed">
-          <NextIcon size={14} />
-        </span>
+        <span className={btnDisabled}><NextIcon size={14} /></span>
+      )}
+
+      {/* Last */}
+      {currentPage < totalPages ? (
+        <Link href={buildHref(totalPages)} className={btnBase} title="Last page">
+          <LastIcon size={14} />
+        </Link>
+      ) : (
+        <span className={btnDisabled}><LastIcon size={14} /></span>
       )}
     </div>
   );

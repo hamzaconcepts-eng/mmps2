@@ -2,16 +2,18 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
 import { DoorOpen, Plus } from 'lucide-react';
 import { getRoomsWithAssignments } from '@/lib/supabase/cached-queries';
-import { formatGradeLevel } from '@/lib/utils/format';
 import PageHeader from '@/components/PageHeader';
 import PrintButton from '@/components/PrintButton';
 import AutoPrint from '@/components/AutoPrint';
 import ClickableRow from '@/components/ClickableRow';
 import SearchBar from '@/components/SearchBar';
+import Pagination from '@/components/Pagination';
 import { Card } from '@/components/ui/Card';
 import { Table } from '@/components/ui/Table';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
+
+const PER_PAGE = 25;
 
 const TYPE_BADGE: Record<string, 'teal' | 'orange' | 'success' | 'dark'> = {
   classroom: 'teal',
@@ -27,7 +29,7 @@ export default async function RoomsPage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ print?: string; search?: string }>;
+  searchParams: Promise<{ print?: string; search?: string; page?: string }>;
 }) {
   const { locale } = await params;
   const sp = await searchParams;
@@ -36,10 +38,11 @@ export default async function RoomsPage({
   const isPrint = sp?.print === '1';
   const search = sp?.search?.toLowerCase() || '';
   const isAr = locale === 'ar';
+  const page = isPrint ? 1 : Math.max(1, Number(sp?.page || 1));
 
   const { facilities: allRooms, classByFacility } = await getRoomsWithAssignments();
 
-  const rooms = search
+  const filtered = search
     ? allRooms.filter((r: any) =>
         r.name?.toLowerCase().includes(search) ||
         r.name_ar?.includes(search) ||
@@ -48,12 +51,21 @@ export default async function RoomsPage({
       )
     : allRooms;
 
+  const totalCount = filtered.length;
+  const totalPages = Math.ceil(totalCount / PER_PAGE);
+  const from = (page - 1) * PER_PAGE;
+  const rooms = isPrint ? filtered : filtered.slice(from, from + PER_PAGE);
+
+  const searchParamsStr = new URLSearchParams();
+  if (search) searchParamsStr.set('search', sp?.search || '');
+  const basePath = `/${locale}/rooms${searchParamsStr.toString() ? `?${searchParamsStr.toString()}` : ''}`;
+
   return (
     <div className="max-w-[1200px]">
       {isPrint && <AutoPrint />}
       <PageHeader
         title={t('room.allRooms')}
-        subtitle={`${allRooms.length} ${t('navigation.rooms')}`}
+        subtitle={`${totalCount} ${t('navigation.rooms')}`}
         actions={
           <Link href={`/${locale}/rooms/new`}>
             <Button variant="accent" size="sm" icon={<Plus size={14} />}>
@@ -70,7 +82,9 @@ export default async function RoomsPage({
           </div>
           <div className="flex items-center gap-3">
             <p className="text-[11px] text-text-tertiary">
-              {rooms.length} {t('navigation.rooms')}
+              {isPrint
+                ? `${totalCount} ${t('navigation.rooms')}`
+                : `${t('common.showing')} ${rooms.length > 0 ? from + 1 : 0}–${Math.min(from + PER_PAGE, totalCount)} ${t('common.of')} ${totalCount}`}
             </p>
             <PrintButton label={t('common.print')} />
           </div>
@@ -102,7 +116,9 @@ export default async function RoomsPage({
               const assignedClasses = classByFacility[room.id] || [];
               return (
                 <ClickableRow key={room.id} href={`/${locale}/rooms/${room.id}`}>
-                  <Table.Cell className="text-text-tertiary text-[11px] font-mono">{index + 1}</Table.Cell>
+                  <Table.Cell className="text-text-tertiary text-[11px] font-mono">
+                    {isPrint ? index + 1 : from + index + 1}
+                  </Table.Cell>
                   <Table.Cell>
                     <span className="font-mono text-[11px] text-brand-teal font-bold">{room.code}</span>
                   </Table.Cell>
@@ -138,6 +154,17 @@ export default async function RoomsPage({
             })}
           </Table.Body>
         </Table>
+
+        {!isPrint && totalPages > 1 && (
+          <div className="flex items-center justify-center px-2 pt-3 border-t border-gray-100 print:hidden">
+            <Pagination
+              currentPage={page}
+              totalPages={totalPages}
+              basePath={basePath}
+              locale={locale}
+            />
+          </div>
+        )}
       </Card>
     </div>
   );

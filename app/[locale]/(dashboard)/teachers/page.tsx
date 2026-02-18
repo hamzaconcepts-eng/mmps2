@@ -18,7 +18,7 @@ import { Table } from '@/components/ui/Table';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 
-const PER_PAGE = 20;
+const PER_PAGE = 25;
 
 export default async function TeachersPage({
   params,
