@@ -8,6 +8,7 @@ import PrintButton from '@/components/PrintButton';
 import AutoPrint from '@/components/AutoPrint';
 import ClickableRow from '@/components/ClickableRow';
 import SortableHead from '@/components/SortableHead';
+import SearchBar from '@/components/SearchBar';
 import { Card } from '@/components/ui/Card';
 import { Table } from '@/components/ui/Table';
 import { Badge } from '@/components/ui/Badge';
@@ -18,15 +19,24 @@ export default async function ClassesPage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ sort?: string; dir?: string; print?: string }>;
+  searchParams: Promise<{ sort?: string; dir?: string; print?: string; search?: string }>;
 }) {
   const { locale } = await params;
   const sp = await searchParams;
   setRequestLocale(locale);
   const t = await getTranslations();
   const isPrint = sp?.print === '1';
+  const search = sp?.search?.toLowerCase() || '';
 
-  const { classes, countMap } = await getClassesWithCounts();
+  const { classes: allClasses, countMap } = await getClassesWithCounts();
+  const classes = search
+    ? allClasses.filter((cls: any) =>
+        cls.name?.toLowerCase().includes(search) ||
+        cls.name_ar?.includes(search) ||
+        cls.section?.toLowerCase().includes(search) ||
+        formatGradeLevel(cls.grade_level, 'en').toLowerCase().includes(search)
+      )
+    : allClasses;
 
   return (
     <div className="max-w-[1200px]">
@@ -46,10 +56,15 @@ export default async function ClassesPage({
       <Card>
         {/* Print button bar above table */}
         <div className="flex items-center justify-between px-2 py-2 print:hidden">
-          <p className="text-[11px] text-text-tertiary">
-            {classes.length} {t('navigation.classes')}
-          </p>
-          <PrintButton label={t('common.print')} />
+          <div className="w-64">
+            <SearchBar placeholder={t('class.searchPlaceholder')} locale={locale} />
+          </div>
+          <div className="flex items-center gap-3">
+            <p className="text-[11px] text-text-tertiary">
+              {classes.length} {t('navigation.classes')}
+            </p>
+            <PrintButton label={t('common.print')} />
+          </div>
         </div>
 
         <Table>

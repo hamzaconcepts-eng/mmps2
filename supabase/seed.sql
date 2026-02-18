@@ -129,7 +129,7 @@ INSERT INTO subjects (code, name, name_ar, is_activity) VALUES
   ('ART', 'Visual Arts', 'الفنون البصرية', false),
   ('CAR', 'Career Guidance', 'التوجيه المهني', false),
   ('SWM', 'Swimming', 'السباحة', true),
-  ('PLY', 'Playground', 'الملعب', true);
+  ('PE', 'Physical Education', 'التربية البدنية', true);
 
 -- ================================================
 -- 5. GRADE-SUBJECT ASSIGNMENTS
@@ -150,7 +150,7 @@ INSERT INTO subjects (code, name, name_ar, is_activity) VALUES
 -- | Visual Arts       |  x  |  x  | x  | x  | x  | x  | x  | x  |    |    |
 -- | Career Guidance   |     |     |    |    |    |    | x  | x  | x  |  x |
 -- | Swimming          |     |     | x  | x  | x  | x  | x  | x  | x  |  x |
--- | Playground        |  x  |  x  | x  | x  | x  | x  | x  | x  | x  |  x |
+-- | Physical Education|  x  |  x  | x  | x  | x  | x  | x  | x  | x  |  x |
 -- ================================================
 
 -- Islamic Education: ALL grades (-1 through 8)
@@ -225,11 +225,11 @@ SELECT s.id, gl.level FROM subjects s,
   (VALUES (1),(2),(3),(4),(5),(6),(7),(8)) AS gl(level)
 WHERE s.code = 'SWM';
 
--- Playground: ALL grades
+-- Physical Education: ALL grades
 INSERT INTO grade_subjects (subject_id, grade_level)
 SELECT s.id, gl.level FROM subjects s,
   (VALUES (-1),(0),(1),(2),(3),(4),(5),(6),(7),(8)) AS gl(level)
-WHERE s.code = 'PLY';
+WHERE s.code = 'PE';
 
 -- ================================================
 -- 6. SCORING CATEGORIES (assessment breakdown per subject per grade)
@@ -293,14 +293,14 @@ BEGIN
   RAISE NOTICE 'Created scoring categories for skill/arts subjects';
 END $$;
 
--- C) Sports/Activity subjects: SWM, PLY
+-- C) Sports/Activity subjects: SWM, PE
 DO $$
 DECLARE
   v_subject RECORD;
   v_gs RECORD;
 BEGIN
   FOR v_subject IN
-    SELECT id, code FROM subjects WHERE code IN ('SWM','PLY')
+    SELECT id, code FROM subjects WHERE code IN ('SWM','PE')
   LOOP
     FOR v_gs IN
       SELECT grade_level FROM grade_subjects WHERE subject_id = v_subject.id

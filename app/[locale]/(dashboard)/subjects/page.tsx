@@ -7,6 +7,7 @@ import PageHeader from '@/components/PageHeader';
 import PrintButton from '@/components/PrintButton';
 import AutoPrint from '@/components/AutoPrint';
 import ClickableRow from '@/components/ClickableRow';
+import SearchBar from '@/components/SearchBar';
 import { Card } from '@/components/ui/Card';
 import { Table } from '@/components/ui/Table';
 import { Badge } from '@/components/ui/Badge';
@@ -17,15 +18,23 @@ export default async function SubjectsPage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ print?: string }>;
+  searchParams: Promise<{ print?: string; search?: string }>;
 }) {
   const { locale } = await params;
   const sp = await searchParams;
   setRequestLocale(locale);
   const t = await getTranslations();
   const isPrint = sp?.print === '1';
+  const search = sp?.search?.toLowerCase() || '';
 
-  const { subjects, gradeLevelMap, scoringMap } = await getSubjectsWithDetails();
+  const { subjects: allSubjects, gradeLevelMap, scoringMap } = await getSubjectsWithDetails();
+  const subjects = search
+    ? allSubjects.filter((s: any) =>
+        s.name?.toLowerCase().includes(search) ||
+        s.name_ar?.includes(search) ||
+        s.code?.toLowerCase().includes(search)
+      )
+    : allSubjects;
 
   return (
     <div className="max-w-[1200px]">
@@ -44,10 +53,15 @@ export default async function SubjectsPage({
 
       <Card>
         <div className="flex items-center justify-between px-2 py-2 print:hidden">
-          <p className="text-[11px] text-text-tertiary">
-            {subjects.length} {t('navigation.subjects')}
-          </p>
-          <PrintButton label={t('common.print')} />
+          <div className="w-64">
+            <SearchBar placeholder={t('subject.searchPlaceholder')} locale={locale} />
+          </div>
+          <div className="flex items-center gap-3">
+            <p className="text-[11px] text-text-tertiary">
+              {subjects.length} {t('navigation.subjects')}
+            </p>
+            <PrintButton label={t('common.print')} />
+          </div>
         </div>
 
         <Table>

@@ -310,7 +310,8 @@
     "classInfo": "Class Information",
     "classNameEn": "Class Name (English)",
     "classNameAr": "Class Name (Arabic)",
-    "selectSupervisor": "Select Supervisor"
+    "selectSupervisor": "Select Supervisor",
+    "searchPlaceholder": "Search by class name or grade..."
   },
   "subject": {
     "allSubjects": "All Subjects",
@@ -335,7 +336,8 @@
     "updateSuccess": "Subject updated successfully",
     "updateFailed": "Failed to update subject",
     "description": "Description",
-    "subjectNameAr": "Subject Name (Arabic)"
+    "subjectNameAr": "Subject Name (Arabic)",
+    "searchPlaceholder": "Search by subject name or code..."
   },
   "transport": {
     "title": "Transport Management",
@@ -371,7 +373,8 @@
     "createSuccess": "Created successfully",
     "createFailed": "Failed to create",
     "updateSuccess": "Updated successfully",
-    "updateFailed": "Failed to update"
+    "updateFailed": "Failed to update",
+    "searchPlaceholder": "Search by area or bus number..."
   },
   "attendance": {
     "date": "Date",

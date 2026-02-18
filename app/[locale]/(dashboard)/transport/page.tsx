@@ -7,6 +7,7 @@ import { formatCurrency, formatDriverName, formatPhone } from '@/lib/utils/forma
 import PageHeader from '@/components/PageHeader';
 import PrintButton from '@/components/PrintButton';
 import AutoPrint from '@/components/AutoPrint';
+import SearchBar from '@/components/SearchBar';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
@@ -16,7 +17,7 @@ export default async function TransportPage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ print?: string }>;
+  searchParams: Promise<{ print?: string; search?: string }>;
 }) {
   const { locale } = await params;
   const sp = await searchParams;
@@ -24,8 +25,18 @@ export default async function TransportPage({
   const t = await getTranslations();
   const isAr = locale === 'ar';
   const isPrint = sp?.print === '1';
+  const search = sp?.search?.toLowerCase() || '';
 
-  const { areas, buses, transports, busStudentCount, busesByArea } = await getTransportData();
+  const { areas: allAreas, buses, transports, busStudentCount, busesByArea } = await getTransportData();
+  const areas = search
+    ? allAreas.filter((area: any) => {
+        const nameMatch = area.name?.toLowerCase().includes(search) || area.name_ar?.includes(search);
+        const busMatch = (busesByArea[area.id] || []).some((bus: any) =>
+          bus.bus_number?.toLowerCase().includes(search) || bus.plate_number?.toLowerCase().includes(search)
+        );
+        return nameMatch || busMatch;
+      })
+    : allAreas;
 
   return (
     <div className="max-w-[1200px]">
@@ -55,7 +66,7 @@ export default async function TransportPage({
       <div className="print:hidden">
         <PageHeader
           title={t('transport.title')}
-          subtitle={`${areas.length} ${t('transport.areas')} · ${buses.length} ${t('transport.buses')} · ${transports.length} ${t('navigation.students')}`}
+          subtitle={`${allAreas.length} ${t('transport.areas')} · ${buses.length} ${t('transport.buses')} · ${transports.length} ${t('navigation.students')}`}
           actions={
             <div className="flex items-center gap-2">
               <Link href={`/${locale}/transport/areas/new`}>
@@ -65,6 +76,9 @@ export default async function TransportPage({
             </div>
           }
         />
+        <div className="mb-4 w-72">
+          <SearchBar placeholder={t('transport.searchPlaceholder')} locale={locale} />
+        </div>
       </div>
 
       <div className="space-y-4">

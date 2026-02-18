@@ -310,7 +310,8 @@
     "classInfo": "معلومات الفصل",
     "classNameEn": "اسم الفصل (إنجليزي)",
     "classNameAr": "اسم الفصل (عربي)",
-    "selectSupervisor": "اختر المشرف"
+    "selectSupervisor": "اختر المشرف",
+    "searchPlaceholder": "ابحث باسم الفصل أو المرحلة..."
   },
   "subject": {
     "allSubjects": "جميع المواد",
@@ -335,7 +336,8 @@
     "updateSuccess": "تم تحديث المادة بنجاح",
     "updateFailed": "فشل تحديث المادة",
     "description": "الوصف",
-    "subjectNameAr": "اسم المادة (عربي)"
+    "subjectNameAr": "اسم المادة (عربي)",
+    "searchPlaceholder": "ابحث باسم المادة أو الرمز..."
   },
   "transport": {
     "title": "إدارة النقل",
@@ -371,7 +373,8 @@
     "createSuccess": "تم الإضافة بنجاح",
     "createFailed": "فشل الإضافة",
     "updateSuccess": "تم التحديث بنجاح",
-    "updateFailed": "فشل التحديث"
+    "updateFailed": "فشل التحديث",
+    "searchPlaceholder": "ابحث بالمنطقة أو رقم الحافلة..."
   },
   "attendance": {
     "date": "التاريخ",
