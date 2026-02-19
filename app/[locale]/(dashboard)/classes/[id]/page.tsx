@@ -68,9 +68,7 @@ export default async function ClassDetailPage({
   const allSubjects = allSubjectsRes.data || [];
   const allTeachers = (allTeachersRes.data || []).map((t: any) => ({
     id: t.id,
-    displayName: isAr
-      ? [t.first_name_ar, t.father_name_ar, t.family_name_ar].filter(Boolean).join(' ')
-      : [t.first_name, t.father_name, t.family_name].filter(Boolean).join(' '),
+    displayName: formatTeacherName(t, locale),
   }));
 
   // Shape assignments for the client form
@@ -80,9 +78,7 @@ export default async function ClassDetailPage({
     subjects: sa.subjects,
     teachers: sa.teachers ? {
       id: sa.teachers.id,
-      displayName: isAr
-        ? [sa.teachers.first_name_ar, sa.teachers.father_name_ar, sa.teachers.family_name_ar].filter(Boolean).join(' ')
-        : [sa.teachers.first_name, sa.teachers.father_name, sa.teachers.family_name].filter(Boolean).join(' '),
+      displayName: formatTeacherName(sa.teachers, locale),
     } : null,
   }));
 
