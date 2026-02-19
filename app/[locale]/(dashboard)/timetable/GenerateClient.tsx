@@ -204,14 +204,14 @@ export default function GenerateClient({ initialSlots, academicYear, locale, lab
                     type="time"
                     value={slot.start_time}
                     onChange={(e) => update(idx, 'start_time', e.target.value)}
-                    className="text-[11px] px-2 py-1 rounded border border-gray-200 bg-white focus:outline-none focus:ring-1 focus:ring-brand-teal/30 w-[82px]"
+                    className="text-[11px] px-2 py-1 rounded border border-gray-200 bg-white focus:outline-none focus:ring-1 focus:ring-brand-teal/30 w-[110px]"
                   />
                   <span className="text-[10px] text-text-tertiary">→</span>
                   <input
                     type="time"
                     value={slot.end_time}
                     onChange={(e) => update(idx, 'end_time', e.target.value)}
-                    className="text-[11px] px-2 py-1 rounded border border-gray-200 bg-white focus:outline-none focus:ring-1 focus:ring-brand-teal/30 w-[82px]"
+                    className="text-[11px] px-2 py-1 rounded border border-gray-200 bg-white focus:outline-none focus:ring-1 focus:ring-brand-teal/30 w-[110px]"
                   />
                 </div>
 
