@@ -2,9 +2,9 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { ArrowLeft, BookOpen, School, BarChart3 } from 'lucide-react';
+import { ArrowLeft, BookOpen, School } from 'lucide-react';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { formatSubjectName, formatGradeLevel, formatClassName, formatTeacherName } from '@/lib/utils/format';
+import { formatSubjectName, formatGradeLevel } from '@/lib/utils/format';
 import PageHeader from '@/components/PageHeader';
 import PrintButton from '@/components/PrintButton';
 import AutoPrint from '@/components/AutoPrint';
@@ -12,7 +12,6 @@ import EntityActions from '@/components/EntityActions';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
-import { Table } from '@/components/ui/Table';
 import { deleteSubject } from './actions';
 
 export default async function SubjectDetailPage({
@@ -30,23 +29,15 @@ export default async function SubjectDetailPage({
   const isAr = locale === 'ar';
   const isPrint = sp?.print === '1';
 
-  // All queries in parallel
-  const [subjectRes, gradeLevelsRes, scoringRes, assignmentsRes] = await Promise.all([
+  const [subjectRes, gradeLevelsRes] = await Promise.all([
     supabase.from('subjects').select('*').eq('id', id).single(),
     supabase.from('grade_subjects').select('*').eq('subject_id', id).eq('is_active', true).order('grade_level'),
-    supabase.from('scoring_categories').select('*').eq('subject_id', id).eq('is_active', true).order('sort_order'),
-    supabase
-      .from('class_subjects')
-      .select('id, periods_per_week, classes(id, name, name_ar, grade_level, section), teachers(id, first_name, first_name_ar, father_name, father_name_ar, grandfather_name, grandfather_name_ar, family_name, family_name_ar, last_name, last_name_ar, gender)')
-      .eq('subject_id', id),
   ]);
 
   const subject = subjectRes.data;
   if (!subject) notFound();
 
   const gradeLevels = gradeLevelsRes.data || [];
-  const scoringCategories = scoringRes.data || [];
-  const classAssignments = assignmentsRes.data || [];
 
   const printDate = new Date().toLocaleDateString(isAr ? 'ar-OM' : 'en-GB', {
     year: 'numeric', month: 'long', day: 'numeric',
@@ -110,7 +101,7 @@ export default async function SubjectDetailPage({
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-3">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
         {/* Subject Info */}
         <Card>
           <Card.Header>
@@ -151,7 +142,6 @@ export default async function SubjectDetailPage({
               {gradeLevels.map((gl: any) => (
                 <div key={gl.id} className="glass rounded-lg px-3 py-2 text-center">
                   <p className="text-[12px] font-bold text-text-primary">{formatGradeLevel(gl.grade_level, locale)}</p>
-                  <p className="text-[10px] text-text-tertiary">{gl.periods_per_week} periods/week</p>
                 </div>
               ))}
             </div>
@@ -160,86 +150,6 @@ export default async function SubjectDetailPage({
           )}
         </Card>
       </div>
-
-      {/* Scoring Categories */}
-      {scoringCategories.length > 0 && (
-        <Card className="mb-3">
-          <Card.Header>
-            <div className="flex items-center gap-2">
-              <BarChart3 size={15} className="text-success" />
-              <Card.Title>{t('subject.scoringCategories')}</Card.Title>
-            </div>
-          </Card.Header>
-          <Table>
-            <Table.Header>
-              <Table.Row>
-                <Table.Head>{t('subject.categoryName')}</Table.Head>
-                <Table.Head>{t('subject.percentage')}</Table.Head>
-                <Table.Head>{t('subject.maxScore')}</Table.Head>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {scoringCategories.map((cat: any) => (
-                <Table.Row key={cat.id}>
-                  <Table.Cell className="text-text-primary font-semibold text-[11px]">
-                    {isAr ? cat.name_ar : cat.name}
-                  </Table.Cell>
-                  <Table.Cell className="text-text-secondary text-[11px]">{cat.percentage}%</Table.Cell>
-                  <Table.Cell className="text-text-secondary text-[11px]">{cat.max_score}</Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table>
-        </Card>
-      )}
-
-      {/* Class Assignments */}
-      <Card>
-        <Card.Header>
-          <div className="flex items-center gap-2">
-            <School size={15} className="text-brand-teal" />
-            <Card.Title>{t('class.subjectAssignments')} ({classAssignments.length})</Card.Title>
-          </div>
-        </Card.Header>
-        {classAssignments.length > 0 ? (
-          <Table>
-            <Table.Header>
-              <Table.Row>
-                <Table.Head>{t('class.className')}</Table.Head>
-                <Table.Head>{t('class.gradeLevel')}</Table.Head>
-                <Table.Head>{t('navigation.teachers')}</Table.Head>
-                <Table.Head>{t('timetable.period')}</Table.Head>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {classAssignments.map((ca: any) => (
-                <Table.Row key={ca.id}>
-                  <Table.Cell>
-                    {ca.classes ? (
-                      <Link href={`/${locale}/classes/${ca.classes.id}`} className="text-[11px] font-semibold text-text-primary hover:text-brand-teal transition-colors">
-                        {formatClassName(ca.classes, locale)}
-                      </Link>
-                    ) : '—'}
-                  </Table.Cell>
-                  <Table.Cell className="text-text-secondary text-[11px]">
-                    {ca.classes ? formatGradeLevel(ca.classes.grade_level, locale) : '—'}
-                  </Table.Cell>
-                  <Table.Cell>
-                    {ca.teachers ? (
-                      <Link href={`/${locale}/teachers/${ca.teachers.id}`} className="text-[11px] text-text-primary hover:text-brand-teal transition-colors">
-                        {formatTeacherName(ca.teachers, locale)}
-                      </Link>
-                    ) : <span className="text-text-tertiary text-[11px]">—</span>}
-                  </Table.Cell>
-                  <Table.Cell className="text-text-secondary text-[11px]">{ca.periods_per_week}/week</Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table>
-        ) : (
-          <p className="text-sm text-text-tertiary">{t('common.noData')}</p>
-        )}
-      </Card>
     </div>
   );
 }
