@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { CheckCircle, XCircle, BookOpen } from 'lucide-react';
+import { CheckCircle, XCircle, BookOpen, GraduationCap } from 'lucide-react';
 import { Input } from '@/components/ui/Input';
 import { Select } from '@/components/ui/Select';
 import { Button } from '@/components/ui/Button';
@@ -14,11 +14,26 @@ interface SubjectCreateFormProps {
   labels: Record<string, string>;
 }
 
+// KG1=0, KG2=-1 (negative to keep them separate), Grade 1–8
+const GRADE_OPTIONS = [
+  { value: -1, labelEn: 'KG 1', labelAr: 'KG 1' },
+  { value: 0,  labelEn: 'KG 2', labelAr: 'KG 2' },
+  { value: 1,  labelEn: 'Grade 1', labelAr: 'الصف 1' },
+  { value: 2,  labelEn: 'Grade 2', labelAr: 'الصف 2' },
+  { value: 3,  labelEn: 'Grade 3', labelAr: 'الصف 3' },
+  { value: 4,  labelEn: 'Grade 4', labelAr: 'الصف 4' },
+  { value: 5,  labelEn: 'Grade 5', labelAr: 'الصف 5' },
+  { value: 6,  labelEn: 'Grade 6', labelAr: 'الصف 6' },
+  { value: 7,  labelEn: 'Grade 7', labelAr: 'الصف 7' },
+  { value: 8,  labelEn: 'Grade 8', labelAr: 'الصف 8' },
+];
+
 export default function SubjectCreateForm({
   locale,
   labels,
 }: SubjectCreateFormProps) {
   const router = useRouter();
+  const isAr = locale === 'ar';
 
   const [form, setForm] = useState({
     code: '',
@@ -28,6 +43,7 @@ export default function SubjectCreateForm({
     description: '',
   });
 
+  const [selectedGrades, setSelectedGrades] = useState<number[]>([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
@@ -36,12 +52,26 @@ export default function SubjectCreateForm({
     setMessage(null);
   };
 
+  const toggleGrade = (value: number) => {
+    setSelectedGrades((prev) =>
+      prev.includes(value) ? prev.filter((g) => g !== value) : [...prev, value]
+    );
+  };
+
+  const toggleAll = () => {
+    if (selectedGrades.length === GRADE_OPTIONS.length) {
+      setSelectedGrades([]);
+    } else {
+      setSelectedGrades(GRADE_OPTIONS.map((g) => g.value));
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setMessage(null);
 
-    const result = await createSubject(form);
+    const result = await createSubject({ ...form, grades: selectedGrades });
 
     if (result.success) {
       setMessage({ type: 'success', text: labels.createSuccess });
@@ -54,6 +84,8 @@ export default function SubjectCreateForm({
       setLoading(false);
     }
   };
+
+  const allSelected = selectedGrades.length === GRADE_OPTIONS.length;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -74,6 +106,7 @@ export default function SubjectCreateForm({
         <span className="text-danger">*</span> {labels.requiredField}
       </p>
 
+      {/* Subject Info */}
       <Card>
         <Card.Header>
           <div className="flex items-center gap-2">
@@ -93,6 +126,49 @@ export default function SubjectCreateForm({
             <Input label={labels.description} value={form.description} onChange={(e) => handleChange('description', e.target.value)} disabled={loading} locale={locale} />
           </div>
         </div>
+      </Card>
+
+      {/* Grade Levels */}
+      <Card>
+        <Card.Header>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <GraduationCap size={15} className="text-brand-teal" />
+              <Card.Title>{labels.gradeLevels}</Card.Title>
+            </div>
+            <button
+              type="button"
+              onClick={toggleAll}
+              disabled={loading}
+              className="text-xs text-brand-teal hover:opacity-70 transition-opacity font-medium"
+            >
+              {allSelected ? labels.deselectAll : labels.selectAll}
+            </button>
+          </div>
+        </Card.Header>
+        <div className="flex flex-wrap gap-2">
+          {GRADE_OPTIONS.map((g) => {
+            const checked = selectedGrades.includes(g.value);
+            return (
+              <button
+                key={g.value}
+                type="button"
+                disabled={loading}
+                onClick={() => toggleGrade(g.value)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
+                  checked
+                    ? 'bg-brand-teal text-white border-brand-teal'
+                    : 'bg-white text-text-secondary border-gray-200 hover:border-brand-teal hover:text-brand-teal'
+                }`}
+              >
+                {isAr ? g.labelAr : g.labelEn}
+              </button>
+            );
+          })}
+        </div>
+        {selectedGrades.length === 0 && (
+          <p className="text-xs text-text-tertiary mt-2">{labels.noGradesSelected}</p>
+        )}
       </Card>
 
       <div className="flex items-center justify-end gap-3 pt-2">

@@ -49,7 +49,9 @@
     "saving": "Saving...",
     "updateSuccess": "Updated successfully",
     "updateFailed": "Failed to update",
-    "requiredField": "Required field"
+    "requiredField": "Required field",
+    "selectAll": "Select All",
+    "deselectAll": "Deselect All"
   },
   "navigation": {
     "home": "Home",
@@ -339,7 +341,8 @@
     "updateFailed": "Failed to update subject",
     "description": "Description",
     "subjectNameAr": "Subject Name (Arabic)",
-    "searchPlaceholder": "Search by subject name or code..."
+    "searchPlaceholder": "Search by subject name or code...",
+    "noGradesSelected": "No grade levels selected — this subject will not appear in any class."
   },
   "transport": {
     "title": "Transport Management",

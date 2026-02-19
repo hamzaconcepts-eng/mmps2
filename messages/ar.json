@@ -49,7 +49,9 @@
     "saving": "جاري الحفظ...",
     "updateSuccess": "تم التحديث بنجاح",
     "updateFailed": "فشل التحديث",
-    "requiredField": "حقل مطلوب"
+    "requiredField": "حقل مطلوب",
+    "selectAll": "تحديد الكل",
+    "deselectAll": "إلغاء تحديد الكل"
   },
   "navigation": {
     "home": "الرئيسية",
@@ -339,7 +341,8 @@
     "updateFailed": "فشل تحديث المادة",
     "description": "الوصف",
     "subjectNameAr": "اسم المادة (عربي)",
-    "searchPlaceholder": "ابحث باسم المادة أو الرمز..."
+    "searchPlaceholder": "ابحث باسم المادة أو الرمز...",
+    "noGradesSelected": "لم يتم تحديد أي مراحل دراسية — لن تظهر هذه المادة في أي فصل."
   },
   "transport": {
     "title": "إدارة النقل",

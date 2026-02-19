@@ -18,13 +18,14 @@ export default async function SubjectEditPage({
   const t = await getTranslations();
   const supabase = createAdminClient();
 
-  const { data: subject } = await supabase
-    .from('subjects')
-    .select('*')
-    .eq('id', id)
-    .single();
+  const [{ data: subject }, { data: gradeRows }] = await Promise.all([
+    supabase.from('subjects').select('*').eq('id', id).single(),
+    supabase.from('grade_subjects').select('grade_level').eq('subject_id', id),
+  ]);
 
   if (!subject) notFound();
+
+  const existingGrades = (gradeRows ?? []).map((r: any) => r.grade_level);
 
   return (
     <div className="max-w-[900px]">
@@ -42,6 +43,7 @@ export default async function SubjectEditPage({
 
       <SubjectEditForm
         subject={subject}
+        existingGrades={existingGrades}
         locale={locale}
         labels={{
           subjectCode: t('subject.subjectCode'),
@@ -54,6 +56,10 @@ export default async function SubjectEditPage({
           status: t('common.status'),
           active: t('student.active'),
           inactive: t('student.inactive'),
+          gradeLevels: t('subject.gradeLevels'),
+          selectAll: t('common.selectAll'),
+          deselectAll: t('common.deselectAll'),
+          noGradesSelected: t('subject.noGradesSelected'),
           save: t('common.save'),
           saving: t('subject.saving'),
           cancel: t('common.cancel'),
