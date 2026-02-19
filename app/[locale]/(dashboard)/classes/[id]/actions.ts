@@ -41,6 +41,61 @@ export async function deleteClass(classId: string) {
 }
 
 /**
+ * Add or update a subject assignment to a class.
+ */
+export async function addClassSubject(data: {
+  classId: string;
+  subjectId: string;
+  teacherId: string | null;
+  periodsPerWeek: number;
+}) {
+  try {
+    const supabase = createAdminClient();
+
+    const { error } = await supabase
+      .from('class_subjects')
+      .upsert({
+        class_id: data.classId,
+        subject_id: data.subjectId,
+        teacher_id: data.teacherId || null,
+        periods_per_week: data.periodsPerWeek,
+      }, { onConflict: 'class_id,subject_id' });
+
+    if (error) throw error;
+
+    revalidatePath(`/[locale]/classes/${data.classId}`, 'page');
+    revalidateTag('classes');
+
+    return { success: true };
+  } catch (error: any) {
+    return { success: false, error: error.message || 'Failed to assign subject' };
+  }
+}
+
+/**
+ * Remove a subject assignment from a class.
+ */
+export async function removeClassSubject(assignmentId: string, classId: string) {
+  try {
+    const supabase = createAdminClient();
+
+    const { error } = await supabase
+      .from('class_subjects')
+      .delete()
+      .eq('id', assignmentId);
+
+    if (error) throw error;
+
+    revalidatePath(`/[locale]/classes/${classId}`, 'page');
+    revalidateTag('classes');
+
+    return { success: true };
+  } catch (error: any) {
+    return { success: false, error: error.message || 'Failed to remove subject' };
+  }
+}
+
+/**
  * Update a class record.
  */
 export async function updateClass(

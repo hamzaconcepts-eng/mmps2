@@ -14,6 +14,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Table } from '@/components/ui/Table';
 import { deleteClass } from './actions';
+import SubjectAssignmentForm from './SubjectAssignmentForm';
 
 export default async function ClassDetailPage({
   params,
@@ -31,7 +32,7 @@ export default async function ClassDetailPage({
   const isPrint = sp?.print === '1';
 
   // All queries in parallel
-  const [clsRes, studentsRes, subjectsRes] = await Promise.all([
+  const [clsRes, studentsRes, subjectsRes, allSubjectsRes, allTeachersRes] = await Promise.all([
     supabase
       .from('classes')
       .select('*, teachers!classes_class_supervisor_id_fkey(id, first_name, first_name_ar, father_name, father_name_ar, grandfather_name, grandfather_name_ar, family_name, family_name_ar, last_name, last_name_ar, gender), facilities(id, name, name_ar, code)')
@@ -47,6 +48,16 @@ export default async function ClassDetailPage({
       .from('class_subjects')
       .select('id, periods_per_week, subjects(id, name, name_ar, code), teachers(id, first_name, first_name_ar, father_name, father_name_ar, grandfather_name, grandfather_name_ar, family_name, family_name_ar, last_name, last_name_ar, gender)')
       .eq('class_id', id),
+    supabase
+      .from('subjects')
+      .select('id, name, name_ar, code')
+      .eq('is_active', true)
+      .order('code'),
+    supabase
+      .from('teachers')
+      .select('id, first_name, first_name_ar, father_name, father_name_ar, grandfather_name, grandfather_name_ar, family_name, family_name_ar, last_name, last_name_ar, gender')
+      .eq('is_active', true)
+      .order('first_name'),
   ]);
 
   const cls = clsRes.data;
@@ -54,6 +65,26 @@ export default async function ClassDetailPage({
 
   const students = studentsRes.data || [];
   const subjectAssignments = subjectsRes.data || [];
+  const allSubjects = allSubjectsRes.data || [];
+  const allTeachers = (allTeachersRes.data || []).map((t: any) => ({
+    id: t.id,
+    displayName: isAr
+      ? [t.first_name_ar, t.father_name_ar, t.family_name_ar].filter(Boolean).join(' ')
+      : [t.first_name, t.father_name, t.family_name].filter(Boolean).join(' '),
+  }));
+
+  // Shape assignments for the client form
+  const assignmentsForForm = subjectAssignments.map((sa: any) => ({
+    id: sa.id,
+    periods_per_week: sa.periods_per_week,
+    subjects: sa.subjects,
+    teachers: sa.teachers ? {
+      id: sa.teachers.id,
+      displayName: isAr
+        ? [sa.teachers.first_name_ar, sa.teachers.father_name_ar, sa.teachers.family_name_ar].filter(Boolean).join(' ')
+        : [sa.teachers.first_name, sa.teachers.father_name, sa.teachers.family_name].filter(Boolean).join(' '),
+    } : null,
+  }));
 
   const printDate = new Date().toLocaleDateString(isAr ? 'ar-OM' : 'en-GB', {
     year: 'numeric', month: 'long', day: 'numeric',
@@ -194,14 +225,44 @@ export default async function ClassDetailPage({
       </div>
 
       {/* Subject Assignments */}
-      <Card className="mb-3">
+      <Card className="mb-3 print:hidden">
         <Card.Header>
           <div className="flex items-center gap-2">
             <BookOpen size={15} className="text-brand-teal" />
-            <Card.Title>{t('class.subjectAssignments')}</Card.Title>
+            <Card.Title>{t('class.subjectAssignments')} ({subjectAssignments.length})</Card.Title>
           </div>
         </Card.Header>
-        {subjectAssignments.length > 0 ? (
+        <SubjectAssignmentForm
+          classId={id}
+          locale={locale}
+          subjects={allSubjects}
+          teachers={allTeachers}
+          assignments={assignmentsForForm}
+          labels={{
+            assignSubject: t('class.assignSubject'),
+            removeSubject: t('class.removeSubject'),
+            selectSubject: t('class.selectSubject'),
+            selectTeacher: t('class.selectTeacher'),
+            noTeacher: t('class.noTeacher'),
+            periodsPerWeek: t('class.periodsPerWeek'),
+            noSubjectsForGrade: t('class.noSubjectsForGrade'),
+            subjectAssigned: t('class.subjectAssigned'),
+            assignFailed: t('class.assignFailed'),
+            save: t('common.save'),
+            saving: t('class.saving'),
+          }}
+        />
+      </Card>
+
+      {/* Subject Assignments — print only (simple table) */}
+      {subjectAssignments.length > 0 && (
+        <Card className="mb-3 hidden print:block">
+          <Card.Header>
+            <div className="flex items-center gap-2">
+              <BookOpen size={15} className="text-brand-teal" />
+              <Card.Title>{t('class.subjectAssignments')}</Card.Title>
+            </div>
+          </Card.Header>
           <Table>
             <Table.Header>
               <Table.Row>
@@ -218,22 +279,16 @@ export default async function ClassDetailPage({
                   <Table.Cell className="text-text-primary font-semibold text-[11px]">
                     {sa.subjects ? formatSubjectName(sa.subjects, locale) : '—'}
                   </Table.Cell>
-                  <Table.Cell>
-                    {sa.teachers ? (
-                      <Link href={`/${locale}/teachers/${sa.teachers.id}`} className="text-[11px] text-text-primary hover:text-brand-teal transition-colors">
-                        {formatTeacherName(sa.teachers, locale)}
-                      </Link>
-                    ) : <span className="text-text-tertiary text-[11px]">—</span>}
+                  <Table.Cell className="text-[11px] text-text-secondary">
+                    {sa.teachers ? formatTeacherName(sa.teachers, locale) : '—'}
                   </Table.Cell>
                   <Table.Cell className="text-text-secondary text-[11px]">{sa.periods_per_week}/week</Table.Cell>
                 </Table.Row>
               ))}
             </Table.Body>
           </Table>
-        ) : (
-          <p className="text-sm text-text-tertiary">{t('common.noData')}</p>
-        )}
-      </Card>
+        </Card>
+      )}
 
       {/* Student Roster */}
       <Card>

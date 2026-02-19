@@ -315,7 +315,16 @@
     "classNameAr": "اسم الفصل (عربي)",
     "selectSupervisor": "اختر المشرف",
     "selectRoom": "اختر الغرفة (اختياري)",
-    "searchPlaceholder": "ابحث باسم الفصل أو المرحلة..."
+    "searchPlaceholder": "ابحث باسم الفصل أو المرحلة...",
+    "assignSubject": "تعيين مادة",
+    "removeSubject": "إزالة المادة",
+    "selectSubject": "اختر المادة",
+    "selectTeacher": "اختر المعلم",
+    "noTeacher": "لم يُعيَّن معلم",
+    "periodsPerWeek": "الحصص / الأسبوع",
+    "noSubjectsForGrade": "تم تعيين جميع المواد لهذا الفصل.",
+    "subjectAssigned": "تم تعيين المادة بنجاح",
+    "assignFailed": "فشل تعيين المادة"
   },
   "subject": {
     "allSubjects": "جميع المواد",

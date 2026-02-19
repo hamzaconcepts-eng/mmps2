@@ -315,7 +315,16 @@
     "classNameAr": "Class Name (Arabic)",
     "selectSupervisor": "Select Supervisor",
     "selectRoom": "Select Room (Optional)",
-    "searchPlaceholder": "Search by class name or grade..."
+    "searchPlaceholder": "Search by class name or grade...",
+    "assignSubject": "Assign Subject",
+    "removeSubject": "Remove Subject",
+    "selectSubject": "Select Subject",
+    "selectTeacher": "Select Teacher",
+    "noTeacher": "No Teacher Assigned",
+    "periodsPerWeek": "Periods / Week",
+    "noSubjectsForGrade": "All subjects have been assigned to this class.",
+    "subjectAssigned": "Subject assigned successfully",
+    "assignFailed": "Failed to assign subject"
   },
   "subject": {
     "allSubjects": "All Subjects",
