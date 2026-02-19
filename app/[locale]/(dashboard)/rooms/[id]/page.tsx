@@ -2,7 +2,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { ArrowLeft, DoorOpen, School, Users } from 'lucide-react';
+import { ArrowLeft, DoorOpen, School, Users, Calendar } from 'lucide-react';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { formatGradeLevel, formatClassName } from '@/lib/utils/format';
 import PageHeader from '@/components/PageHeader';
@@ -13,6 +13,7 @@ import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { deleteRoom } from './actions';
+import EmbeddedTimetable from '@/app/[locale]/(dashboard)/timetable/EmbeddedTimetable';
 
 const TYPE_BADGE: Record<string, 'teal' | 'orange' | 'success' | 'dark'> = {
   classroom: 'teal',
@@ -109,6 +110,7 @@ export default async function RoomDetailPage({
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-3">
+
         <Card>
           <Card.Header>
             <div className="flex items-center gap-2">
@@ -164,6 +166,16 @@ export default async function RoomDetailPage({
           )}
         </Card>
       </div>
+      {/* Room Timetable */}
+      <Card className="lg:col-span-2">
+        <Card.Header>
+          <div className="flex items-center gap-2">
+            <Calendar size={15} className="text-brand-teal" />
+            <Card.Title>{t('timetable.roomTimetable')}</Card.Title>
+          </div>
+        </Card.Header>
+        <EmbeddedTimetable mode="room" entityId={id} locale={locale} />
+      </Card>
     </div>
   );
 }

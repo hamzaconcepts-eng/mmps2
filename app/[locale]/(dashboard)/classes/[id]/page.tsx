@@ -15,6 +15,8 @@ import { Button } from '@/components/ui/Button';
 import { Table } from '@/components/ui/Table';
 import { deleteClass } from './actions';
 import SubjectAssignmentForm from './SubjectAssignmentForm';
+import EmbeddedTimetable from '@/app/[locale]/(dashboard)/timetable/EmbeddedTimetable';
+import { Calendar } from 'lucide-react';
 
 export default async function ClassDetailPage({
   params,
@@ -287,6 +289,22 @@ export default async function ClassDetailPage({
           </Table>
         </Card>
       )}
+
+      {/* Timetable */}
+      <Card className="mb-3">
+        <Card.Header>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Calendar size={15} className="text-brand-teal" />
+              <Card.Title>{t('timetable.classTimetable')}</Card.Title>
+            </div>
+            <Link href={`/${locale}/timetable?classId=${id}`} className="print:hidden">
+              <Button variant="glass" size="sm">{t('timetable.viewFullTimetable')}</Button>
+            </Link>
+          </div>
+        </Card.Header>
+        <EmbeddedTimetable mode="class" entityId={id} locale={locale} />
+      </Card>
 
       {/* Student Roster */}
       <Card>

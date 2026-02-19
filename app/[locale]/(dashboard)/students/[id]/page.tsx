@@ -2,7 +2,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import { ArrowLeft, User, Users, Bus, Receipt, Phone, Mail, MapPin, MessageCircle } from 'lucide-react';
+import { ArrowLeft, User, Users, Bus, Receipt, Phone, Mail, MapPin, MessageCircle, Calendar } from 'lucide-react';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { formatStudentName, formatGuardianName, formatDriverName, formatGradeLevel, formatCurrency, formatDate, formatClassName, formatPhone } from '@/lib/utils/format';
 import { getDefaultStudentPhoto } from '@/lib/utils/student-photo';
@@ -15,6 +15,7 @@ import StudentActions from '@/components/StudentActions';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
+import EmbeddedTimetable from '@/app/[locale]/(dashboard)/timetable/EmbeddedTimetable';
 
 export default async function StudentDetailPage({
   params,
@@ -322,6 +323,29 @@ export default async function StudentDetailPage({
             </div>
           )}
         </Card>
+
+        {/* Student Timetable (class timetable) */}
+        {student.classes && (
+          <div className="lg:col-span-2">
+            <Card>
+              <Card.Header>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Calendar size={15} className="text-brand-teal" />
+                    <Card.Title>{t('timetable.studentTimetable')}</Card.Title>
+                    <span className="text-[10px] text-text-tertiary hidden sm:inline">
+                      {formatClassName(student.classes, locale)}
+                    </span>
+                  </div>
+                  <Link href={`/${locale}/timetable?classId=${student.classes.id}`} className="print:hidden">
+                    <Button variant="glass" size="sm">{t('timetable.viewFullTimetable')}</Button>
+                  </Link>
+                </div>
+              </Card.Header>
+              <EmbeddedTimetable mode="class" entityId={student.classes.id} locale={locale} />
+            </Card>
+          </div>
+        )}
 
         {/* Finance Info */}
         <div className="lg:col-span-2">

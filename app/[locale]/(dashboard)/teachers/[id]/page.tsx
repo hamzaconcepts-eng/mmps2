@@ -14,6 +14,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Table } from '@/components/ui/Table';
 import { deleteTeacher } from './actions';
+import EmbeddedTimetable from '@/app/[locale]/(dashboard)/timetable/EmbeddedTimetable';
 
 export default async function TeacherDetailPage({
   params,
@@ -196,6 +197,24 @@ export default async function TeacherDetailPage({
             <p className="text-sm text-text-tertiary">{t('common.noData')}</p>
           )}
         </Card>
+
+        {/* Teacher Timetable */}
+        <div className="lg:col-span-2">
+          <Card>
+            <Card.Header>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Calendar size={15} className="text-brand-teal" />
+                  <Card.Title>{t('timetable.teacherTimetable')}</Card.Title>
+                </div>
+                <Link href={`/${locale}/timetable`} className="print:hidden">
+                  <Button variant="glass" size="sm">{t('timetable.viewFullTimetable')}</Button>
+                </Link>
+              </div>
+            </Card.Header>
+            <EmbeddedTimetable mode="teacher" entityId={id} locale={locale} />
+          </Card>
+        </div>
 
         {/* Subject & Class Assignments */}
         <div className="lg:col-span-2">
