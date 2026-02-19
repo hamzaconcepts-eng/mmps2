@@ -75,6 +75,8 @@ export default async function TimetablePage({
   ]);
 
   const classes = classesRes.data || [];
+  // If period_settings table doesn't exist yet, treat as empty (migration not run)
+  const migrationNeeded = !!periodRes.error;
   const periodSettings = periodRes.data || [];
   const rawSlots = slotsRes.data || [];
 
@@ -205,6 +207,25 @@ export default async function TimetablePage({
           <p className="text-[9px] text-gray-500 mt-0.5">
             {formatGradeLevel(selectedClass.grade_level, locale)} · {t('class.section')} {selectedClass.section} · {ACADEMIC_YEAR}
           </p>
+        </div>
+      )}
+
+      {/* ── Migration needed banner ──────────────────────────────────────── */}
+      {migrationNeeded && (
+        <div className="print:hidden mb-4 flex items-start gap-3 p-4 rounded-xl border border-amber-300 bg-amber-50 text-amber-900">
+          <span className="text-lg flex-shrink-0">⚠️</span>
+          <div>
+            <p className="text-[13px] font-bold">Database migration required</p>
+            <p className="text-[12px] mt-1 leading-relaxed">
+              The <code className="bg-amber-100 px-1 rounded font-mono text-[11px]">period_settings</code> table
+              does not exist yet. Please open your{' '}
+              <strong>Supabase dashboard → SQL Editor</strong> and run the file:
+            </p>
+            <code className="mt-1.5 block text-[11px] font-mono bg-amber-100 px-2 py-1 rounded">
+              supabase/migrate_timetable.sql
+            </code>
+            <p className="text-[11px] mt-1.5 opacity-70">Then refresh this page.</p>
+          </div>
         </div>
       )}
 

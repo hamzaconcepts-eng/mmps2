@@ -26,12 +26,15 @@ export default async function EmbeddedTimetable({ mode, entityId, locale, academ
   const t = await getTranslations();
   const supabase = createAdminClient();
 
-  // ── Fetch period settings ─────────────────────────────────────────────────
-  const { data: periodSettings } = await supabase
+  // ── Fetch period settings (graceful if table doesn't exist yet) ──────────
+  const { data: periodSettings, error: psError } = await supabase
     .from('period_settings')
     .select('*')
     .eq('is_active', true)
     .order('slot_number');
+
+  // If migration hasn't been run yet, show nothing rather than crash
+  if (psError) return null;
 
   const ps = periodSettings || [];
 
