@@ -55,6 +55,18 @@ export default function GenerateClient({ initialSlots, academicYear, locale, lab
   const addSlot = () => {
     const next = slots.length + 1;
     const periodNum = slots.filter((s) => s.slot_type === 'period').length + 1;
+
+    // Start new slot from the end_time of the last slot
+    const lastSlot = slots[slots.length - 1];
+    const startTime = lastSlot ? lastSlot.end_time : '07:30';
+
+    // Add 45 minutes for default end_time
+    const [h, m] = startTime.split(':').map(Number);
+    const totalMin = h * 60 + m + 45;
+    const endH = Math.floor(totalMin / 60) % 24;
+    const endM = totalMin % 60;
+    const endTime = `${String(endH).padStart(2, '0')}:${String(endM).padStart(2, '0')}`;
+
     setSlots((prev) => [
       ...prev,
       {
@@ -62,8 +74,8 @@ export default function GenerateClient({ initialSlots, academicYear, locale, lab
         slot_type: 'period',
         label: `Period ${periodNum}`,
         label_ar: `الحصة ${periodNum}`,
-        start_time: '14:00',
-        end_time: '14:45',
+        start_time: startTime,
+        end_time: endTime,
       },
     ]);
   };
