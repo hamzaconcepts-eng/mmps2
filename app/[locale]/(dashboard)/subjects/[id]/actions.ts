@@ -41,7 +41,7 @@ export async function deleteSubject(subjectId: string) {
 }
 
 /**
- * Update a subject record.
+ * Update a subject record and sync grade levels.
  */
 export async function updateSubject(
   subjectId: string,
@@ -63,6 +63,21 @@ export async function updateSubject(
       .eq('id', subjectId);
 
     if (error) throw error;
+
+    // Sync grade_subjects: delete all existing, re-insert selected
+    await supabase.from('grade_subjects').delete().eq('subject_id', subjectId);
+
+    const grades: number[] = data.grades ?? [];
+    if (grades.length > 0) {
+      const gradeRows = grades.map((g) => ({
+        subject_id: subjectId,
+        grade_level: g,
+        periods_per_week: 1,
+        is_active: true,
+      }));
+      const { error: gradeError } = await supabase.from('grade_subjects').insert(gradeRows);
+      if (gradeError) throw gradeError;
+    }
 
     revalidatePath(`/[locale]/subjects/${subjectId}`, 'page');
     revalidatePath('/[locale]/subjects', 'page');
