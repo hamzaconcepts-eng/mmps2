@@ -324,7 +324,9 @@
     "periodsPerWeek": "Periods / Week",
     "noSubjectsForGrade": "All subjects have been assigned to this class.",
     "subjectAssigned": "Subject assigned successfully",
-    "assignFailed": "Failed to assign subject"
+    "updateSuccess": "Assignment updated successfully",
+    "assignFailed": "Failed to assign subject",
+    "editAssignment": "Edit assignment"
   },
   "subject": {
     "allSubjects": "All Subjects",

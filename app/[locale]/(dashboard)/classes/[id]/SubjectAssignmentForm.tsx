@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Plus, X, Trash2, CheckCircle, XCircle, BookOpen } from 'lucide-react';
+import { Plus, X, Trash2, Pencil, CheckCircle, XCircle } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Select } from '@/components/ui/Select';
 import { addClassSubject, removeClassSubject } from './actions';
@@ -24,15 +24,22 @@ export default function SubjectAssignmentForm({ classId, locale, subjects, teach
   const router = useRouter();
   const isAr = locale === 'ar';
 
-  const [open, setOpen] = useState(false);
+  // Add form state
+  const [addOpen, setAddOpen] = useState(false);
   const [subjectId, setSubjectId] = useState('');
   const [teacherId, setTeacherId] = useState('');
   const [periodsPerWeek, setPeriodsPerWeek] = useState(4);
   const [loading, setLoading] = useState(false);
+
+  // Edit state — which row is being edited
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editTeacherId, setEditTeacherId] = useState('');
+  const [editPeriods, setEditPeriods] = useState(1);
+  const [editLoading, setEditLoading] = useState(false);
+
   const [removingId, setRemovingId] = useState<string | null>(null);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
-  // Filter out already-assigned subjects
   const assignedSubjectIds = assignments.map((a) => a.subjects?.id).filter(Boolean);
   const availableSubjects = subjects.filter((s) => !assignedSubjectIds.includes(s.id));
 
@@ -40,19 +47,38 @@ export default function SubjectAssignmentForm({ classId, locale, subjects, teach
     if (!subjectId) return;
     setLoading(true);
     setMessage(null);
-    const result = await addClassSubject({
-      classId,
-      subjectId,
-      teacherId: teacherId || null,
-      periodsPerWeek,
-    });
+    const result = await addClassSubject({ classId, subjectId, teacherId: teacherId || null, periodsPerWeek });
     setLoading(false);
     if (result.success) {
       setMessage({ type: 'success', text: labels.subjectAssigned });
-      setSubjectId('');
-      setTeacherId('');
-      setPeriodsPerWeek(4);
-      setOpen(false);
+      setSubjectId(''); setTeacherId(''); setPeriodsPerWeek(4); setAddOpen(false);
+      router.refresh();
+    } else {
+      setMessage({ type: 'error', text: result.error || labels.assignFailed });
+    }
+  };
+
+  const openEdit = (sa: Assignment) => {
+    setEditingId(sa.id);
+    setEditTeacherId(sa.teachers?.id || '');
+    setEditPeriods(sa.periods_per_week);
+    setMessage(null);
+  };
+
+  const handleEdit = async (sa: Assignment) => {
+    if (!sa.subjects) return;
+    setEditLoading(true);
+    setMessage(null);
+    const result = await addClassSubject({
+      classId,
+      subjectId: sa.subjects.id,
+      teacherId: editTeacherId || null,
+      periodsPerWeek: editPeriods,
+    });
+    setEditLoading(false);
+    if (result.success) {
+      setMessage({ type: 'success', text: labels.updateSuccess });
+      setEditingId(null);
       router.refresh();
     } else {
       setMessage({ type: 'error', text: result.error || labels.assignFailed });
@@ -63,13 +89,11 @@ export default function SubjectAssignmentForm({ classId, locale, subjects, teach
     setRemovingId(assignmentId);
     const result = await removeClassSubject(assignmentId, classId);
     setRemovingId(null);
-    if (result.success) {
-      router.refresh();
-    }
+    if (result.success) router.refresh();
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-2">
       {/* Message */}
       {message && (
         <div className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium ${
@@ -82,35 +106,94 @@ export default function SubjectAssignmentForm({ classId, locale, subjects, teach
 
       {/* Assignment rows */}
       {assignments.map((sa) => (
-        <div key={sa.id} className="flex items-center justify-between gap-2 px-3 py-2 rounded-lg bg-gray-50 border border-gray-100">
-          <div className="flex items-center gap-2 min-w-0">
-            <span className="font-mono text-[10px] text-brand-teal bg-brand-teal/10 px-1.5 py-0.5 rounded flex-shrink-0">
-              {sa.subjects?.code}
-            </span>
-            <span className="text-[11px] font-semibold text-text-primary truncate">
-              {sa.subjects ? (isAr ? sa.subjects.name_ar : sa.subjects.name) : '—'}
-            </span>
-            {sa.teachers && (
-              <span className="text-[10px] text-text-tertiary truncate hidden sm:block">
-                · {sa.teachers.displayName}
-              </span>
-            )}
-            <span className="text-[10px] text-text-tertiary flex-shrink-0">
-              {sa.periods_per_week}p/w
-            </span>
-          </div>
-          <button
-            onClick={() => handleRemove(sa.id)}
-            disabled={removingId === sa.id}
-            className="flex-shrink-0 p-1 rounded text-text-tertiary hover:text-danger hover:bg-red-50 transition-colors"
-          >
-            <Trash2 size={13} />
-          </button>
+        <div key={sa.id}>
+          {/* Normal row */}
+          {editingId !== sa.id ? (
+            <div className="flex items-center justify-between gap-2 px-3 py-2 rounded-lg bg-gray-50 border border-gray-100">
+              <div className="flex items-center gap-2 min-w-0">
+                <span className="font-mono text-[10px] text-brand-teal bg-brand-teal/10 px-1.5 py-0.5 rounded flex-shrink-0">
+                  {sa.subjects?.code}
+                </span>
+                <span className="text-[11px] font-semibold text-text-primary truncate">
+                  {sa.subjects ? (isAr ? sa.subjects.name_ar : sa.subjects.name) : '—'}
+                </span>
+                {sa.teachers ? (
+                  <span className="text-[10px] text-text-tertiary truncate hidden sm:block">· {sa.teachers.displayName}</span>
+                ) : (
+                  <span className="text-[10px] text-text-tertiary italic hidden sm:block">· {labels.noTeacher}</span>
+                )}
+                <span className="text-[10px] text-text-tertiary flex-shrink-0">{sa.periods_per_week}p/w</span>
+              </div>
+              <div className="flex items-center gap-1 flex-shrink-0">
+                <button
+                  onClick={() => openEdit(sa)}
+                  className="p-1 rounded text-text-tertiary hover:text-brand-teal hover:bg-brand-teal/10 transition-colors"
+                  title={labels.editAssignment}
+                >
+                  <Pencil size={13} />
+                </button>
+                <button
+                  onClick={() => handleRemove(sa.id)}
+                  disabled={removingId === sa.id}
+                  className="p-1 rounded text-text-tertiary hover:text-danger hover:bg-red-50 transition-colors"
+                  title={labels.removeSubject}
+                >
+                  <Trash2 size={13} />
+                </button>
+              </div>
+            </div>
+          ) : (
+            /* Inline edit row */
+            <div className="border border-brand-teal/30 rounded-lg p-3 bg-brand-teal/5 space-y-2">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="font-mono text-[10px] text-brand-teal bg-brand-teal/10 px-1.5 py-0.5 rounded">
+                  {sa.subjects?.code}
+                </span>
+                <span className="text-[11px] font-semibold text-text-primary">
+                  {sa.subjects ? (isAr ? sa.subjects.name_ar : sa.subjects.name) : '—'}
+                </span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <Select
+                  label={labels.selectTeacher}
+                  value={editTeacherId}
+                  onChange={(e) => setEditTeacherId(e.target.value)}
+                  locale={locale}
+                  disabled={editLoading}
+                >
+                  <option value="">{labels.noTeacher}</option>
+                  {teachers.map((t) => (
+                    <option key={t.id} value={t.id}>{t.displayName}</option>
+                  ))}
+                </Select>
+                <div>
+                  <label className="block text-[11px] font-semibold text-text-secondary mb-1">{labels.periodsPerWeek}</label>
+                  <input
+                    type="number"
+                    min={1}
+                    max={15}
+                    value={editPeriods}
+                    onChange={(e) => setEditPeriods(Number(e.target.value))}
+                    disabled={editLoading}
+                    className="w-full h-9 px-3 text-[12px] rounded-lg border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-brand-teal/30 focus:border-brand-teal"
+                  />
+                </div>
+              </div>
+              <div className="flex items-center gap-2 justify-end">
+                <Button type="button" variant="glass" size="sm" onClick={() => setEditingId(null)} disabled={editLoading}>
+                  <X size={13} />
+                </Button>
+                <Button type="button" variant="accent" size="sm" onClick={() => handleEdit(sa)} loading={editLoading}>
+                  {editLoading ? labels.saving : labels.save}
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       ))}
 
       {/* Add form */}
-      {open ? (
+      {addOpen ? (
         <div className="border border-brand-teal/20 rounded-lg p-3 bg-brand-teal/5 space-y-2">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
             <Select
@@ -122,9 +205,7 @@ export default function SubjectAssignmentForm({ classId, locale, subjects, teach
             >
               <option value="">{labels.selectSubject}</option>
               {availableSubjects.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.code} — {isAr ? s.name_ar : s.name}
-                </option>
+                <option key={s.id} value={s.id}>{s.code} — {isAr ? s.name_ar : s.name}</option>
               ))}
             </Select>
             <Select
@@ -153,7 +234,7 @@ export default function SubjectAssignmentForm({ classId, locale, subjects, teach
             </div>
           </div>
           <div className="flex items-center gap-2 justify-end">
-            <Button type="button" variant="glass" size="sm" onClick={() => { setOpen(false); setMessage(null); }} disabled={loading}>
+            <Button type="button" variant="glass" size="sm" onClick={() => { setAddOpen(false); setMessage(null); }} disabled={loading}>
               <X size={13} />
             </Button>
             <Button type="button" variant="accent" size="sm" onClick={handleAdd} loading={loading} disabled={!subjectId}>
@@ -170,7 +251,7 @@ export default function SubjectAssignmentForm({ classId, locale, subjects, teach
           variant="glass"
           size="sm"
           icon={<Plus size={13} />}
-          onClick={() => { setOpen(true); setMessage(null); }}
+          onClick={() => { setAddOpen(true); setMessage(null); setEditingId(null); }}
         >
           {labels.assignSubject}
         </Button>

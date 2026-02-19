@@ -324,7 +324,9 @@
     "periodsPerWeek": "الحصص / الأسبوع",
     "noSubjectsForGrade": "تم تعيين جميع المواد لهذا الفصل.",
     "subjectAssigned": "تم تعيين المادة بنجاح",
-    "assignFailed": "فشل تعيين المادة"
+    "updateSuccess": "تم تحديث التعيين بنجاح",
+    "assignFailed": "فشل تعيين المادة",
+    "editAssignment": "تعديل التعيين"
   },
   "subject": {
     "allSubjects": "جميع المواد",

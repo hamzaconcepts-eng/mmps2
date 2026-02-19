@@ -247,7 +247,9 @@ export default async function ClassDetailPage({
             periodsPerWeek: t('class.periodsPerWeek'),
             noSubjectsForGrade: t('class.noSubjectsForGrade'),
             subjectAssigned: t('class.subjectAssigned'),
+            updateSuccess: t('class.updateSuccess'),
             assignFailed: t('class.assignFailed'),
+            editAssignment: t('class.editAssignment'),
             save: t('common.save'),
             saving: t('class.saving'),
           }}
