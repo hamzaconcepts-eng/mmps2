@@ -34,10 +34,10 @@ export default function Sidebar({ locale, userRole = 'admin' }: SidebarProps) {
         { key: 'home', icon: Home, href: `/${locale}/dashboard`, roles: ['owner','admin','teacher','class_supervisor','student','parent','accountant'] },
         { key: 'students', icon: Users, href: `/${locale}/students`, roles: ['owner','admin','teacher','class_supervisor'] },
         { key: 'teachers', icon: GraduationCap, href: `/${locale}/teachers`, roles: ['owner','admin'] },
+        { key: 'rooms', icon: DoorOpen, href: `/${locale}/rooms`, roles: ['owner','admin'] },
         { key: 'classes', icon: School, href: `/${locale}/classes`, roles: ['owner','admin','teacher','class_supervisor'] },
         { key: 'subjects', icon: BookOpen, href: `/${locale}/subjects`, roles: ['owner','admin','teacher'] },
         { key: 'transport', icon: Bus, href: `/${locale}/transport`, roles: ['owner','admin'] },
-        { key: 'rooms', icon: DoorOpen, href: `/${locale}/rooms`, roles: ['owner','admin'] },
       ],
     },
     {
