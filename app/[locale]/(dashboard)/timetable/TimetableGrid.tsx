@@ -213,17 +213,15 @@ export default function TimetableGrid({
       } catch { /* cross-origin — skip */ }
     }
 
-    // Keep Google Fonts link for @font-face file loading
     const fontLinks = Array.from(document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]'))
       .filter(l => l.href.includes('fonts.googleapis.com') || l.href.includes('fonts.gstatic.com'))
       .map(l => `<link rel="stylesheet" href="${l.href}">`)
       .join('\n');
 
-    // ── 2. Open print window ──
-    const win = window.open('', '_blank', 'width=1200,height=900');
+    // ── 2. Open print window sized to match our target content area ──
+    const win = window.open('', '_blank', 'width=960,height=700');
     if (!win) { window.print(); return; }
 
-    // Write minimal HTML (CSS injected programmatically to avoid template-literal issues)
     win.document.write(
       '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Timetable</title>' +
       fontLinks +
@@ -233,17 +231,21 @@ export default function TimetableGrid({
     );
     win.document.close();
 
-    // ── 3. Inject CSS programmatically (sync — no network delay) ──
+    // ── 3. Inject CSS (sync — all styles available immediately) ──
     const appStyle = win.document.createElement('style');
     appStyle.textContent = cssRules.join('\n');
     win.document.head.appendChild(appStyle);
 
     const overrides = win.document.createElement('style');
     overrides.textContent = [
-      // Let Chrome handle pagination naturally — NO overflow:hidden, NO fixed height
-      '@page { size: A4 landscape; margin: 10mm; }',
+      // Force landscape, let browser use its own default margins
+      '@page { size: landscape; }',
       '*, *::before, *::after { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; box-sizing: border-box; }',
-      'html, body { margin: 0; padding: 0; background: white; width: 277mm; max-width: 277mm; font-family: "Roboto", -apple-system, BlinkMacSystemFont, sans-serif; }',
+      // Center content on page using flexbox
+      'html { height: 100%; margin: 0; padding: 0; background: white; }',
+      'body { margin: 0; padding: 0; min-height: 100%; display: flex; justify-content: center; align-items: center; background: white; font-family: "Roboto", -apple-system, BlinkMacSystemFont, sans-serif; }',
+      // Content block — 230mm fits comfortably in any landscape paper (Letter or A4)
+      '#tt-scaled { width: 230mm; max-width: 230mm; }',
       // Visibility
       '[class*="print:block"]  { display: block !important; }',
       '[class*="print:flex"]   { display: flex  !important; }',
@@ -254,58 +256,43 @@ export default function TimetableGrid({
       '.h-screen { height: auto !important; }',
       '[class*="h-14"],[class*="h-10"],[class*="h-12"],[class*="h-16"] { height: auto !important; }',
       // Print header
-      '.border-gray-800 { border-color: #1f2937 !important; padding-bottom: 5pt !important; margin-bottom: 7pt !important; }',
-      '.border-gray-800 img { width: 36px !important; height: 36px !important; }',
+      '.border-gray-800 { border-color: #1f2937 !important; padding-bottom: 4pt !important; margin-bottom: 6pt !important; }',
+      '.border-gray-800 img { width: 32px !important; height: 32px !important; }',
       '.border-gray-800 p { white-space: normal !important; margin: 0 !important; }',
-      '.border-gray-800 p:first-child { font-size: 13pt !important; font-weight: 800 !important; color: #111 !important; }',
-      '.border-gray-800 p:last-child  { font-size: 9pt !important; color: #555 !important; }',
-      // Table
+      '.border-gray-800 p:first-child { font-size: 12pt !important; font-weight: 800 !important; color: #111 !important; }',
+      '.border-gray-800 p:last-child  { font-size: 8.5pt !important; color: #555 !important; }',
+      // Table — compact enough to always fit single landscape page
       '.timetable-grid-wrap table { width: 100% !important; table-layout: fixed !important; border-collapse: collapse !important; }',
-      '.timetable-grid-wrap th { font-size: 10pt !important; font-weight: 700 !important; padding: 5pt 3pt !important; border: 0.75pt solid #aaa !important; text-align: center !important; }',
-      '.timetable-grid-wrap td { padding: 2pt !important; border: 0.5pt solid #ccc !important; height: auto !important; vertical-align: middle !important; }',
-      '.timetable-grid-wrap td > div { height: auto !important; min-height: 30pt !important; padding: 3pt 5pt !important; overflow: visible !important; border-radius: 3pt !important; display: flex !important; flex-direction: column !important; justify-content: center !important; gap: 1pt !important; }',
-      '.timetable-grid-wrap td > div > p { margin: 0 !important; overflow: visible !important; text-overflow: unset !important; white-space: normal !important; word-break: break-word !important; line-height: 1.3 !important; }',
-      '.timetable-grid-wrap td > div > p:first-child  { font-size: 9pt !important; font-weight: 700 !important; }',
-      '.timetable-grid-wrap td > div > p:nth-child(2)  { font-size: 7.5pt !important; font-family: monospace !important; }',
-      '.timetable-grid-wrap td > div > p:nth-child(n+3){ font-size: 8pt !important; }',
-      '.timetable-grid-wrap td > div > span { font-size: 7.5pt !important; }',
+      '.timetable-grid-wrap th { font-size: 9pt !important; font-weight: 700 !important; padding: 3pt 2pt !important; border: 0.75pt solid #aaa !important; text-align: center !important; }',
+      '.timetable-grid-wrap td { padding: 1.5pt !important; border: 0.5pt solid #ccc !important; height: auto !important; vertical-align: middle !important; }',
+      '.timetable-grid-wrap td > div { height: auto !important; min-height: 24pt !important; padding: 2pt 3pt !important; overflow: visible !important; border-radius: 2pt !important; display: flex !important; flex-direction: column !important; justify-content: center !important; gap: 0.5pt !important; }',
+      '.timetable-grid-wrap td > div > p { margin: 0 !important; overflow: visible !important; text-overflow: unset !important; white-space: normal !important; word-break: break-word !important; line-height: 1.2 !important; }',
+      '.timetable-grid-wrap td > div > p:first-child  { font-size: 8pt !important; font-weight: 700 !important; }',
+      '.timetable-grid-wrap td > div > p:nth-child(2)  { font-size: 6.5pt !important; font-family: monospace !important; }',
+      '.timetable-grid-wrap td > div > p:nth-child(n+3){ font-size: 7pt !important; }',
+      '.timetable-grid-wrap td > div > span { font-size: 6.5pt !important; }',
       '.timetable-grid-wrap td:first-child > div { text-align: center !important; background-color: #f9fafb !important; }',
       '.timetable-grid-wrap td:first-child > div > span { display: block !important; overflow: visible !important; white-space: normal !important; }',
-      '.timetable-grid-wrap td:first-child > div > span:first-child      { font-size: 8pt !important; font-weight: 700 !important; }',
-      '.timetable-grid-wrap td:first-child > div > span:not(:first-child) { font-size: 7pt !important; }',
-      '.timetable-grid-wrap td[colspan] > div { min-height: 13pt !important; padding: 2pt 8pt !important; font-size: 8.5pt !important; font-weight: 600 !important; }',
+      '.timetable-grid-wrap td:first-child > div > span:first-child      { font-size: 7pt !important; font-weight: 700 !important; }',
+      '.timetable-grid-wrap td:first-child > div > span:not(:first-child) { font-size: 6pt !important; }',
+      '.timetable-grid-wrap td[colspan] > div { min-height: 10pt !important; padding: 1pt 6pt !important; font-size: 7pt !important; font-weight: 600 !important; }',
       '.truncate { overflow: visible !important; text-overflow: unset !important; white-space: normal !important; }',
       '.border-t { border-top: 0.5pt solid #e5e7eb !important; }',
+      // Legend compact
+      '.mt-3 { margin-top: 4pt !important; }',
+      '.pt-2 { padding-top: 3pt !important; }',
     ].join('\n');
     win.document.head.appendChild(overrides);
 
-    // ── 4. Wait for fonts + layout, measure, zoom to fit A4 landscape, then print ──
+    // ── 4. Wait for fonts + layout, then print ──
     const fontsReady = win.document.fonts ? win.document.fonts.ready : Promise.resolve();
     fontsReady.then(() => {
       win.requestAnimationFrame(() => {
         win.requestAnimationFrame(() => {
-          const content = win.document.getElementById('tt-scaled');
-          if (!content) return;
-
-          // 190mm printable height at 96dpi ≈ 718px
-          const availH = 190 * (96 / 25.4); // exact: 718.11px
-          const cH = content.scrollHeight;
-
-          if (cH > availH) {
-            const scale = availH / cH;
-            // Inject zoom via stylesheet (more reliable for print than inline style)
-            const zoomStyle = win.document.createElement('style');
-            zoomStyle.textContent = '#tt-scaled { zoom: ' + scale.toFixed(5) + '; }';
-            win.document.head.appendChild(zoomStyle);
-          }
-
-          // Extra rAF after zoom injection to let layout recompute
-          win.requestAnimationFrame(() => {
-            setTimeout(() => {
-              win.print();
-              win.addEventListener('afterprint', () => win.close());
-            }, 300);
-          });
+          setTimeout(() => {
+            win.print();
+            win.addEventListener('afterprint', () => win.close());
+          }, 300);
         });
       });
     });
