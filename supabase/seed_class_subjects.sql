@@ -159,7 +159,8 @@ INSERT INTO teachers (
   -- TCH-042: ISL, G7-G8
   ('TCH-042', 'Muna', 'منى', 'Khalid', 'خالد', 'Rashid', 'راشد', 'Al Ismaili', 'الإسماعيلي', 'Al Ismaili', 'الإسماعيلي',
    'female', '1991-02-14', '91001042', 'muna.ismaili@mashaail.school', '2022-09-01',
-   'Islamic Education', 'التربية الإسلامية');
+   'Islamic Education', 'التربية الإسلامية')
+ON CONFLICT (employee_id) DO NOTHING;
 
 
 -- ================================================
