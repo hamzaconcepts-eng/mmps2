@@ -181,93 +181,93 @@ SELECT c.id, s.id, t.id, x.ppw
 FROM (VALUES
 
   -- ===================================================
-  -- KG-1 A  (grade -1, section A)
+  -- KG-1 A  (grade -1, section A)  TOTAL = 40
   -- Homeroom teacher TCH-001 (Fatma) covers: ISL, ARA, MAT, SCI, LFS
   -- Specialists: ENG=TCH-003, ART=TCH-010, PE=TCH-013
-  -- ISL=4, ARA=6, ENG=5, MAT=5, SCI=4, LFS=2, ART=1, PE=1
+  -- ISL=6, ARA=8, ENG=7, MAT=7, SCI=6, LFS=4, ART=1, PE=1
   -- ===================================================
-  ('KG-1 A', 'ISL', 'TCH-001', 4),
-  ('KG-1 A', 'ARA', 'TCH-001', 6),
-  ('KG-1 A', 'ENG', 'TCH-003', 5),
-  ('KG-1 A', 'MAT', 'TCH-001', 5),
-  ('KG-1 A', 'SCI', 'TCH-001', 4),
-  ('KG-1 A', 'LFS', 'TCH-001', 2),
+  ('KG-1 A', 'ISL', 'TCH-001', 6),
+  ('KG-1 A', 'ARA', 'TCH-001', 8),
+  ('KG-1 A', 'ENG', 'TCH-003', 7),
+  ('KG-1 A', 'MAT', 'TCH-001', 7),
+  ('KG-1 A', 'SCI', 'TCH-001', 6),
+  ('KG-1 A', 'LFS', 'TCH-001', 4),
   ('KG-1 A', 'ART', 'TCH-010', 1),
   ('KG-1 A', 'PE',  'TCH-013', 1),
 
-  -- KG-1 B  (homeroom = TCH-014, Salma)
-  ('KG-1 B', 'ISL', 'TCH-014', 4),
-  ('KG-1 B', 'ARA', 'TCH-014', 6),
-  ('KG-1 B', 'ENG', 'TCH-003', 5),
-  ('KG-1 B', 'MAT', 'TCH-014', 5),
-  ('KG-1 B', 'SCI', 'TCH-014', 4),
-  ('KG-1 B', 'LFS', 'TCH-014', 2),
+  -- KG-1 B  (homeroom = TCH-014, Salma)  TOTAL = 40
+  ('KG-1 B', 'ISL', 'TCH-014', 6),
+  ('KG-1 B', 'ARA', 'TCH-014', 8),
+  ('KG-1 B', 'ENG', 'TCH-003', 7),
+  ('KG-1 B', 'MAT', 'TCH-014', 7),
+  ('KG-1 B', 'SCI', 'TCH-014', 6),
+  ('KG-1 B', 'LFS', 'TCH-014', 4),
   ('KG-1 B', 'ART', 'TCH-010', 1),
   ('KG-1 B', 'PE',  'TCH-013', 1),
-  -- TCH-001 KG1A: ISL+ARA+MAT+SCI+LFS = 4+6+5+4+2 = 21ppw ✓
-  -- TCH-014 KG1B: ISL+ARA+MAT+SCI+LFS = 4+6+5+4+2 = 21ppw ✓
+  -- TCH-001 KG1A: ISL+ARA+MAT+SCI+LFS = 6+8+7+6+4 = 31ppw
+  -- TCH-014 KG1B: ISL+ARA+MAT+SCI+LFS = 6+8+7+6+4 = 31ppw
 
   -- ===================================================
-  -- KG-2 A  (grade 0, section A)
+  -- KG-2 A  (grade 0, section A)  TOTAL = 40
   -- Homeroom teacher TCH-002 (Maryam) covers: ISL, ARA, MAT, SCI, LFS
   -- Specialists: ENG=TCH-003, ART=TCH-010, PE=TCH-013
   -- ===================================================
-  ('KG-2 A', 'ISL', 'TCH-002', 4),
-  ('KG-2 A', 'ARA', 'TCH-002', 6),
-  ('KG-2 A', 'ENG', 'TCH-003', 5),
-  ('KG-2 A', 'MAT', 'TCH-002', 5),
-  ('KG-2 A', 'SCI', 'TCH-002', 4),
-  ('KG-2 A', 'LFS', 'TCH-002', 2),
+  ('KG-2 A', 'ISL', 'TCH-002', 6),
+  ('KG-2 A', 'ARA', 'TCH-002', 8),
+  ('KG-2 A', 'ENG', 'TCH-003', 7),
+  ('KG-2 A', 'MAT', 'TCH-002', 7),
+  ('KG-2 A', 'SCI', 'TCH-002', 6),
+  ('KG-2 A', 'LFS', 'TCH-002', 4),
   ('KG-2 A', 'ART', 'TCH-010', 1),
   ('KG-2 A', 'PE',  'TCH-013', 1),
 
-  -- KG-2 B  (homeroom = TCH-015, Nawal)
-  ('KG-2 B', 'ISL', 'TCH-015', 4),
-  ('KG-2 B', 'ARA', 'TCH-015', 6),
-  ('KG-2 B', 'ENG', 'TCH-003', 5),
-  ('KG-2 B', 'MAT', 'TCH-015', 5),
-  ('KG-2 B', 'SCI', 'TCH-015', 4),
-  ('KG-2 B', 'LFS', 'TCH-015', 2),
+  -- KG-2 B  (homeroom = TCH-015, Nawal)  TOTAL = 40
+  ('KG-2 B', 'ISL', 'TCH-015', 6),
+  ('KG-2 B', 'ARA', 'TCH-015', 8),
+  ('KG-2 B', 'ENG', 'TCH-003', 7),
+  ('KG-2 B', 'MAT', 'TCH-015', 7),
+  ('KG-2 B', 'SCI', 'TCH-015', 6),
+  ('KG-2 B', 'LFS', 'TCH-015', 4),
   ('KG-2 B', 'ART', 'TCH-010', 1),
   ('KG-2 B', 'PE',  'TCH-013', 1),
-  -- TCH-002 KG2A: ISL+ARA+MAT+SCI+LFS = 4+6+5+4+2 = 21ppw ✓
-  -- TCH-015 KG2B: ISL+ARA+MAT+SCI+LFS = 4+6+5+4+2 = 21ppw ✓
-  -- TCH-003 ENG KG1A+KG1B+KG2A+KG2B: 4×5 = 20ppw ✓
+  -- TCH-002 KG2A: ISL+ARA+MAT+SCI+LFS = 6+8+7+6+4 = 31ppw
+  -- TCH-015 KG2B: ISL+ARA+MAT+SCI+LFS = 6+8+7+6+4 = 31ppw
+  -- TCH-003 ENG KG1A+KG1B+KG2A+KG2B: 4×7 = 28ppw
   -- TCH-010 ART KG: 4×1 = 4ppw | TCH-013 PE KG: 4×1 = 4ppw
 
   -- ===================================================
-  -- Grade 1 A & B
-  -- ISL=5, ARA=8, ENG=6, MAT=6, SCI=5, LFS=2, ART=1, SWM=1, PE=1
+  -- Grade 1 A & B  TOTAL = 40
+  -- ISL=5, ARA=9, ENG=7, MAT=7, SCI=6, LFS=3, ART=1, SWM=1, PE=1
   -- ===================================================
   ('Grade 1 A', 'ISL', 'TCH-029', 5),
-  ('Grade 1 A', 'ARA', 'TCH-022', 8),
-  ('Grade 1 A', 'ENG', 'TCH-016', 6),
-  ('Grade 1 A', 'MAT', 'TCH-017', 6),
-  ('Grade 1 A', 'SCI', 'TCH-018', 5),
-  ('Grade 1 A', 'LFS', 'TCH-030', 2),
+  ('Grade 1 A', 'ARA', 'TCH-022', 9),
+  ('Grade 1 A', 'ENG', 'TCH-016', 7),
+  ('Grade 1 A', 'MAT', 'TCH-017', 7),
+  ('Grade 1 A', 'SCI', 'TCH-018', 6),
+  ('Grade 1 A', 'LFS', 'TCH-030', 3),
   ('Grade 1 A', 'ART', 'TCH-010', 1),
   ('Grade 1 A', 'SWM', 'TCH-012', 1),
   ('Grade 1 A', 'PE',  'TCH-013', 1),
 
   ('Grade 1 B', 'ISL', 'TCH-029', 5),
-  ('Grade 1 B', 'ARA', 'TCH-022', 8),
-  ('Grade 1 B', 'ENG', 'TCH-016', 6),
-  ('Grade 1 B', 'MAT', 'TCH-017', 6),
-  ('Grade 1 B', 'SCI', 'TCH-018', 5),
-  ('Grade 1 B', 'LFS', 'TCH-030', 2),
+  ('Grade 1 B', 'ARA', 'TCH-022', 9),
+  ('Grade 1 B', 'ENG', 'TCH-016', 7),
+  ('Grade 1 B', 'MAT', 'TCH-017', 7),
+  ('Grade 1 B', 'SCI', 'TCH-018', 6),
+  ('Grade 1 B', 'LFS', 'TCH-030', 3),
   ('Grade 1 B', 'ART', 'TCH-010', 1),
   ('Grade 1 B', 'SWM', 'TCH-012', 1),
   ('Grade 1 B', 'PE',  'TCH-013', 1),
 
   -- ===================================================
-  -- Grade 2 A & B
-  -- ISL=5, ARA=8, ENG=6, MAT=6, SCI=5, LFS=2, MUS=1, ART=1, SWM=1, PE=1
+  -- Grade 2 A & B  TOTAL = 40
+  -- ISL=5, ARA=9, ENG=7, MAT=7, SCI=6, LFS=2, MUS=1, ART=1, SWM=1, PE=1
   -- ===================================================
   ('Grade 2 A', 'ISL', 'TCH-029', 5),
-  ('Grade 2 A', 'ARA', 'TCH-035', 8),
-  ('Grade 2 A', 'ENG', 'TCH-016', 6),
-  ('Grade 2 A', 'MAT', 'TCH-017', 6),
-  ('Grade 2 A', 'SCI', 'TCH-018', 5),
+  ('Grade 2 A', 'ARA', 'TCH-035', 9),
+  ('Grade 2 A', 'ENG', 'TCH-016', 7),
+  ('Grade 2 A', 'MAT', 'TCH-017', 7),
+  ('Grade 2 A', 'SCI', 'TCH-018', 6),
   ('Grade 2 A', 'LFS', 'TCH-030', 2),
   ('Grade 2 A', 'MUS', 'TCH-009', 1),
   ('Grade 2 A', 'ART', 'TCH-010', 1),
@@ -275,10 +275,10 @@ FROM (VALUES
   ('Grade 2 A', 'PE',  'TCH-013', 1),
 
   ('Grade 2 B', 'ISL', 'TCH-029', 5),
-  ('Grade 2 B', 'ARA', 'TCH-035', 8),
-  ('Grade 2 B', 'ENG', 'TCH-016', 6),
-  ('Grade 2 B', 'MAT', 'TCH-017', 6),
-  ('Grade 2 B', 'SCI', 'TCH-018', 5),
+  ('Grade 2 B', 'ARA', 'TCH-035', 9),
+  ('Grade 2 B', 'ENG', 'TCH-016', 7),
+  ('Grade 2 B', 'MAT', 'TCH-017', 7),
+  ('Grade 2 B', 'SCI', 'TCH-018', 6),
   ('Grade 2 B', 'LFS', 'TCH-030', 2),
   ('Grade 2 B', 'MUS', 'TCH-009', 1),
   ('Grade 2 B', 'ART', 'TCH-010', 1),
@@ -291,11 +291,11 @@ FROM (VALUES
   -- TCH-013 PE G1+G2: 4×1=4ppw (KG+G1+G2 total: 12ppw ✓)
 
   -- ===================================================
-  -- Grade 3 A & B
-  -- ISL=5, ARA=8, ENG=6, MAT=6, SCI=5, SOC=2, ICT=1, LFS=2, MUS=1, ART=1, SWM=1, PE=1
+  -- Grade 3 A & B  TOTAL = 40
+  -- ISL=5, ARA=9, ENG=6, MAT=6, SCI=5, SOC=2, ICT=1, LFS=2, MUS=1, ART=1, SWM=1, PE=1
   -- ===================================================
   ('Grade 3 A', 'ISL', 'TCH-033', 5),
-  ('Grade 3 A', 'ARA', 'TCH-015', 8),
+  ('Grade 3 A', 'ARA', 'TCH-015', 9),
   ('Grade 3 A', 'ENG', 'TCH-023', 6),
   ('Grade 3 A', 'MAT', 'TCH-024', 6),
   ('Grade 3 A', 'SCI', 'TCH-025', 5),
@@ -308,7 +308,7 @@ FROM (VALUES
   ('Grade 3 A', 'PE',  'TCH-013', 1),
 
   ('Grade 3 B', 'ISL', 'TCH-033', 5),
-  ('Grade 3 B', 'ARA', 'TCH-015', 8),
+  ('Grade 3 B', 'ARA', 'TCH-015', 9),
   ('Grade 3 B', 'ENG', 'TCH-023', 6),
   ('Grade 3 B', 'MAT', 'TCH-024', 6),
   ('Grade 3 B', 'SCI', 'TCH-025', 5),
@@ -321,11 +321,11 @@ FROM (VALUES
   ('Grade 3 B', 'PE',  'TCH-013', 1),
 
   -- ===================================================
-  -- Grade 4 A & B
-  -- ISL=5, ARA=8, ENG=6, MAT=6, SCI=5, SOC=2, ICT=1, LFS=2, MUS=1, ART=1, SWM=1, PE=1
+  -- Grade 4 A & B  TOTAL = 40
+  -- ISL=5, ARA=9, ENG=6, MAT=6, SCI=5, SOC=2, ICT=1, LFS=2, MUS=1, ART=1, SWM=1, PE=1
   -- ===================================================
   ('Grade 4 A', 'ISL', 'TCH-033', 5),
-  ('Grade 4 A', 'ARA', 'TCH-015', 8),
+  ('Grade 4 A', 'ARA', 'TCH-015', 9),
   ('Grade 4 A', 'ENG', 'TCH-023', 6),
   ('Grade 4 A', 'MAT', 'TCH-024', 6),
   ('Grade 4 A', 'SCI', 'TCH-025', 5),
@@ -338,7 +338,7 @@ FROM (VALUES
   ('Grade 4 A', 'PE',  'TCH-013', 1),
 
   ('Grade 4 B', 'ISL', 'TCH-033', 5),
-  ('Grade 4 B', 'ARA', 'TCH-015', 8),
+  ('Grade 4 B', 'ARA', 'TCH-015', 9),
   ('Grade 4 B', 'ENG', 'TCH-023', 6),
   ('Grade 4 B', 'MAT', 'TCH-024', 6),
   ('Grade 4 B', 'SCI', 'TCH-025', 5),
@@ -389,15 +389,15 @@ FROM (VALUES
   ('Grade 5 B', 'PE',  'TCH-031', 1),
 
   -- ===================================================
-  -- Grade 6 A & B
-  -- ISL=5, ARA=6, ENG=6, MAT=6, SCI=5, SOC=3, ICT=2, MUS=1, ART=1, CAR=1, SWM=1, PE=1
+  -- Grade 6 A & B  TOTAL = 40
+  -- ISL=5, ARA=7, ENG=6, MAT=6, SCI=6, SOC=3, ICT=2, MUS=1, ART=1, CAR=1, SWM=1, PE=1
   -- (No LFS at G6 per curriculum)
   -- ===================================================
   ('Grade 6 A', 'ISL', 'TCH-034', 5),
-  ('Grade 6 A', 'ARA', 'TCH-035', 6),
+  ('Grade 6 A', 'ARA', 'TCH-035', 7),
   ('Grade 6 A', 'ENG', 'TCH-036', 6),
   ('Grade 6 A', 'MAT', 'TCH-038', 6),
-  ('Grade 6 A', 'SCI', 'TCH-040', 5),
+  ('Grade 6 A', 'SCI', 'TCH-040', 6),
   ('Grade 6 A', 'SOC', 'TCH-006', 3),
   ('Grade 6 A', 'ICT', 'TCH-020', 2),
   ('Grade 6 A', 'MUS', 'TCH-009', 1),
@@ -407,10 +407,10 @@ FROM (VALUES
   ('Grade 6 A', 'PE',  'TCH-031', 1),
 
   ('Grade 6 B', 'ISL', 'TCH-034', 5),
-  ('Grade 6 B', 'ARA', 'TCH-035', 6),
+  ('Grade 6 B', 'ARA', 'TCH-035', 7),
   ('Grade 6 B', 'ENG', 'TCH-036', 6),
   ('Grade 6 B', 'MAT', 'TCH-038', 6),
-  ('Grade 6 B', 'SCI', 'TCH-040', 5),
+  ('Grade 6 B', 'SCI', 'TCH-040', 6),
   ('Grade 6 B', 'SOC', 'TCH-006', 3),
   ('Grade 6 B', 'ICT', 'TCH-020', 2),
   ('Grade 6 B', 'MUS', 'TCH-009', 1),
@@ -430,14 +430,14 @@ FROM (VALUES
   -- TCH-031 PE G5+G6: 4×1=4ppw (more to add)
 
   -- ===================================================
-  -- Grade 7 A & B
-  -- ISL=5, ARA=7, ENG=6, MAT=6, SCI=5, SOC=3, ICT=2, CAR=1, SWM=1, PE=1
+  -- Grade 7 A & B  TOTAL = 40
+  -- ISL=5, ARA=8, ENG=7, MAT=6, SCI=6, SOC=3, ICT=2, CAR=1, SWM=1, PE=1
   -- ===================================================
   ('Grade 7 A', 'ISL', 'TCH-042', 5),
-  ('Grade 7 A', 'ARA', 'TCH-032', 7),
-  ('Grade 7 A', 'ENG', 'TCH-037', 6),
+  ('Grade 7 A', 'ARA', 'TCH-032', 8),
+  ('Grade 7 A', 'ENG', 'TCH-037', 7),
   ('Grade 7 A', 'MAT', 'TCH-039', 6),
-  ('Grade 7 A', 'SCI', 'TCH-041', 5),
+  ('Grade 7 A', 'SCI', 'TCH-041', 6),
   ('Grade 7 A', 'SOC', 'TCH-019', 3),
   ('Grade 7 A', 'ICT', 'TCH-007', 2),
   ('Grade 7 A', 'CAR', 'TCH-028', 1),
@@ -445,10 +445,10 @@ FROM (VALUES
   ('Grade 7 A', 'PE',  'TCH-031', 1),
 
   ('Grade 7 B', 'ISL', 'TCH-042', 5),
-  ('Grade 7 B', 'ARA', 'TCH-032', 7),
-  ('Grade 7 B', 'ENG', 'TCH-037', 6),
+  ('Grade 7 B', 'ARA', 'TCH-032', 8),
+  ('Grade 7 B', 'ENG', 'TCH-037', 7),
   ('Grade 7 B', 'MAT', 'TCH-039', 6),
-  ('Grade 7 B', 'SCI', 'TCH-041', 5),
+  ('Grade 7 B', 'SCI', 'TCH-041', 6),
   ('Grade 7 B', 'SOC', 'TCH-019', 3),
   ('Grade 7 B', 'ICT', 'TCH-007', 2),
   ('Grade 7 B', 'CAR', 'TCH-028', 1),
@@ -456,14 +456,14 @@ FROM (VALUES
   ('Grade 7 B', 'PE',  'TCH-031', 1),
 
   -- ===================================================
-  -- Grade 8 A & B
-  -- ISL=5, ARA=7, ENG=6, MAT=6, SCI=5, SOC=3, ICT=2, CAR=1, SWM=1, PE=1
+  -- Grade 8 A & B  TOTAL = 40
+  -- ISL=5, ARA=8, ENG=7, MAT=6, SCI=6, SOC=3, ICT=2, CAR=1, SWM=1, PE=1
   -- ===================================================
   ('Grade 8 A', 'ISL', 'TCH-042', 5),
-  ('Grade 8 A', 'ARA', 'TCH-032', 7),
-  ('Grade 8 A', 'ENG', 'TCH-037', 6),
+  ('Grade 8 A', 'ARA', 'TCH-032', 8),
+  ('Grade 8 A', 'ENG', 'TCH-037', 7),
   ('Grade 8 A', 'MAT', 'TCH-039', 6),
-  ('Grade 8 A', 'SCI', 'TCH-041', 5),
+  ('Grade 8 A', 'SCI', 'TCH-041', 6),
   ('Grade 8 A', 'SOC', 'TCH-019', 3),
   ('Grade 8 A', 'ICT', 'TCH-007', 2),
   ('Grade 8 A', 'CAR', 'TCH-028', 1),
@@ -471,10 +471,10 @@ FROM (VALUES
   ('Grade 8 A', 'PE',  'TCH-031', 1),
 
   ('Grade 8 B', 'ISL', 'TCH-042', 5),
-  ('Grade 8 B', 'ARA', 'TCH-032', 7),
-  ('Grade 8 B', 'ENG', 'TCH-037', 6),
+  ('Grade 8 B', 'ARA', 'TCH-032', 8),
+  ('Grade 8 B', 'ENG', 'TCH-037', 7),
   ('Grade 8 B', 'MAT', 'TCH-039', 6),
-  ('Grade 8 B', 'SCI', 'TCH-041', 5),
+  ('Grade 8 B', 'SCI', 'TCH-041', 6),
   ('Grade 8 B', 'SOC', 'TCH-019', 3),
   ('Grade 8 B', 'ICT', 'TCH-007', 2),
   ('Grade 8 B', 'CAR', 'TCH-028', 1),

@@ -44,10 +44,11 @@ export async function upsertPeriodSettings(
 // ─────────────────────────────────────────────────────────────────────────────
 // TIMETABLE GENERATION — Deterministic MRV scheduler (zero free periods)
 //
+// Pre-requisite: Each class must have class_subjects totalling exactly 40 ppw
+//                (5 days × 8 periods). See supabase/seed_class_subjects.sql.
+//
 // Guarantees:
-//   1. Every class has EXACTLY (5 days × 8 periods = 40) subject slots filled.
-//      If assigned subjects total < 40, extra periods are distributed across
-//      the heaviest subjects so every cell is a real subject — no free periods.
+//   1. Every class has EXACTLY 40 subject slots filled — no free periods.
 //   2. No teacher is scheduled in two classes at the same day/period.
 //   3. Subjects are spread across the week (max ceil(ppw/5) per day).
 //   4. Hardest subjects (highest ppw, most-constrained teacher) placed first
@@ -108,29 +109,6 @@ export async function generateTimetable(academicYear: string = '2025-2026') {
       .from('timetable_slots')
       .delete()
       .eq('academic_year', academicYear);
-
-    // ── 4b. Auto-fill: pad every class to exactly TOTAL_SLOTS ppw ────────────
-    //
-    // If a class has fewer than 40 total periods, distribute the deficit
-    // across its subjects (heaviest first, round-robin +1 each pass).
-    // This ensures zero free periods in every single class.
-
-    for (const cls of classes) {
-      const csForClass = classSubjects.filter((cs) => cs.class_id === cls.id);
-      const totalPPW = csForClass.reduce((sum, cs) => sum + cs.periods_per_week, 0);
-      let deficit = TOTAL_SLOTS - totalPPW;
-
-      if (deficit > 0 && csForClass.length > 0) {
-        // Sort by ppw descending — give extra periods to the biggest subjects first
-        const sorted = [...csForClass].sort((a, b) => b.periods_per_week - a.periods_per_week);
-        let idx = 0;
-        while (deficit > 0) {
-          sorted[idx % sorted.length].periods_per_week += 1;
-          deficit--;
-          idx++;
-        }
-      }
-    }
 
     // ── 5. Build in-memory grids ─────────────────────────────────────────────
     //
