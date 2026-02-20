@@ -78,16 +78,17 @@ interface Props {
   };
 }
 
-function buildColorMap(slots: TimetableSlot[]) {
-  const map: Record<string, number> = {};
-  let idx = 0;
-  for (const s of slots) {
-    if (!(s.subjectId in map)) {
-      map[s.subjectId] = idx % SUBJECT_COLORS.length;
-      idx++;
-    }
+/** Deterministic color index derived from a subject's UUID.
+ *  The same subject always maps to the same palette slot regardless of
+ *  which timetable view renders it (class / teacher / embedded). */
+function getSubjectColorIndex(subjectId: string): number {
+  let hash = 0;
+  for (let i = 0; i < subjectId.length; i++) {
+    const char = subjectId.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // keep within 32-bit int range
   }
-  return map;
+  return Math.abs(hash) % SUBJECT_COLORS.length;
 }
 
 function fmt(time: string) {
@@ -166,8 +167,6 @@ export default function TimetableGrid({
   for (const s of slots) {
     lookup[s.day_of_week][s.period] = s;
   }
-
-  const colorMap = buildColorMap(slots);
 
   if (periods.length === 0) {
     return (
@@ -311,12 +310,11 @@ export default function TimetableGrid({
                     if (!slot) {
                       return <FreePeriodCell key={d} label={labels.free} />;
                     }
-                    const colorIdx = colorMap[slot.subjectId] ?? 0;
                     return (
                       <SlotCell
                         key={d}
                         slot={slot}
-                        color={SUBJECT_COLORS[colorIdx]}
+                        color={SUBJECT_COLORS[getSubjectColorIndex(slot.subjectId)]}
                         mode={mode}
                         isAr={isAr}
                       />
@@ -332,13 +330,11 @@ export default function TimetableGrid({
       {/* Subject legend */}
       {slots.length > 0 && (
         <div className="mt-3 flex flex-wrap gap-1.5 print:mt-2">
-          {Object.entries(colorMap).map(([subjectId, colorIdx]) => {
-            const sample = slots.find((s) => s.subjectId === subjectId);
-            if (!sample) return null;
-            const c = SUBJECT_COLORS[colorIdx];
+          {Array.from(new Map(slots.map((s) => [s.subjectId, s])).values()).map((sample) => {
+            const c = SUBJECT_COLORS[getSubjectColorIndex(sample.subjectId)];
             return (
               <div
-                key={subjectId}
+                key={sample.subjectId}
                 className={`flex items-center gap-1 px-2 py-0.5 rounded-full border text-[10px] print:text-[7px] font-semibold ${c.bg} ${c.border} ${c.text}`}
                 style={{
                   printColorAdjust: 'exact',

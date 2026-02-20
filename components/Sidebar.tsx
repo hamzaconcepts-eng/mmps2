@@ -45,7 +45,6 @@ export default function Sidebar({ locale, userRole = 'admin' }: SidebarProps) {
       items: [
         { key: 'attendance', icon: ClipboardCheck, href: `/${locale}/attendance`, roles: ['owner','admin','teacher','class_supervisor'] },
         { key: 'grades', icon: FileText, href: `/${locale}/grades`, roles: ['owner','admin','teacher','class_supervisor','student','parent'] },
-        { key: 'exams', icon: Calendar, href: `/${locale}/exams`, roles: ['owner','admin','teacher','class_supervisor'] },
         { key: 'timetable', icon: Calendar, href: `/${locale}/timetable`, roles: ['owner','admin','teacher','class_supervisor','student'] },
       ],
     },
