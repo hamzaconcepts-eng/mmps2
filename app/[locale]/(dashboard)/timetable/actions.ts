@@ -97,11 +97,36 @@ export async function generateTimetable(academicYear: string = '2025-2026') {
     // ── 3. Fetch all class_subjects ──────────────────────────────────────────
     const { data: classSubjects, error: csErr } = await supabase
       .from('class_subjects')
-      .select('id, class_id, teacher_id, periods_per_week, subjects(name, code)')
+      .select('id, class_id, teacher_id, periods_per_week, subjects(name, code), teachers(employee_id, first_name, family_name)')
       .in('class_id', classes.map((c) => c.id));
 
     if (csErr || !classSubjects || classSubjects.length === 0) {
       return { success: false, error: 'No subject assignments found. Please assign subjects to classes first.' };
+    }
+
+    // ── 3b. Pre-flight validation: no teacher may exceed TOTAL_SLOTS ppw ────
+    const teacherLoad: Record<string, { name: string; eid: string; total: number }> = {};
+    for (const cs of classSubjects) {
+      if (!cs.teacher_id) continue;
+      if (!teacherLoad[cs.teacher_id]) {
+        const t = cs.teachers as unknown as { employee_id: string; first_name: string; family_name: string } | null;
+        teacherLoad[cs.teacher_id] = {
+          name: t ? `${t.first_name} ${t.family_name}` : cs.teacher_id,
+          eid: t?.employee_id ?? '?',
+          total: 0,
+        };
+      }
+      teacherLoad[cs.teacher_id].total += cs.periods_per_week;
+    }
+    const overloaded = Object.values(teacherLoad).filter((t) => t.total > TOTAL_SLOTS);
+    if (overloaded.length > 0) {
+      const list = overloaded
+        .map((t) => `${t.eid} ${t.name}: ${t.total} ppw`)
+        .join('; ');
+      return {
+        success: false,
+        error: `Cannot generate: teacher(s) exceed ${TOTAL_SLOTS} periods/week — ${list}. Please reassign subjects before generating.`,
+      };
     }
 
     // ── 4. Clear existing slots ──────────────────────────────────────────────
@@ -291,12 +316,21 @@ export async function generateTimetable(academicYear: string = '2025-2026') {
     revalidateTag('timetable');
     revalidatePath('/[locale]/timetable', 'page');
 
+    if (conflicts.length > 0) {
+      return {
+        success: false,
+        slotsCreated: toInsert.length,
+        classesScheduled: classes.length,
+        error: `${conflicts.length} teacher conflict(s) detected. Some teachers are assigned to overlapping time slots across classes. Please reassign overloaded teachers and regenerate.`,
+        conflicts,
+      };
+    }
+
     return {
       success: true,
       slotsCreated: toInsert.length,
       classesScheduled: classes.length,
       freePeriods: 0,
-      conflicts: conflicts.length > 0 ? conflicts : undefined,
     };
   } catch (e: any) {
     return { success: false, error: e.message || 'Generation failed' };

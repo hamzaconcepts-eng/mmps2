@@ -159,7 +159,17 @@ INSERT INTO teachers (
   -- TCH-042: ISL, G7-G8
   ('TCH-042', 'Muna', 'منى', 'Khalid', 'خالد', 'Rashid', 'راشد', 'Al Ismaili', 'الإسماعيلي', 'Al Ismaili', 'الإسماعيلي',
    'female', '1991-02-14', '91001042', 'muna.ismaili@mashaail.school', '2022-09-01',
-   'Islamic Education', 'التربية الإسلامية')
+   'Islamic Education', 'التربية الإسلامية'),
+
+  -- TCH-043: ARA, G3 A+B (split from TCH-015 overload)
+  ('TCH-043', 'Jamila', 'جميلة', 'Yousuf', 'يوسف', 'Said', 'سعيد', 'Al Maskari', 'المسكري', 'Al Maskari', 'المسكري',
+   'female', '1990-06-20', '91001043', 'jamila.maskari@mashaail.school', '2023-09-01',
+   'Arabic Language', 'اللغة العربية'),
+
+  -- TCH-044: ARA, G4 A+B (split from TCH-015 overload)
+  ('TCH-044', 'Faiza', 'فايزة', 'Hamoud', 'حمود', 'Nasser', 'ناصر', 'Al Shukaili', 'الشكيلي', 'Al Shukaili', 'الشكيلي',
+   'female', '1988-10-03', '91001044', 'faiza.shukaili@mashaail.school', '2020-09-01',
+   'Arabic Language', 'اللغة العربية')
 ON CONFLICT (employee_id) DO NOTHING;
 
 
@@ -296,7 +306,7 @@ FROM (VALUES
   -- ISL=5, ARA=9, ENG=6, MAT=6, SCI=5, SOC=2, ICT=1, LFS=2, MUS=1, ART=1, SWM=1, PE=1
   -- ===================================================
   ('Grade 3 A', 'ISL', 'TCH-033', 5),
-  ('Grade 3 A', 'ARA', 'TCH-015', 9),
+  ('Grade 3 A', 'ARA', 'TCH-043', 9),
   ('Grade 3 A', 'ENG', 'TCH-023', 6),
   ('Grade 3 A', 'MAT', 'TCH-024', 6),
   ('Grade 3 A', 'SCI', 'TCH-025', 5),
@@ -309,7 +319,7 @@ FROM (VALUES
   ('Grade 3 A', 'PE',  'TCH-013', 1),
 
   ('Grade 3 B', 'ISL', 'TCH-033', 5),
-  ('Grade 3 B', 'ARA', 'TCH-015', 9),
+  ('Grade 3 B', 'ARA', 'TCH-043', 9),
   ('Grade 3 B', 'ENG', 'TCH-023', 6),
   ('Grade 3 B', 'MAT', 'TCH-024', 6),
   ('Grade 3 B', 'SCI', 'TCH-025', 5),
@@ -326,7 +336,7 @@ FROM (VALUES
   -- ISL=5, ARA=9, ENG=6, MAT=6, SCI=5, SOC=2, ICT=1, LFS=2, MUS=1, ART=1, SWM=1, PE=1
   -- ===================================================
   ('Grade 4 A', 'ISL', 'TCH-033', 5),
-  ('Grade 4 A', 'ARA', 'TCH-015', 9),
+  ('Grade 4 A', 'ARA', 'TCH-044', 9),
   ('Grade 4 A', 'ENG', 'TCH-023', 6),
   ('Grade 4 A', 'MAT', 'TCH-024', 6),
   ('Grade 4 A', 'SCI', 'TCH-025', 5),
@@ -339,7 +349,7 @@ FROM (VALUES
   ('Grade 4 A', 'PE',  'TCH-013', 1),
 
   ('Grade 4 B', 'ISL', 'TCH-033', 5),
-  ('Grade 4 B', 'ARA', 'TCH-015', 9),
+  ('Grade 4 B', 'ARA', 'TCH-044', 9),
   ('Grade 4 B', 'ENG', 'TCH-023', 6),
   ('Grade 4 B', 'MAT', 'TCH-024', 6),
   ('Grade 4 B', 'SCI', 'TCH-025', 5),
@@ -350,7 +360,7 @@ FROM (VALUES
   ('Grade 4 B', 'ART', 'TCH-026', 1),
   ('Grade 4 B', 'SWM', 'TCH-012', 1),
   ('Grade 4 B', 'PE',  'TCH-013', 1),
-  -- TCH-033 ISL G3+G4: 4×5=20ppw ✓ | TCH-015 ARA G3+G4: 4×8=32ppw ← high but valid
+  -- TCH-033 ISL G3+G4: 4×5=20ppw ✓ | TCH-043 ARA G3: 2×9=18ppw ✓ | TCH-044 ARA G4: 2×9=18ppw ✓
   -- TCH-023 ENG G3+G4: 4×6=24ppw ✓ | TCH-024 MAT G3+G4: 4×6=24ppw ✓
   -- TCH-025 SCI G3+G4: 4×5=20ppw ✓ | TCH-006 SOC G3+G4: 4×2=8ppw (more to add)
   -- TCH-007 ICT G3+G4: 4×1=4ppw   | TCH-008 LFS G3+G4: +8ppw (KG+G3+G4=8+8=16ppw ✓)
