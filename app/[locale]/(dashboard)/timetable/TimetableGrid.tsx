@@ -227,9 +227,9 @@ export default function TimetableGrid({
     win.document.write(
       '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Timetable</title>' +
       fontLinks +
-      '</head><body><div id="page-frame"><div id="tt-scaled">' +
+      '</head><body><div id="tt-scaled">' +
       el.outerHTML +
-      '</div></div></body></html>'
+      '</div></body></html>'
     );
     win.document.close();
 
@@ -240,10 +240,10 @@ export default function TimetableGrid({
 
     const overrides = win.document.createElement('style');
     overrides.textContent = [
-      '@page { size: A4 landscape; margin: 0; }',
+      // Let Chrome handle pagination naturally — NO overflow:hidden, NO fixed height
+      '@page { size: A4 landscape; margin: 10mm; }',
       '*, *::before, *::after { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; box-sizing: border-box; }',
-      'html, body { margin: 0; padding: 0; background: white; width: 297mm; height: 210mm; overflow: hidden; font-family: "Roboto", -apple-system, BlinkMacSystemFont, sans-serif; }',
-      '#page-frame { position: absolute; top: 10mm; left: 10mm; width: 277mm; height: 190mm; overflow: hidden; }',
+      'html, body { margin: 0; padding: 0; background: white; width: 277mm; max-width: 277mm; font-family: "Roboto", -apple-system, BlinkMacSystemFont, sans-serif; }',
       // Visibility
       '[class*="print:block"]  { display: block !important; }',
       '[class*="print:flex"]   { display: flex  !important; }',
@@ -279,31 +279,33 @@ export default function TimetableGrid({
     ].join('\n');
     win.document.head.appendChild(overrides);
 
-    // ── 4. Wait for fonts + layout, then scale to fit and print ──
+    // ── 4. Wait for fonts + layout, measure, zoom to fit A4 landscape, then print ──
     const fontsReady = win.document.fonts ? win.document.fonts.ready : Promise.resolve();
     fontsReady.then(() => {
-      // Double requestAnimationFrame ensures layout is fully computed after CSS injection
       win.requestAnimationFrame(() => {
         win.requestAnimationFrame(() => {
-          const frame   = win.document.getElementById('page-frame');
           const content = win.document.getElementById('tt-scaled');
-          if (!frame || !content) return;
+          if (!content) return;
 
-          const availW = frame.clientWidth;
-          const availH = frame.clientHeight;
-          const cW = content.scrollWidth;
+          // 190mm printable height at 96dpi ≈ 718px
+          const availH = 190 * (96 / 25.4); // exact: 718.11px
           const cH = content.scrollHeight;
-          const scale = Math.min(availW / cW, availH / cH, 1);
 
-          // Use CSS zoom (changes layout size, so overflow:hidden clips correctly)
-          if (scale < 0.999) {
-            (content.style as any).zoom = String(scale);
+          if (cH > availH) {
+            const scale = availH / cH;
+            // Inject zoom via stylesheet (more reliable for print than inline style)
+            const zoomStyle = win.document.createElement('style');
+            zoomStyle.textContent = '#tt-scaled { zoom: ' + scale.toFixed(5) + '; }';
+            win.document.head.appendChild(zoomStyle);
           }
 
-          setTimeout(() => {
-            win.print();
-            win.addEventListener('afterprint', () => win.close());
-          }, 300);
+          // Extra rAF after zoom injection to let layout recompute
+          win.requestAnimationFrame(() => {
+            setTimeout(() => {
+              win.print();
+              win.addEventListener('afterprint', () => win.close());
+            }, 300);
+          });
         });
       });
     });
