@@ -203,120 +203,110 @@ export default function TimetableGrid({
     const el = timetableRef.current;
     if (!el) { window.print(); return; }
 
-    const styleLinks = Array.from(document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]'))
+    // ── 1. Inline all same-origin CSS (avoids async stylesheet loading) ──
+    const cssRules: string[] = [];
+    for (const sheet of Array.from(document.styleSheets)) {
+      try {
+        for (const rule of Array.from(sheet.cssRules)) {
+          cssRules.push(rule.cssText);
+        }
+      } catch { /* cross-origin — skip */ }
+    }
+
+    // Keep Google Fonts link for @font-face file loading
+    const fontLinks = Array.from(document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]'))
+      .filter(l => l.href.includes('fonts.googleapis.com') || l.href.includes('fonts.gstatic.com'))
       .map(l => `<link rel="stylesheet" href="${l.href}">`)
       .join('\n');
-    const inlineStyles = Array.from(document.querySelectorAll('style'))
-      .map(s => s.outerHTML)
-      .join('\n');
 
-    const win = window.open('', '_blank', 'width=1400,height=900');
+    // ── 2. Open print window ──
+    const win = window.open('', '_blank', 'width=1200,height=900');
     if (!win) { window.print(); return; }
 
-    win.document.write(`<!DOCTYPE html>
-<html><head>
-  <meta charset="utf-8">
-  <title>Timetable</title>
-  ${styleLinks}
-  ${inlineStyles}
-  <style>
-    /* Zero margins — we control all spacing inside #page-frame */
-    @page { size: A4 landscape; margin: 0; }
-
-    *, *::before, *::after {
-      -webkit-print-color-adjust: exact !important;
-      print-color-adjust: exact !important;
-      box-sizing: border-box;
-    }
-
-    html, body {
-      margin: 0; padding: 0; background: white;
-      /* Exactly one A4 landscape page — overflow hidden = impossible to spill to page 2 */
-      width: 297mm; height: 210mm; overflow: hidden;
-      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    }
-
-    /* Content frame with 10mm margins inset */
-    #page-frame {
-      position: absolute;
-      top: 10mm; left: 10mm;
-      width: 277mm; height: 190mm;
-      overflow: hidden;
-    }
-
-    /* Content will be transform-scaled by JS to fit inside #page-frame */
-    #tt-scaled { transform-origin: top left; }
-
-    /* ── Visibility: simulate print media ── */
-    [class*="print:block"]  { display: block !important; }
-    [class*="print:flex"]   { display: flex  !important; }
-    [class*="print:hidden"] { display: none  !important; }
-    .hidden:not([class*="print:block"]):not([class*="print:flex"]) { display: none !important; }
-
-    /* ── Layout resets ── */
-    .overflow-x-auto, .overflow-hidden, .timetable-grid-wrap { overflow: visible !important; }
-    .h-screen { height: auto !important; }
-    [class*="h-14"],[class*="h-10"],[class*="h-12"],[class*="h-16"] { height: auto !important; }
-
-    /* ── Print header ── */
-    .border-gray-800 { border-color: #1f2937 !important; padding-bottom: 5pt !important; margin-bottom: 7pt !important; }
-    .border-gray-800 img { width: 36px !important; height: 36px !important; }
-    .border-gray-800 p { white-space: normal !important; margin: 0 !important; }
-    .border-gray-800 p:first-child { font-size: 13pt !important; font-weight: 800 !important; color: #111 !important; }
-    .border-gray-800 p:last-child  { font-size: 9pt !important; color: #555 !important; }
-
-    /* ── Table ── */
-    .timetable-grid-wrap table { width: 100% !important; table-layout: fixed !important; border-collapse: collapse !important; }
-    .timetable-grid-wrap th { font-size: 10pt !important; font-weight: 700 !important; padding: 5pt 3pt !important; border: 0.75pt solid #aaa !important; text-align: center !important; line-height: 1.25 !important; }
-    .timetable-grid-wrap td { padding: 2pt !important; border: 0.5pt solid #ccc !important; height: auto !important; vertical-align: middle !important; }
-
-    /* Cell inner box */
-    .timetable-grid-wrap td > div { height: auto !important; min-height: 32pt !important; padding: 3pt 5pt !important; overflow: visible !important; border-radius: 3pt !important; display: flex !important; flex-direction: column !important; justify-content: center !important; gap: 1pt !important; }
-    .timetable-grid-wrap td > div > p { margin: 0 !important; overflow: visible !important; text-overflow: unset !important; white-space: normal !important; word-break: break-word !important; line-height: 1.3 !important; }
-    .timetable-grid-wrap td > div > p:first-child  { font-size: 9pt !important; font-weight: 700 !important; }
-    .timetable-grid-wrap td > div > p:nth-child(2)  { font-size: 7.5pt !important; font-family: monospace !important; }
-    .timetable-grid-wrap td > div > p:nth-child(n+3){ font-size: 8pt !important; }
-    .timetable-grid-wrap td > div > span { font-size: 7.5pt !important; }
-
-    /* Period column */
-    .timetable-grid-wrap td:first-child > div { text-align: center !important; background-color: #f9fafb !important; }
-    .timetable-grid-wrap td:first-child > div > span { display: block !important; overflow: visible !important; white-space: normal !important; }
-    .timetable-grid-wrap td:first-child > div > span:first-child     { font-size: 8pt !important; font-weight: 700 !important; }
-    .timetable-grid-wrap td:first-child > div > span:not(:first-child){ font-size: 7pt !important; }
-
-    /* Break rows */
-    .timetable-grid-wrap td[colspan] > div { min-height: 13pt !important; padding: 2pt 8pt !important; font-size: 8.5pt !important; font-weight: 600 !important; }
-
-    /* Remove truncation */
-    .truncate { overflow: visible !important; text-overflow: unset !important; white-space: normal !important; }
-
-    /* Legend */
-    .border-t { border-top: 0.5pt solid #e5e7eb !important; }
-  </style>
-</head><body>
-  <div id="page-frame">
-    <div id="tt-scaled">${el.outerHTML}</div>
-  </div>
-  <script>
-    document.fonts.ready.then(function() {
-      var frame   = document.getElementById('page-frame');
-      var content = document.getElementById('tt-scaled');
-      var availW  = frame.clientWidth;   /* 277mm in px */
-      var availH  = frame.clientHeight;  /* 190mm in px */
-      var cW = content.scrollWidth;
-      var cH = content.scrollHeight;
-      var scale = Math.min(availW / cW, availH / cH, 1);
-      if (scale < 0.999) {
-        content.style.transform = 'scale(' + scale.toFixed(5) + ')';
-      }
-      setTimeout(function() {
-        window.print();
-        window.addEventListener('afterprint', function() { window.close(); });
-      }, 400);
-    });
-  </script>
-</body></html>`);
+    // Write minimal HTML (CSS injected programmatically to avoid template-literal issues)
+    win.document.write(
+      '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Timetable</title>' +
+      fontLinks +
+      '</head><body><div id="page-frame"><div id="tt-scaled">' +
+      el.outerHTML +
+      '</div></div></body></html>'
+    );
     win.document.close();
+
+    // ── 3. Inject CSS programmatically (sync — no network delay) ──
+    const appStyle = win.document.createElement('style');
+    appStyle.textContent = cssRules.join('\n');
+    win.document.head.appendChild(appStyle);
+
+    const overrides = win.document.createElement('style');
+    overrides.textContent = [
+      '@page { size: A4 landscape; margin: 0; }',
+      '*, *::before, *::after { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; box-sizing: border-box; }',
+      'html, body { margin: 0; padding: 0; background: white; width: 297mm; height: 210mm; overflow: hidden; font-family: "Roboto", -apple-system, BlinkMacSystemFont, sans-serif; }',
+      '#page-frame { position: absolute; top: 10mm; left: 10mm; width: 277mm; height: 190mm; overflow: hidden; }',
+      // Visibility
+      '[class*="print:block"]  { display: block !important; }',
+      '[class*="print:flex"]   { display: flex  !important; }',
+      '[class*="print:hidden"] { display: none  !important; }',
+      '.hidden:not([class*="print:block"]):not([class*="print:flex"]) { display: none !important; }',
+      // Layout resets
+      '.overflow-x-auto, .overflow-hidden, .timetable-grid-wrap { overflow: visible !important; }',
+      '.h-screen { height: auto !important; }',
+      '[class*="h-14"],[class*="h-10"],[class*="h-12"],[class*="h-16"] { height: auto !important; }',
+      // Print header
+      '.border-gray-800 { border-color: #1f2937 !important; padding-bottom: 5pt !important; margin-bottom: 7pt !important; }',
+      '.border-gray-800 img { width: 36px !important; height: 36px !important; }',
+      '.border-gray-800 p { white-space: normal !important; margin: 0 !important; }',
+      '.border-gray-800 p:first-child { font-size: 13pt !important; font-weight: 800 !important; color: #111 !important; }',
+      '.border-gray-800 p:last-child  { font-size: 9pt !important; color: #555 !important; }',
+      // Table
+      '.timetable-grid-wrap table { width: 100% !important; table-layout: fixed !important; border-collapse: collapse !important; }',
+      '.timetable-grid-wrap th { font-size: 10pt !important; font-weight: 700 !important; padding: 5pt 3pt !important; border: 0.75pt solid #aaa !important; text-align: center !important; }',
+      '.timetable-grid-wrap td { padding: 2pt !important; border: 0.5pt solid #ccc !important; height: auto !important; vertical-align: middle !important; }',
+      '.timetable-grid-wrap td > div { height: auto !important; min-height: 30pt !important; padding: 3pt 5pt !important; overflow: visible !important; border-radius: 3pt !important; display: flex !important; flex-direction: column !important; justify-content: center !important; gap: 1pt !important; }',
+      '.timetable-grid-wrap td > div > p { margin: 0 !important; overflow: visible !important; text-overflow: unset !important; white-space: normal !important; word-break: break-word !important; line-height: 1.3 !important; }',
+      '.timetable-grid-wrap td > div > p:first-child  { font-size: 9pt !important; font-weight: 700 !important; }',
+      '.timetable-grid-wrap td > div > p:nth-child(2)  { font-size: 7.5pt !important; font-family: monospace !important; }',
+      '.timetable-grid-wrap td > div > p:nth-child(n+3){ font-size: 8pt !important; }',
+      '.timetable-grid-wrap td > div > span { font-size: 7.5pt !important; }',
+      '.timetable-grid-wrap td:first-child > div { text-align: center !important; background-color: #f9fafb !important; }',
+      '.timetable-grid-wrap td:first-child > div > span { display: block !important; overflow: visible !important; white-space: normal !important; }',
+      '.timetable-grid-wrap td:first-child > div > span:first-child      { font-size: 8pt !important; font-weight: 700 !important; }',
+      '.timetable-grid-wrap td:first-child > div > span:not(:first-child) { font-size: 7pt !important; }',
+      '.timetable-grid-wrap td[colspan] > div { min-height: 13pt !important; padding: 2pt 8pt !important; font-size: 8.5pt !important; font-weight: 600 !important; }',
+      '.truncate { overflow: visible !important; text-overflow: unset !important; white-space: normal !important; }',
+      '.border-t { border-top: 0.5pt solid #e5e7eb !important; }',
+    ].join('\n');
+    win.document.head.appendChild(overrides);
+
+    // ── 4. Wait for fonts + layout, then scale to fit and print ──
+    const fontsReady = win.document.fonts ? win.document.fonts.ready : Promise.resolve();
+    fontsReady.then(() => {
+      // Double requestAnimationFrame ensures layout is fully computed after CSS injection
+      win.requestAnimationFrame(() => {
+        win.requestAnimationFrame(() => {
+          const frame   = win.document.getElementById('page-frame');
+          const content = win.document.getElementById('tt-scaled');
+          if (!frame || !content) return;
+
+          const availW = frame.clientWidth;
+          const availH = frame.clientHeight;
+          const cW = content.scrollWidth;
+          const cH = content.scrollHeight;
+          const scale = Math.min(availW / cW, availH / cH, 1);
+
+          // Use CSS zoom (changes layout size, so overflow:hidden clips correctly)
+          if (scale < 0.999) {
+            (content.style as any).zoom = String(scale);
+          }
+
+          setTimeout(() => {
+            win.print();
+            win.addEventListener('afterprint', () => win.close());
+          }, 300);
+        });
+      });
+    });
   };
 
   return (
