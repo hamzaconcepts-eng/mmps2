@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useRef } from 'react';
 import { Printer } from 'lucide-react';
 
 // ─── Subject colour palette (20 distinct colours) ───────────────────────────
@@ -200,12 +200,73 @@ export default function TimetableGrid({
     for (const p of periods) rows.push({ type: 'period', info: p });
   }
 
+  const timetableRef = useRef<HTMLDivElement>(null);
+
   const handlePrint = () => {
-    window.print();
+    const el = timetableRef.current;
+    if (!el) { window.print(); return; }
+
+    const styleLinks = Array.from(document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]'))
+      .map(l => `<link rel="stylesheet" href="${l.href}">`)
+      .join('\n');
+    const inlineStyles = Array.from(document.querySelectorAll('style'))
+      .map(s => s.outerHTML)
+      .join('\n');
+
+    const win = window.open('', '_blank', 'width=1400,height=900');
+    if (!win) { window.print(); return; }
+
+    win.document.write(`<!DOCTYPE html>
+<html><head>
+  <meta charset="utf-8">
+  <title>Timetable</title>
+  ${styleLinks}
+  ${inlineStyles}
+  <style>
+    @page { size: A4 landscape; margin: 10mm; }
+    html, body {
+      margin: 0 !important;
+      padding: 0 !important;
+      background: white !important;
+      height: auto !important;
+      overflow: visible !important;
+    }
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    [class*="print:block"] { display: block !important; }
+    [class*="print:flex"]  { display: flex  !important; }
+    [class*="print:hidden"] { display: none !important; }
+    .hidden:not([class*="print:block"]):not([class*="print:flex"]) { display: none !important; }
+    .overflow-x-auto, .timetable-grid-wrap { overflow: visible !important; }
+    .timetable-grid-wrap table { width: 100% !important; table-layout: fixed !important; }
+    .h-screen { height: auto !important; overflow: visible !important; }
+  </style>
+</head><body>
+  <div style="padding:6px" id="tt-root">${el.outerHTML}</div>
+  <script>
+    window.addEventListener('load', function() {
+      var root = document.getElementById('tt-root');
+      var maxW = 1040, maxH = 700;
+      var W = root ? root.scrollWidth : document.body.scrollWidth;
+      var H = root ? root.scrollHeight : document.body.scrollHeight;
+      if (W > maxW || H > maxH) {
+        var scale = Math.min(maxW / W, maxH / H);
+        document.body.style.zoom = scale.toFixed(4);
+      }
+      setTimeout(function() {
+        window.print();
+        window.addEventListener('afterprint', function() { window.close(); });
+      }, 500);
+    });
+  </script>
+</body></html>`);
+    win.document.close();
   };
 
   return (
-    <div>
+    <div ref={timetableRef}>
       {/* Print button — screen only */}
       <div className="flex items-center justify-end mb-2 print:hidden gap-2">
         <button
