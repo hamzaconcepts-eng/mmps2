@@ -240,8 +240,16 @@ export default function TimetableGrid({
     [class*="print:hidden"] { display: none !important; }
     .hidden:not([class*="print:block"]):not([class*="print:flex"]) { display: none !important; }
     .overflow-x-auto, .timetable-grid-wrap { overflow: visible !important; }
-    .timetable-grid-wrap table { width: 100% !important; table-layout: fixed !important; }
+    .overflow-hidden { overflow: visible !important; }
+    .timetable-grid-wrap table { width: 100% !important; table-layout: fixed !important; border-collapse: collapse !important; }
     .h-screen { height: auto !important; overflow: visible !important; }
+    /* Remove all fixed heights on cells — let content breathe */
+    .timetable-grid-wrap td { height: auto !important; padding: 2px !important; }
+    .timetable-grid-wrap td > div { height: auto !important; min-height: 36px; overflow: visible !important; }
+    /* Remove text truncation so nothing gets cut */
+    .truncate { overflow: visible !important; text-overflow: unset !important; white-space: normal !important; word-break: break-word; }
+    /* Force all fixed-height Tailwind utilities to auto */
+    [class*="h-14"], [class*="h-10"], [class*="h-12"] { height: auto !important; }
   </style>
 </head><body>
   <div style="padding:6px" id="tt-root">${el.outerHTML}</div>
