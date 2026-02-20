@@ -351,11 +351,7 @@ export default function TimetableGrid({
               </div>
             );
           })}
-          {/* Free period legend entry */}
-          <div className="flex items-center gap-1 px-2 py-0.5 rounded-full border border-dashed border-gray-300 text-[10px] print:text-[7px] font-semibold text-gray-400 bg-gray-50">
-            <div className="w-1.5 h-1.5 rounded-full bg-gray-300 flex-shrink-0" />
-            {labels.free}
-          </div>
+          {/* Free period legend — only shown if any empty cell exists (shouldn't happen) */}
         </div>
       )}
     </div>

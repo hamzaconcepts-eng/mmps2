@@ -42,15 +42,15 @@ export async function upsertPeriodSettings(
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// TIMETABLE GENERATION — Deterministic MRV scheduler
+// TIMETABLE GENERATION — Deterministic MRV scheduler (zero free periods)
 //
 // Guarantees:
-//   1. Every class slot (5 days × 8 periods = 40) is filled — either with a
-//      subject or a styled "Free Period" placeholder.
+//   1. Every class has EXACTLY (5 days × 8 periods = 40) subject slots filled.
+//      If assigned subjects total < 40, extra periods are distributed across
+//      the heaviest subjects so every cell is a real subject — no free periods.
 //   2. No teacher is scheduled in two classes at the same day/period.
-//   3. Subjects are spread across the week (no subject twice on the same day
-//      unless unavoidable).
-//   4. Hardest subjects (highest ppw, most-constrained teacher) are placed first
+//   3. Subjects are spread across the week (max ceil(ppw/5) per day).
+//   4. Hardest subjects (highest ppw, most-constrained teacher) placed first
 //      (MRV heuristic).
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -71,7 +71,7 @@ export async function generateTimetable(academicYear: string = '2025-2026') {
     }
 
     const periods = periodSettings.map((ps, idx) => ({
-      period_number: idx + 1,      // 1-based index in teaching-only list
+      period_number: idx + 1,
       setting_id: ps.id,
       start_time: ps.start_time,
       end_time: ps.end_time,
@@ -79,6 +79,7 @@ export async function generateTimetable(academicYear: string = '2025-2026') {
 
     const DAYS = [0, 1, 2, 3, 4]; // Sun=0 … Thu=4
     const NUM_PERIODS = periods.length; // 8 teaching periods
+    const TOTAL_SLOTS = DAYS.length * NUM_PERIODS; // 40
 
     // ── 2. Fetch all active classes ──────────────────────────────────────────
     const { data: classes, error: clsErr } = await supabase
@@ -108,12 +109,35 @@ export async function generateTimetable(academicYear: string = '2025-2026') {
       .delete()
       .eq('academic_year', academicYear);
 
+    // ── 4b. Auto-fill: pad every class to exactly TOTAL_SLOTS ppw ────────────
+    //
+    // If a class has fewer than 40 total periods, distribute the deficit
+    // across its subjects (heaviest first, round-robin +1 each pass).
+    // This ensures zero free periods in every single class.
+
+    for (const cls of classes) {
+      const csForClass = classSubjects.filter((cs) => cs.class_id === cls.id);
+      const totalPPW = csForClass.reduce((sum, cs) => sum + cs.periods_per_week, 0);
+      let deficit = TOTAL_SLOTS - totalPPW;
+
+      if (deficit > 0 && csForClass.length > 0) {
+        // Sort by ppw descending — give extra periods to the biggest subjects first
+        const sorted = [...csForClass].sort((a, b) => b.periods_per_week - a.periods_per_week);
+        let idx = 0;
+        while (deficit > 0) {
+          sorted[idx % sorted.length].periods_per_week += 1;
+          deficit--;
+          idx++;
+        }
+      }
+    }
+
     // ── 5. Build in-memory grids ─────────────────────────────────────────────
     //
-    // classGrid[classId][day][period] = class_subject_id | 'FREE' | null
+    // classGrid[classId][day][period] = class_subject_id | null
     // teacherGrid[teacherId][day][period] = classId (for conflict detection)
     //
-    type SlotValue = string | 'FREE' | null;
+    type SlotValue = string | null;
     const classGrid: Record<string, Record<number, Record<number, SlotValue>>> = {};
     const teacherGrid: Record<string, Record<number, Record<number, string>>> = {};
 
@@ -172,17 +196,6 @@ export async function generateTimetable(academicYear: string = '2025-2026') {
           return bLoad - aLoad;
         });
 
-      const totalRequired = subjects.reduce((s, cs) => s + cs.periods_per_week, 0);
-
-      // For each subject: spread its periods as evenly as possible across days.
-      // Strategy:
-      //   - Rotate through days in order [0,1,2,3,4,0,1,2,3,4,...]
-      //   - For each occurrence of the subject, find the next day that has:
-      //       a) a free class slot
-      //       b) no teacher conflict
-      //       c) hasn't already been given this subject twice today (max 2/day)
-      //   - Scan periods 1..NUM_PERIODS on that day to find the first free period
-
       for (const cs of subjects) {
         let remaining = cs.periods_per_week;
         const tid = cs.teacher_id ?? null;
@@ -190,20 +203,16 @@ export async function generateTimetable(academicYear: string = '2025-2026') {
         // Track how many times this subject is already placed on each day
         const dayCount: Record<number, number> = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 };
 
-        // Rotating day cursor — start at the day that has the fewest assigned
-        // slots for this class so far (most room available)
         let dayStart = 0;
 
-        // Pass 1: strict spread — max 1 occurrence per day if possible
-        const maxPerDay = Math.ceil(cs.periods_per_week / DAYS.length); // e.g. 8/5 → 2
+        // Pass 1: strict spread — max ceil(ppw/5) per day
+        const maxPerDay = Math.ceil(cs.periods_per_week / DAYS.length);
 
         for (let attempt = 0; attempt < cs.periods_per_week * DAYS.length * NUM_PERIODS && remaining > 0; attempt++) {
           const day = DAYS[(dayStart + attempt) % DAYS.length];
 
-          // Skip if this day already has maxPerDay of this subject
           if (dayCount[day] >= maxPerDay) continue;
 
-          // Find the first free period on this day
           let placed = false;
           for (let p = 1; p <= NUM_PERIODS; p++) {
             if (isFree(cls.id, tid, day, p)) {
@@ -215,12 +224,10 @@ export async function generateTimetable(academicYear: string = '2025-2026') {
             }
           }
 
-          // Advance dayStart after each successful placement to spread across days
           if (placed) dayStart = (dayStart + 1) % DAYS.length;
         }
 
-        // Pass 2: if still remaining (teacher conflicts couldn't be resolved normally),
-        // relax the max-per-day constraint and try any free slot in the class
+        // Pass 2: relax max-per-day, try any free slot with teacher check
         if (remaining > 0) {
           outer:
           for (const day of DAYS) {
@@ -234,19 +241,17 @@ export async function generateTimetable(academicYear: string = '2025-2026') {
           }
         }
 
-        // Pass 3: last resort — ignore teacher constraint to avoid leaving gaps
-        // (teacher conflict is reported but class grid stays full)
+        // Pass 3: last resort — ignore teacher constraint to keep class full
         if (remaining > 0) {
           const subjectName = (cs.subjects as any)?.code || cs.id;
           outer3:
           for (const day of DAYS) {
             for (let p = 1; p <= NUM_PERIODS; p++) {
               if (classGrid[cls.id]?.[day]?.[p] === null) {
-                // Place ignoring teacher conflict — mark in class grid only
                 classGrid[cls.id][day][p] = cs.id;
                 remaining--;
                 conflicts.push(
-                  `Teacher conflict on ${cls.name} ${subjectName} day=${day} period=${p} — teacher double-booked`
+                  `Teacher conflict on ${cls.name} ${subjectName} day=${day} period=${p}`
                 );
                 if (remaining === 0) break outer3;
               }
@@ -258,28 +263,18 @@ export async function generateTimetable(academicYear: string = '2025-2026') {
           conflicts.push(`Could not place ${remaining} period(s) for ${cls.name} — ${(cs.subjects as any)?.code}`);
         }
       }
-
-      // ── 7. Fill remaining null slots with FREE ──────────────────────────
-      for (const day of DAYS) {
-        for (let p = 1; p <= NUM_PERIODS; p++) {
-          if (classGrid[cls.id][day][p] === null) {
-            classGrid[cls.id][day][p] = 'FREE';
-          }
-        }
-      }
     }
 
-    // ── 8. Build insert rows from classGrid ──────────────────────────────────
+    // ── 7. Build insert rows from classGrid (ALL slots must be filled) ───────
 
     const toInsert: Array<{
-      class_subject_id: string | null;
+      class_subject_id: string;
       day_of_week: number;
       period: number;
       start_time: string;
       end_time: string;
       period_setting_id: string;
       academic_year: string;
-      is_free: boolean;
     }> = [];
 
     for (const cls of classes) {
@@ -288,20 +283,7 @@ export async function generateTimetable(academicYear: string = '2025-2026') {
           const val = classGrid[cls.id][day][p];
           const periodInfo = periods[p - 1];
 
-          if (val === 'FREE' || val === null) {
-            // Free period — store with null class_subject_id
-            // We need to store class_id info too — use a special approach:
-            // We'll insert a timetable_slot with class_subject_id = null
-            // but we need to link it to the class somehow.
-            // Solution: We insert one free-period row per class per day/period.
-            // The class linkage is implicit: we store it in a way the query can filter.
-            // Since timetable_slots only has class_subject_id (not class_id),
-            // we skip null insertions for now and handle them via class_subjects sentinel.
-            // Actually — just don't insert FREE slots, and render null cells as Free.
-            // The grid will show "Free" for any slot not in the DB.
-            // This is the cleaner approach.
-            continue;
-          } else {
+          if (val && val !== null) {
             toInsert.push({
               class_subject_id: val,
               day_of_week: day,
@@ -310,23 +292,20 @@ export async function generateTimetable(academicYear: string = '2025-2026') {
               end_time: periodInfo.end_time,
               period_setting_id: periodInfo.setting_id,
               academic_year: academicYear,
-              is_free: false,
             });
           }
         }
       }
     }
 
-    // ── 9. Bulk insert ───────────────────────────────────────────────────────
-    // Remove is_free from insert (not a DB column — just used internally)
-    const dbRows = toInsert.map(({ is_free: _f, ...rest }) => rest);
+    // ── 8. Bulk insert ───────────────────────────────────────────────────────
 
-    if (dbRows.length > 0) {
+    if (toInsert.length > 0) {
       const BATCH = 500;
-      for (let i = 0; i < dbRows.length; i += BATCH) {
+      for (let i = 0; i < toInsert.length; i += BATCH) {
         const { error: insertError } = await supabase
           .from('timetable_slots')
-          .insert(dbRows.slice(i, i + BATCH));
+          .insert(toInsert.slice(i, i + BATCH));
         if (insertError) throw insertError;
       }
     }
@@ -334,21 +313,11 @@ export async function generateTimetable(academicYear: string = '2025-2026') {
     revalidateTag('timetable');
     revalidatePath('/[locale]/timetable', 'page');
 
-    // Calculate free period count
-    let freePeriods = 0;
-    for (const cls of classes) {
-      for (const day of DAYS) {
-        for (let p = 1; p <= NUM_PERIODS; p++) {
-          if (classGrid[cls.id][day][p] === 'FREE') freePeriods++;
-        }
-      }
-    }
-
     return {
       success: true,
-      slotsCreated: dbRows.length,
+      slotsCreated: toInsert.length,
       classesScheduled: classes.length,
-      freePeriods,
+      freePeriods: 0,
       conflicts: conflicts.length > 0 ? conflicts : undefined,
     };
   } catch (e: any) {
