@@ -220,23 +220,32 @@ export default function TimetableGrid({
   ${styleLinks}
   ${inlineStyles}
   <style>
-    @page { size: A4 landscape; margin: 10mm; }
+    /* Zero margins — we control all spacing inside #page-frame */
+    @page { size: A4 landscape; margin: 0; }
 
-    html {
-      background: white !important;
+    *, *::before, *::after {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      box-sizing: border-box;
     }
-    body {
-      margin: 0 !important;
-      padding: 6px 8px !important;
-      background: white !important;
-      height: auto !important;
-      overflow: visible !important;
-      /* Render at exactly A4 landscape printable width so zoom math is accurate */
-      width: 1040px !important;
-      max-width: 1040px !important;
-      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+
+    html, body {
+      margin: 0; padding: 0; background: white;
+      /* Exactly one A4 landscape page — overflow hidden = impossible to spill to page 2 */
+      width: 297mm; height: 210mm; overflow: hidden;
+      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     }
-    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; box-sizing: border-box; }
+
+    /* Content frame with 10mm margins inset */
+    #page-frame {
+      position: absolute;
+      top: 10mm; left: 10mm;
+      width: 277mm; height: 190mm;
+      overflow: hidden;
+    }
+
+    /* Content will be transform-scaled by JS to fit inside #page-frame */
+    #tt-scaled { transform-origin: top left; }
 
     /* ── Visibility: simulate print media ── */
     [class*="print:block"]  { display: block !important; }
@@ -246,115 +255,64 @@ export default function TimetableGrid({
 
     /* ── Layout resets ── */
     .overflow-x-auto, .overflow-hidden, .timetable-grid-wrap { overflow: visible !important; }
-    .h-screen { height: auto !important; overflow: visible !important; }
+    .h-screen { height: auto !important; }
     [class*="h-14"],[class*="h-10"],[class*="h-12"],[class*="h-16"] { height: auto !important; }
 
-    /* ── Print header (school name + title) ── */
-    .border-gray-800 { border-color: #1f2937 !important; padding-bottom: 6pt !important; margin-bottom: 8pt !important; }
-    .border-gray-800 img { width: 40px !important; height: 40px !important; }
+    /* ── Print header ── */
+    .border-gray-800 { border-color: #1f2937 !important; padding-bottom: 5pt !important; margin-bottom: 7pt !important; }
+    .border-gray-800 img { width: 36px !important; height: 36px !important; }
     .border-gray-800 p { white-space: normal !important; margin: 0 !important; }
     .border-gray-800 p:first-child { font-size: 13pt !important; font-weight: 800 !important; color: #111 !important; }
-    .border-gray-800 p:last-child  { font-size: 9.5pt !important; color: #555 !important; margin-top: 1pt !important; }
+    .border-gray-800 p:last-child  { font-size: 9pt !important; color: #555 !important; }
 
     /* ── Table ── */
-    .timetable-grid-wrap table {
-      width: 100% !important;
-      table-layout: fixed !important;
-      border-collapse: collapse !important;
-    }
+    .timetable-grid-wrap table { width: 100% !important; table-layout: fixed !important; border-collapse: collapse !important; }
+    .timetable-grid-wrap th { font-size: 10pt !important; font-weight: 700 !important; padding: 5pt 3pt !important; border: 0.75pt solid #aaa !important; text-align: center !important; line-height: 1.25 !important; }
+    .timetable-grid-wrap td { padding: 2pt !important; border: 0.5pt solid #ccc !important; height: auto !important; vertical-align: middle !important; }
 
-    /* Day headers */
-    .timetable-grid-wrap th {
-      font-size: 10pt !important;
-      font-weight: 700 !important;
-      padding: 5pt 3pt !important;
-      border: 0.75pt solid #aaa !important;
-      text-align: center !important;
-      line-height: 1.25 !important;
-    }
-
-    /* Cells — compact, 2-line content only */
-    .timetable-grid-wrap td {
-      padding: 2pt !important;
-      border: 0.5pt solid #ccc !important;
-      height: auto !important;
-      vertical-align: middle !important;
-    }
-
-    /* Cell inner content box */
-    .timetable-grid-wrap td > div {
-      height: auto !important;
-      min-height: 34pt !important;
-      max-height: none !important;
-      padding: 3pt 5pt !important;
-      overflow: visible !important;
-      border-radius: 3pt !important;
-      display: flex !important;
-      flex-direction: column !important;
-      justify-content: center !important;
-      gap: 1pt !important;
-    }
-
-    /* All <p> inside cells */
-    .timetable-grid-wrap td > div > p {
-      margin: 0 !important;
-      overflow: visible !important;
-      text-overflow: unset !important;
-      white-space: normal !important;
-      word-break: break-word !important;
-      line-height: 1.3 !important;
-    }
-    /* Subject name */
-    .timetable-grid-wrap td > div > p:first-child { font-size: 9pt !important; font-weight: 700 !important; }
-    /* Subject code */
-    .timetable-grid-wrap td > div > p:nth-child(2) { font-size: 7.5pt !important; font-family: monospace !important; }
-    /* Class name (teacher/room mode) */
-    .timetable-grid-wrap td > div > p:nth-child(n+3) { font-size: 8pt !important; }
-
-    /* Free period text */
+    /* Cell inner box */
+    .timetable-grid-wrap td > div { height: auto !important; min-height: 32pt !important; padding: 3pt 5pt !important; overflow: visible !important; border-radius: 3pt !important; display: flex !important; flex-direction: column !important; justify-content: center !important; gap: 1pt !important; }
+    .timetable-grid-wrap td > div > p { margin: 0 !important; overflow: visible !important; text-overflow: unset !important; white-space: normal !important; word-break: break-word !important; line-height: 1.3 !important; }
+    .timetable-grid-wrap td > div > p:first-child  { font-size: 9pt !important; font-weight: 700 !important; }
+    .timetable-grid-wrap td > div > p:nth-child(2)  { font-size: 7.5pt !important; font-family: monospace !important; }
+    .timetable-grid-wrap td > div > p:nth-child(n+3){ font-size: 8pt !important; }
     .timetable-grid-wrap td > div > span { font-size: 7.5pt !important; }
 
-    /* Period label column */
-    .timetable-grid-wrap td:first-child > div {
-      text-align: center !important;
-      min-height: 34pt !important;
-      background-color: #f9fafb !important;
-    }
-    .timetable-grid-wrap td:first-child > div > span {
-      display: block !important; overflow: visible !important; white-space: normal !important;
-    }
-    .timetable-grid-wrap td:first-child > div > span:first-child { font-size: 8pt !important; font-weight: 700 !important; }
-    .timetable-grid-wrap td:first-child > div > span:not(:first-child) { font-size: 7pt !important; }
+    /* Period column */
+    .timetable-grid-wrap td:first-child > div { text-align: center !important; background-color: #f9fafb !important; }
+    .timetable-grid-wrap td:first-child > div > span { display: block !important; overflow: visible !important; white-space: normal !important; }
+    .timetable-grid-wrap td:first-child > div > span:first-child     { font-size: 8pt !important; font-weight: 700 !important; }
+    .timetable-grid-wrap td:first-child > div > span:not(:first-child){ font-size: 7pt !important; }
 
-    /* Break / prayer rows */
-    .timetable-grid-wrap td[colspan] > div {
-      min-height: 14pt !important; padding: 2pt 8pt !important;
-      font-size: 8.5pt !important; font-weight: 600 !important;
-    }
+    /* Break rows */
+    .timetable-grid-wrap td[colspan] > div { min-height: 13pt !important; padding: 2pt 8pt !important; font-size: 8.5pt !important; font-weight: 600 !important; }
 
-    /* Remove truncation everywhere */
+    /* Remove truncation */
     .truncate { overflow: visible !important; text-overflow: unset !important; white-space: normal !important; }
 
-    /* Subject + teacher legend */
+    /* Legend */
     .border-t { border-top: 0.5pt solid #e5e7eb !important; }
-    .border-gray-100 { border-color: #e5e7eb !important; }
   </style>
 </head><body>
-  <div id="tt-root">${el.outerHTML}</div>
+  <div id="page-frame">
+    <div id="tt-scaled">${el.outerHTML}</div>
+  </div>
   <script>
-    window.addEventListener('load', function() {
-      /* Body width is pinned to 1040px (A4 landscape printable width).
-         Scale body zoom so the total height also fits A4 landscape (≈ 700px usable). */
-      var maxH = 700;
-      var H = document.body.scrollHeight;
-      if (H > maxH) {
-        var scale = maxH / H;
-        document.body.style.zoom = scale.toFixed(4);
+    document.fonts.ready.then(function() {
+      var frame   = document.getElementById('page-frame');
+      var content = document.getElementById('tt-scaled');
+      var availW  = frame.clientWidth;   /* 277mm in px */
+      var availH  = frame.clientHeight;  /* 190mm in px */
+      var cW = content.scrollWidth;
+      var cH = content.scrollHeight;
+      var scale = Math.min(availW / cW, availH / cH, 1);
+      if (scale < 0.999) {
+        content.style.transform = 'scale(' + scale.toFixed(5) + ')';
       }
       setTimeout(function() {
         window.print();
         window.addEventListener('afterprint', function() { window.close(); });
-      }, 600);
+      }, 400);
     });
   </script>
 </body></html>`);
