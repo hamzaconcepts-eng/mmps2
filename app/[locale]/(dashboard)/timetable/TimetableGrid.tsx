@@ -224,41 +224,139 @@ export default function TimetableGrid({
   ${inlineStyles}
   <style>
     @page { size: A4 landscape; margin: 10mm; }
+
     html, body {
       margin: 0 !important;
-      padding: 0 !important;
+      padding: 8px 10px !important;
       background: white !important;
       height: auto !important;
       overflow: visible !important;
+      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
     }
-    * {
-      -webkit-print-color-adjust: exact !important;
-      print-color-adjust: exact !important;
-    }
-    [class*="print:block"] { display: block !important; }
-    [class*="print:flex"]  { display: flex  !important; }
-    [class*="print:hidden"] { display: none !important; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+    /* ── Visibility: simulate print media ── */
+    [class*="print:block"]  { display: block !important; }
+    [class*="print:flex"]   { display: flex  !important; }
+    [class*="print:hidden"] { display: none  !important; }
     .hidden:not([class*="print:block"]):not([class*="print:flex"]) { display: none !important; }
-    .overflow-x-auto, .timetable-grid-wrap { overflow: visible !important; }
-    .overflow-hidden { overflow: visible !important; }
-    .timetable-grid-wrap table { width: 100% !important; table-layout: fixed !important; border-collapse: collapse !important; }
+
+    /* ── Layout resets ── */
+    .overflow-x-auto, .overflow-hidden, .timetable-grid-wrap { overflow: visible !important; }
     .h-screen { height: auto !important; overflow: visible !important; }
-    /* Remove all fixed heights on cells — let content breathe */
-    .timetable-grid-wrap td { height: auto !important; padding: 2px !important; }
-    .timetable-grid-wrap td > div { height: auto !important; min-height: 36px; overflow: visible !important; }
-    /* Remove text truncation so nothing gets cut */
-    .truncate { overflow: visible !important; text-overflow: unset !important; white-space: normal !important; word-break: break-word; }
-    /* Force all fixed-height Tailwind utilities to auto */
-    [class*="h-14"], [class*="h-10"], [class*="h-12"] { height: auto !important; }
+    [class*="h-14"],[class*="h-10"],[class*="h-12"],[class*="h-16"] { height: auto !important; }
+
+    /* ── Print header (school name + title) ── */
+    .border-gray-800 { border-color: #1f2937 !important; padding-bottom: 8pt !important; margin-bottom: 10pt !important; }
+    .border-gray-800 img { width: 48px !important; height: 48px !important; }
+    .border-gray-800 p { white-space: normal !important; }
+    .border-gray-800 p:first-child { font-size: 15pt !important; font-weight: 800 !important; color: #111 !important; }
+    .border-gray-800 p:last-child  { font-size: 11pt !important; color: #555 !important; margin-top: 2pt !important; }
+
+    /* ── Table ── */
+    .timetable-grid-wrap table {
+      width: 100% !important;
+      table-layout: fixed !important;
+      border-collapse: collapse !important;
+    }
+
+    /* Day headers */
+    .timetable-grid-wrap th {
+      font-size: 11pt !important;
+      font-weight: 700 !important;
+      padding: 6pt 4pt !important;
+      border: 0.75pt solid #aaa !important;
+      text-align: center !important;
+      line-height: 1.3 !important;
+    }
+
+    /* Cells */
+    .timetable-grid-wrap td {
+      padding: 3pt !important;
+      border: 0.5pt solid #ccc !important;
+      height: auto !important;
+      vertical-align: middle !important;
+    }
+
+    /* Cell inner content box */
+    .timetable-grid-wrap td > div {
+      height: auto !important;
+      min-height: 46pt !important;
+      padding: 5pt 6pt !important;
+      overflow: visible !important;
+      border-radius: 3pt !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: center !important;
+      gap: 1.5pt !important;
+    }
+
+    /* All <p> tags inside cells — clear tiny font locks */
+    .timetable-grid-wrap td > div > p {
+      margin: 0 !important;
+      overflow: visible !important;
+      text-overflow: unset !important;
+      white-space: normal !important;
+      word-break: break-word !important;
+      line-height: 1.35 !important;
+    }
+
+    /* Subject name */
+    .timetable-grid-wrap td > div > p:first-child {
+      font-size: 10pt !important;
+      font-weight: 700 !important;
+    }
+    /* Subject code */
+    .timetable-grid-wrap td > div > p:nth-child(2) {
+      font-size: 8.5pt !important;
+      font-family: monospace !important;
+    }
+    /* Teacher / class name */
+    .timetable-grid-wrap td > div > p:nth-child(n+3) {
+      font-size: 9pt !important;
+    }
+
+    /* Free period text */
+    .timetable-grid-wrap td > div > span { font-size: 8.5pt !important; }
+
+    /* Period label column */
+    .timetable-grid-wrap td:first-child > div {
+      text-align: center !important;
+      min-height: 46pt !important;
+      background-color: #f9fafb !important;
+    }
+    .timetable-grid-wrap td:first-child > div > span {
+      display: block !important;
+      overflow: visible !important;
+      white-space: normal !important;
+    }
+    .timetable-grid-wrap td:first-child > div > span:first-child { font-size: 9pt !important; font-weight: 700 !important; }
+    .timetable-grid-wrap td:first-child > div > span:not(:first-child) { font-size: 8pt !important; }
+
+    /* Break / prayer rows */
+    .timetable-grid-wrap td[colspan] > div {
+      min-height: 18pt !important;
+      padding: 3pt 8pt !important;
+      font-size: 9pt !important;
+      font-weight: 600 !important;
+    }
+
+    /* Remove truncation globally */
+    .truncate { overflow: visible !important; text-overflow: unset !important; white-space: normal !important; word-break: break-word !important; }
+
+    /* Legend */
+    .flex-wrap { margin-top: 8pt !important; gap: 5pt !important; }
+    .flex-wrap > div { font-size: 8.5pt !important; padding: 2pt 7pt !important; }
+    .flex-wrap > div > div { width: 7px !important; height: 7px !important; flex-shrink: 0 !important; }
   </style>
 </head><body>
-  <div style="padding:6px" id="tt-root">${el.outerHTML}</div>
+  <div id="tt-root">${el.outerHTML}</div>
   <script>
     window.addEventListener('load', function() {
-      var root = document.getElementById('tt-root');
-      var maxW = 1040, maxH = 700;
-      var W = root ? root.scrollWidth : document.body.scrollWidth;
-      var H = root ? root.scrollHeight : document.body.scrollHeight;
+      /* Only zoom if content genuinely overflows A4 landscape printable area */
+      var maxW = 1020, maxH = 680;
+      var W = document.body.scrollWidth;
+      var H = document.body.scrollHeight;
       if (W > maxW || H > maxH) {
         var scale = Math.min(maxW / W, maxH / H);
         document.body.style.zoom = scale.toFixed(4);
@@ -266,7 +364,7 @@ export default function TimetableGrid({
       setTimeout(function() {
         window.print();
         window.addEventListener('afterprint', function() { window.close(); });
-      }, 500);
+      }, 600);
     });
   </script>
 </body></html>`);
