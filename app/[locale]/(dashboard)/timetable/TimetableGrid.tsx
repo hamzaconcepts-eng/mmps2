@@ -136,17 +136,14 @@ function SlotCell({
           backgroundColor: color.print, // fallback for print
         } as React.CSSProperties}
       >
-        <p className={`text-[10px] print:text-[7px] font-bold leading-tight truncate ${color.text}`}>
+        <p className={`text-[10px] font-bold leading-tight truncate ${color.text}`}>
           {name}
         </p>
-        <p className="text-[8px] print:text-[6px] text-gray-400 font-mono leading-tight">
+        <p className="text-[8px] text-gray-400 font-mono leading-tight">
           {slot.subjectCode}
         </p>
         {mode !== 'class' && slot.className && (
-          <p className="text-[8px] print:text-[6px] text-gray-500 leading-tight truncate">{slot.className}</p>
-        )}
-        {mode !== 'teacher' && slot.teacherName && (
-          <p className="text-[8px] print:text-[6px] text-gray-500 leading-tight truncate">{slot.teacherName}</p>
+          <p className="text-[8px] text-gray-500 leading-tight truncate">{slot.className}</p>
         )}
       </div>
     </td>
@@ -225,15 +222,21 @@ export default function TimetableGrid({
   <style>
     @page { size: A4 landscape; margin: 10mm; }
 
-    html, body {
+    html {
+      background: white !important;
+    }
+    body {
       margin: 0 !important;
-      padding: 8px 10px !important;
+      padding: 6px 8px !important;
       background: white !important;
       height: auto !important;
       overflow: visible !important;
+      /* Render at exactly A4 landscape printable width so zoom math is accurate */
+      width: 1040px !important;
+      max-width: 1040px !important;
       font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
     }
-    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; box-sizing: border-box; }
 
     /* ── Visibility: simulate print media ── */
     [class*="print:block"]  { display: block !important; }
@@ -247,11 +250,11 @@ export default function TimetableGrid({
     [class*="h-14"],[class*="h-10"],[class*="h-12"],[class*="h-16"] { height: auto !important; }
 
     /* ── Print header (school name + title) ── */
-    .border-gray-800 { border-color: #1f2937 !important; padding-bottom: 8pt !important; margin-bottom: 10pt !important; }
-    .border-gray-800 img { width: 48px !important; height: 48px !important; }
-    .border-gray-800 p { white-space: normal !important; }
-    .border-gray-800 p:first-child { font-size: 15pt !important; font-weight: 800 !important; color: #111 !important; }
-    .border-gray-800 p:last-child  { font-size: 11pt !important; color: #555 !important; margin-top: 2pt !important; }
+    .border-gray-800 { border-color: #1f2937 !important; padding-bottom: 6pt !important; margin-bottom: 8pt !important; }
+    .border-gray-800 img { width: 40px !important; height: 40px !important; }
+    .border-gray-800 p { white-space: normal !important; margin: 0 !important; }
+    .border-gray-800 p:first-child { font-size: 13pt !important; font-weight: 800 !important; color: #111 !important; }
+    .border-gray-800 p:last-child  { font-size: 9.5pt !important; color: #555 !important; margin-top: 1pt !important; }
 
     /* ── Table ── */
     .timetable-grid-wrap table {
@@ -262,17 +265,17 @@ export default function TimetableGrid({
 
     /* Day headers */
     .timetable-grid-wrap th {
-      font-size: 11pt !important;
+      font-size: 10pt !important;
       font-weight: 700 !important;
-      padding: 6pt 4pt !important;
+      padding: 5pt 3pt !important;
       border: 0.75pt solid #aaa !important;
       text-align: center !important;
-      line-height: 1.3 !important;
+      line-height: 1.25 !important;
     }
 
-    /* Cells */
+    /* Cells — compact, 2-line content only */
     .timetable-grid-wrap td {
-      padding: 3pt !important;
+      padding: 2pt !important;
       border: 0.5pt solid #ccc !important;
       height: auto !important;
       vertical-align: middle !important;
@@ -281,84 +284,71 @@ export default function TimetableGrid({
     /* Cell inner content box */
     .timetable-grid-wrap td > div {
       height: auto !important;
-      min-height: 46pt !important;
-      padding: 5pt 6pt !important;
+      min-height: 34pt !important;
+      max-height: none !important;
+      padding: 3pt 5pt !important;
       overflow: visible !important;
       border-radius: 3pt !important;
       display: flex !important;
       flex-direction: column !important;
       justify-content: center !important;
-      gap: 1.5pt !important;
+      gap: 1pt !important;
     }
 
-    /* All <p> tags inside cells — clear tiny font locks */
+    /* All <p> inside cells */
     .timetable-grid-wrap td > div > p {
       margin: 0 !important;
       overflow: visible !important;
       text-overflow: unset !important;
       white-space: normal !important;
       word-break: break-word !important;
-      line-height: 1.35 !important;
+      line-height: 1.3 !important;
     }
-
     /* Subject name */
-    .timetable-grid-wrap td > div > p:first-child {
-      font-size: 10pt !important;
-      font-weight: 700 !important;
-    }
+    .timetable-grid-wrap td > div > p:first-child { font-size: 9pt !important; font-weight: 700 !important; }
     /* Subject code */
-    .timetable-grid-wrap td > div > p:nth-child(2) {
-      font-size: 8.5pt !important;
-      font-family: monospace !important;
-    }
-    /* Teacher / class name */
-    .timetable-grid-wrap td > div > p:nth-child(n+3) {
-      font-size: 9pt !important;
-    }
+    .timetable-grid-wrap td > div > p:nth-child(2) { font-size: 7.5pt !important; font-family: monospace !important; }
+    /* Class name (teacher/room mode) */
+    .timetable-grid-wrap td > div > p:nth-child(n+3) { font-size: 8pt !important; }
 
     /* Free period text */
-    .timetable-grid-wrap td > div > span { font-size: 8.5pt !important; }
+    .timetable-grid-wrap td > div > span { font-size: 7.5pt !important; }
 
     /* Period label column */
     .timetable-grid-wrap td:first-child > div {
       text-align: center !important;
-      min-height: 46pt !important;
+      min-height: 34pt !important;
       background-color: #f9fafb !important;
     }
     .timetable-grid-wrap td:first-child > div > span {
-      display: block !important;
-      overflow: visible !important;
-      white-space: normal !important;
+      display: block !important; overflow: visible !important; white-space: normal !important;
     }
-    .timetable-grid-wrap td:first-child > div > span:first-child { font-size: 9pt !important; font-weight: 700 !important; }
-    .timetable-grid-wrap td:first-child > div > span:not(:first-child) { font-size: 8pt !important; }
+    .timetable-grid-wrap td:first-child > div > span:first-child { font-size: 8pt !important; font-weight: 700 !important; }
+    .timetable-grid-wrap td:first-child > div > span:not(:first-child) { font-size: 7pt !important; }
 
     /* Break / prayer rows */
     .timetable-grid-wrap td[colspan] > div {
-      min-height: 18pt !important;
-      padding: 3pt 8pt !important;
-      font-size: 9pt !important;
-      font-weight: 600 !important;
+      min-height: 14pt !important; padding: 2pt 8pt !important;
+      font-size: 8.5pt !important; font-weight: 600 !important;
     }
 
-    /* Remove truncation globally */
-    .truncate { overflow: visible !important; text-overflow: unset !important; white-space: normal !important; word-break: break-word !important; }
+    /* Remove truncation everywhere */
+    .truncate { overflow: visible !important; text-overflow: unset !important; white-space: normal !important; }
 
-    /* Legend */
-    .flex-wrap { margin-top: 8pt !important; gap: 5pt !important; }
-    .flex-wrap > div { font-size: 8.5pt !important; padding: 2pt 7pt !important; }
-    .flex-wrap > div > div { width: 7px !important; height: 7px !important; flex-shrink: 0 !important; }
+    /* Subject + teacher legend */
+    .border-t { border-top: 0.5pt solid #e5e7eb !important; }
+    .border-gray-100 { border-color: #e5e7eb !important; }
   </style>
 </head><body>
   <div id="tt-root">${el.outerHTML}</div>
   <script>
     window.addEventListener('load', function() {
-      /* Only zoom if content genuinely overflows A4 landscape printable area */
-      var maxW = 1020, maxH = 680;
-      var W = document.body.scrollWidth;
+      /* Body width is pinned to 1040px (A4 landscape printable width).
+         Scale body zoom so the total height also fits A4 landscape (≈ 700px usable). */
+      var maxH = 700;
       var H = document.body.scrollHeight;
-      if (W > maxW || H > maxH) {
-        var scale = Math.min(maxW / W, maxH / H);
+      if (H > maxH) {
+        var scale = maxH / H;
         document.body.style.zoom = scale.toFixed(4);
       }
       setTimeout(function() {
@@ -494,27 +484,33 @@ export default function TimetableGrid({
         </table>
       </div>
 
-      {/* Subject legend */}
+      {/* Subject + teacher reference legend */}
       {slots.length > 0 && (
-        <div className="mt-3 flex flex-wrap gap-1.5 print:mt-2">
-          {Array.from(new Map(slots.map((s) => [s.subjectId, s])).values()).map((sample) => {
-            const c = SUBJECT_COLORS[getSubjectColorIndex(sample.subjectId)];
-            return (
-              <div
-                key={sample.subjectId}
-                className={`flex items-center gap-1 px-2 py-0.5 rounded-full border text-[10px] print:text-[7px] font-semibold ${c.bg} ${c.border} ${c.text}`}
-                style={{
-                  printColorAdjust: 'exact',
-                  WebkitPrintColorAdjust: 'exact',
-                  backgroundColor: c.print,
-                } as React.CSSProperties}
-              >
-                <div className={`w-1.5 h-1.5 rounded-full ${c.dot} flex-shrink-0`} style={{ backgroundColor: c.print.replace('#', '#') }} />
-                {isAr ? sample.subjectNameAr : sample.subjectName}
-              </div>
-            );
-          })}
-          {/* Free period legend — only shown if any empty cell exists (shouldn't happen) */}
+        <div className="mt-3 print:mt-2 border-t border-gray-100 pt-2">
+          <p className="text-[9px] font-semibold text-text-secondary uppercase tracking-wide mb-1.5 print:mb-1">
+            {mode === 'teacher' ? (isAr ? 'المواد' : 'Subjects') : (isAr ? 'المواد والمعلمون' : 'Subjects & Teachers')}
+          </p>
+          <div className="flex flex-wrap gap-x-4 gap-y-1 print:gap-x-3 print:gap-y-0.5">
+            {Array.from(new Map(slots.map((s) => [s.subjectId, s])).values()).map((sample) => {
+              const c = SUBJECT_COLORS[getSubjectColorIndex(sample.subjectId)];
+              const extra = mode !== 'teacher' ? sample.teacherName : sample.className;
+              return (
+                <div key={sample.subjectId} className="flex items-center gap-1.5 text-[9px] print:text-[8px]">
+                  <div
+                    className={`w-2 h-2 rounded-full flex-shrink-0 ${c.dot}`}
+                    style={{ backgroundColor: c.print, printColorAdjust: 'exact', WebkitPrintColorAdjust: 'exact' } as React.CSSProperties}
+                  />
+                  <span className={`font-semibold ${c.text}`}>{isAr ? sample.subjectNameAr : sample.subjectName}</span>
+                  {extra && (
+                    <>
+                      <span className="text-gray-300">—</span>
+                      <span className="text-gray-500">{extra}</span>
+                    </>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
     </div>
