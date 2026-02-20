@@ -22,6 +22,8 @@ interface GenerateResult {
   success: boolean;
   slotsCreated?: number;
   classesScheduled?: number;
+  freePeriods?: number;
+  conflicts?: string[];
   error?: string;
 }
 
@@ -290,7 +292,15 @@ export default function GenerateClient({ initialSlots, academicYear, locale, lab
                   <p className="font-bold">{labels.generateSuccess}</p>
                   <p className="text-[11px] mt-0.5 opacity-80">
                     {genResult.classesScheduled} {labels.classesScheduled} · {genResult.slotsCreated} {labels.slotsCreated}
+                    {genResult.freePeriods != null && genResult.freePeriods > 0
+                      ? ` · ${genResult.freePeriods} ${labels.freePeriods}`
+                      : ''}
                   </p>
+                  {genResult.conflicts && genResult.conflicts.length > 0 && (
+                    <div className="mt-1 text-[10px] text-amber-700">
+                      ⚠️ {genResult.conflicts.length} teacher conflict(s) — check timetable
+                    </div>
+                  )}
                 </div>
               ) : (
                 <p className="font-medium">{genResult.error}</p>

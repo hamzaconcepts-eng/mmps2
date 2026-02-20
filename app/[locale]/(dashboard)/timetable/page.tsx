@@ -170,6 +170,7 @@ export default async function TimetablePage({
     classesScheduled: t('timetable.classesScheduled'),
     slotsCreated: t('timetable.slotsCreated'),
     noPeriods: t('timetable.noPeriods'),
+    freePeriods: t('timetable.freePeriods'),
   };
 
   // ── Period settings for the client component ───────────────────────────────
@@ -234,11 +235,7 @@ export default async function TimetablePage({
         <PageHeader
           title={t('timetable.title')}
           subtitle={`${ACADEMIC_YEAR} · ${classes.length} ${t('class.allClasses')}`}
-          actions={
-            <div className="flex items-center gap-2">
-              {selectedClassId && <PrintButton label={t('common.print')} />}
-            </div>
-          }
+          actions={<div />}
         />
       </div>
 
@@ -302,9 +299,7 @@ export default async function TimetablePage({
                   )}
                 </div>
                 {selectedClassId && (
-                  <div className="flex items-center gap-1.5 print:hidden">
-                    <span className="text-[10px] text-text-tertiary">{slots.length} {t('timetable.slotsCreated')}</span>
-                  </div>
+                  <span className="text-[10px] text-text-tertiary print:hidden">{slots.length} {t('timetable.slotsCreated')}</span>
                 )}
               </div>
             </Card.Header>
@@ -322,6 +317,9 @@ export default async function TimetablePage({
                 locale={locale}
                 mode="class"
                 labels={gridLabels}
+                printTitle={selectedClass ? `${formatClassName(selectedClass, locale)} — ${t('timetable.title')}` : undefined}
+                schoolName={t('common.schoolName')}
+                academicYear={ACADEMIC_YEAR}
               />
             )}
           </Card>

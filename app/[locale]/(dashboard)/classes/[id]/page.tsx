@@ -303,7 +303,12 @@ export default async function ClassDetailPage({
             </Link>
           </div>
         </Card.Header>
-        <EmbeddedTimetable mode="class" entityId={id} locale={locale} />
+        <EmbeddedTimetable
+          mode="class"
+          entityId={id}
+          locale={locale}
+          printTitle={`${formatClassName(cls, locale)} — ${t('timetable.title')}`}
+        />
       </Card>
 
       {/* Student Roster */}

@@ -342,7 +342,12 @@ export default async function StudentDetailPage({
                   </Link>
                 </div>
               </Card.Header>
-              <EmbeddedTimetable mode="class" entityId={student.classes.id} locale={locale} />
+              <EmbeddedTimetable
+                mode="class"
+                entityId={student.classes.id}
+                locale={locale}
+                printTitle={`${formatClassName(student.classes, locale)} — ${t('timetable.title')}`}
+              />
             </Card>
           </div>
         )}

@@ -174,7 +174,12 @@ export default async function RoomDetailPage({
             <Card.Title>{t('timetable.roomTimetable')}</Card.Title>
           </div>
         </Card.Header>
-        <EmbeddedTimetable mode="room" entityId={id} locale={locale} />
+        <EmbeddedTimetable
+          mode="room"
+          entityId={id}
+          locale={locale}
+          printTitle={`${isAr ? room.name_ar : room.name} — ${t('timetable.roomTimetable')}`}
+        />
       </Card>
     </div>
   );

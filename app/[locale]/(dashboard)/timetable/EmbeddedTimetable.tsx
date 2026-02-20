@@ -20,9 +20,11 @@ interface Props {
   entityId: string;
   locale: string;
   academicYear?: string;
+  /** Shown in print header e.g. "Grade 3-A Weekly Timetable" */
+  printTitle?: string;
 }
 
-export default async function EmbeddedTimetable({ mode, entityId, locale, academicYear = '2025-2026' }: Props) {
+export default async function EmbeddedTimetable({ mode, entityId, locale, academicYear = '2025-2026', printTitle }: Props) {
   const t = await getTranslations();
   const supabase = createAdminClient();
 
@@ -184,6 +186,9 @@ export default async function EmbeddedTimetable({ mode, entityId, locale, academ
       locale={locale}
       mode={mode}
       labels={gridLabels}
+      printTitle={printTitle}
+      schoolName="Mashaail Muscat Private School"
+      academicYear={academicYear}
     />
   );
 }

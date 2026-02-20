@@ -298,38 +298,44 @@
 
 /* ── Timetable Print: landscape A4 ── */
 @media print {
-  .timetable-print-page {
-    size: A4 landscape !important;
-    margin: 6mm 8mm !important;
+  /* Landscape page size for timetable printing */
+  @page {
+    size: A4 landscape;
+    margin: 8mm 10mm;
   }
 
-  /* Ensure timetable cells have their background colors printed */
-  .timetable-cell-colored {
+  /* Ensure ALL colored backgrounds print correctly */
+  * {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 
   /* Timetable grid: full width, compact */
+  .timetable-grid-wrap {
+    overflow: visible !important;
+  }
+
   .timetable-grid-wrap table {
     font-size: 7pt !important;
     border-collapse: collapse !important;
     width: 100% !important;
+    table-layout: fixed !important;
   }
 
   .timetable-grid-wrap th {
     font-size: 7pt !important;
-    padding: 2pt 3pt !important;
+    padding: 2pt 4pt !important;
+    border: 0.5pt solid #aaa !important;
   }
 
   .timetable-grid-wrap td {
     padding: 2pt !important;
     border: 0.5pt solid #ccc !important;
+    height: 32pt !important;
   }
-}
 
-/* Ensure print color adjust on timetable cells */
-.timetable-cell-colored,
-[class*="bg-[#"] {
-  -webkit-print-color-adjust: exact;
-  print-color-adjust: exact;
+  /* Legend compact */
+  .timetable-grid-wrap + div {
+    margin-top: 4pt !important;
+  }
 }

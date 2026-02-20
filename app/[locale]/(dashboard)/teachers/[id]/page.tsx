@@ -212,7 +212,12 @@ export default async function TeacherDetailPage({
                 </Link>
               </div>
             </Card.Header>
-            <EmbeddedTimetable mode="teacher" entityId={id} locale={locale} />
+            <EmbeddedTimetable
+              mode="teacher"
+              entityId={id}
+              locale={locale}
+              printTitle={`${formatTeacherName(teacher, locale)} — ${t('timetable.teacherTimetable')}`}
+            />
           </Card>
         </div>
 

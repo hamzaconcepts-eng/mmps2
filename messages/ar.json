@@ -531,6 +531,7 @@
     "roomTimetable": "جدول القاعة",
     "studentTimetable": "جدول الطالب",
     "academicYear": "العام الدراسي",
-    "viewFullTimetable": "عرض الجدول الكامل"
+    "viewFullTimetable": "عرض الجدول الكامل",
+    "freePeriods": "حصة فارغة"
   }
 }
