@@ -203,22 +203,24 @@ export default async function StudentDetailPage({
             )}
           </Card>
 
-          {/* Home Location — always shown */}
-          <Card>
-            <Card.Header>
-              <div className="flex items-center gap-2">
-                <MapPin size={15} className="text-danger" />
-                <Card.Title>{isAr ? 'موقع المنزل' : 'Home Location'}</Card.Title>
-              </div>
-            </Card.Header>
-            {student.gps_location ? (
-              <LocationButtons url={student.gps_location} locale={locale} />
-            ) : (
-              <div className="text-center py-4">
-                <Badge variant="dark">{t('student.noLocation')}</Badge>
-              </div>
-            )}
-          </Card>
+          {/* Home Location — buttons only, hidden on print */}
+          <div className="print:hidden">
+            <Card>
+              <Card.Header>
+                <div className="flex items-center gap-2">
+                  <MapPin size={15} className="text-danger" />
+                  <Card.Title>{isAr ? 'موقع المنزل' : 'Home Location'}</Card.Title>
+                </div>
+              </Card.Header>
+              {student.gps_location ? (
+                <LocationButtons url={student.gps_location} locale={locale} />
+              ) : (
+                <div className="text-center py-4">
+                  <Badge variant="dark">{t('student.noLocation')}</Badge>
+                </div>
+              )}
+            </Card>
+          </div>
         </div>
 
         {/* Guardian Info */}
@@ -324,9 +326,9 @@ export default async function StudentDetailPage({
           )}
         </Card>
 
-        {/* Student Timetable (class timetable) */}
+        {/* Student Timetable — hidden on print; printed separately via timetable page */}
         {student.classes && (
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 print:hidden">
             <Card>
               <Card.Header>
                 <div className="flex items-center justify-between">
