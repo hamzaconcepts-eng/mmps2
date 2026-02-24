@@ -46,7 +46,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           <Link href={`/${locale}`} className="flex items-center gap-3">
             <Image src="/logo.svg" alt="Mashaail" width={36} height={36} />
             <span className="text-lg font-extrabold text-brand-deep hidden sm:inline">
-              {isRTL ? 'مشاعل' : 'Mashaail'}
+              {isRTL ? 'مدارس' : 'Madaris'}
             </span>
           </Link>
 
