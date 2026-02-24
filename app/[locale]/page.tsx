@@ -4,9 +4,10 @@ import Link from 'next/link';
 import {
   Users, GraduationCap, BookOpen, DollarSign, ArrowRight, Bus,
   CalendarDays, Building2, MessageSquare, Globe, ShieldCheck,
-  LayoutDashboard, Printer, Zap, ChevronRight, CheckCircle2, Menu,
+  LayoutDashboard, Printer, Zap, ChevronRight,
 } from 'lucide-react';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import EnableScroll from '@/components/EnableScroll';
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -34,15 +35,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     { icon: Zap,            key: 'modern'    },
   ];
 
-  const stats = [
-    { value: '10+', label: t('landing.stats.modules')   },
-    { value: '7',   label: t('landing.stats.roles')     },
-    { value: '2',   label: t('landing.stats.languages') },
-    { value: '99%', label: t('landing.stats.uptime')    },
-  ];
-
   return (
     <main className="min-h-screen bg-surface overflow-x-hidden" dir={isRTL ? 'rtl' : 'ltr'}>
+      <EnableScroll />
 
       {/* ═══════════════════ NAVBAR ═══════════════════ */}
       <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100">
@@ -121,7 +116,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div className="flex items-center justify-center">
               <Link
                 href={`/${locale}/auth/login`}
                 className="group flex items-center gap-2 px-8 py-3.5 rounded-full bg-gradient-to-r from-brand-orange to-accent-orange text-white font-bold text-base shadow-[0_8px_30px_rgba(240,144,33,0.35)] hover:shadow-[0_12px_40px_rgba(240,144,33,0.5)] hover:-translate-y-0.5 transition-all duration-300"
@@ -129,28 +124,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                 {t('landing.hero.cta')}
                 <ArrowRight size={18} className={`transition-transform group-hover:translate-x-1 ${isRTL ? 'rotate-180 group-hover:-translate-x-1' : ''}`} />
               </Link>
-              <a
-                href="#features"
-                className="flex items-center gap-2 px-8 py-3.5 rounded-full border-2 border-brand-deep/15 text-brand-deep font-bold text-base hover:border-brand-deep/30 hover:bg-brand-deep/5 transition-all duration-300"
-              >
-                {t('landing.hero.demo')}
-              </a>
             </div>
-          </div>
-        </div>
-      </section>
-
-
-      {/* ═══════════════════ STATS BAR ═══════════════════ */}
-      <section className="relative py-8 bg-brand-deep">
-        <div className="max-w-5xl mx-auto px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            {stats.map((stat, i) => (
-              <div key={i} className="flex flex-col items-center">
-                <span className="text-3xl sm:text-4xl font-black text-white mb-1">{stat.value}</span>
-                <span className="text-xs sm:text-sm text-brand-teal-soft font-medium">{stat.label}</span>
-              </div>
-            ))}
           </div>
         </div>
       </section>
@@ -267,7 +241,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             {t('landing.cta.subtitle')}
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex items-center justify-center">
             <Link
               href={`/${locale}/auth/login`}
               className="group flex items-center gap-2 px-8 py-3.5 rounded-full bg-gradient-to-r from-brand-orange to-accent-orange text-white font-bold text-base shadow-[0_8px_30px_rgba(240,144,33,0.4)] hover:shadow-[0_12px_40px_rgba(240,144,33,0.55)] hover:-translate-y-0.5 transition-all duration-300"
@@ -275,12 +249,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               {t('landing.cta.button')}
               <ArrowRight size={18} className={`transition-transform group-hover:translate-x-1 ${isRTL ? 'rotate-180 group-hover:-translate-x-1' : ''}`} />
             </Link>
-            <a
-              href="#features"
-              className="flex items-center gap-2 px-8 py-3.5 rounded-full border-2 border-white/20 text-white font-bold text-base hover:border-white/40 hover:bg-white/5 transition-all duration-300"
-            >
-              {t('landing.cta.demo')}
-            </a>
           </div>
         </div>
       </section>
