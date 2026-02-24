@@ -104,7 +104,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             </div>
 
             {/* Headline */}
-            <h1 className="text-5xl sm:text-6xl lg:text-[4.5rem] font-black text-brand-deep leading-[1.06] tracking-[-0.02em] mb-6">
+            <h1 className={`text-5xl sm:text-6xl lg:text-[4.5rem] font-black text-brand-deep tracking-[-0.02em] mb-6 ${isRTL ? 'leading-[1.5]' : 'leading-[1.06]'}`}>
               {isRTL
                 ? <>نظام إدارة<br /><span className="bg-gradient-to-r from-brand-teal to-[#4FAFC0] bg-clip-text text-transparent">مدرسي متكامل</span></>
                 : <>The Complete<br /><span className="bg-gradient-to-r from-brand-teal to-[#4FAFC0] bg-clip-text text-transparent">School OS</span></>
@@ -177,7 +177,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             <span className="inline-block px-4 py-1.5 rounded-full bg-brand-orange/10 text-brand-orange text-[11px] font-black mb-5 tracking-widest uppercase">
               {t('landing.featuresSection.badge')}
             </span>
-            <h2 className="text-4xl sm:text-5xl font-black text-brand-deep mb-4 leading-tight tracking-[-0.02em]">
+            <h2 className={`text-4xl sm:text-5xl font-black text-brand-deep mb-4 tracking-[-0.02em] ${isRTL ? 'leading-[1.45]' : 'leading-tight'}`}>
               {t('landing.featuresSection.title')}
             </h2>
             <p className="text-text-secondary leading-relaxed text-sm sm:text-base">
@@ -260,7 +260,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             <span className="inline-block px-4 py-1.5 rounded-full bg-white/10 text-white/60 text-[11px] font-black mb-5 tracking-widest uppercase">
               {t('landing.highlights.badge')}
             </span>
-            <h2 className="text-4xl sm:text-5xl font-black text-white mb-4 leading-tight tracking-[-0.02em]">
+            <h2 className={`text-4xl sm:text-5xl font-black text-white mb-4 tracking-[-0.02em] ${isRTL ? 'leading-[1.45]' : 'leading-tight'}`}>
               {t('landing.highlights.title')}
             </h2>
             <p className="text-white/55 leading-relaxed text-sm sm:text-base">
@@ -310,7 +310,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white border border-gray-100 shadow-[0_4px_20px_rgba(115,192,207,0.2)] mb-8">
             <Image src="/logo.svg" alt="" width={38} height={38} />
           </div>
-          <h2 className="text-4xl sm:text-5xl font-black text-brand-deep mb-4 leading-tight tracking-[-0.02em]">
+          <h2 className={`text-4xl sm:text-5xl font-black text-brand-deep mb-4 tracking-[-0.02em] ${isRTL ? 'leading-[1.45]' : 'leading-tight'}`}>
             {t('landing.cta.title')}
           </h2>
           <div className="flex items-center justify-center gap-3 mt-8 flex-wrap">
