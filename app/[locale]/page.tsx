@@ -49,7 +49,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
       {/* ══════════════════════════════════ NAVBAR ══════════════════════════════════ */}
       <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100/80">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between relative">
           <Link href={`/${locale}`} className="flex items-center gap-2.5">
             <Image src="/logo.svg" alt="School Management System" width={32} height={32} />
             <span className="text-[15px] font-extrabold text-brand-deep hidden sm:inline tracking-tight">
@@ -57,7 +57,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             </span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-8 text-sm font-semibold text-text-secondary">
+          {/* Nav links — absolutely centered so they stay dead-center regardless of side widths */}
+          <div className="hidden md:flex items-center gap-8 text-sm font-semibold text-text-secondary absolute left-1/2 -translate-x-1/2">
             <a href="#features" className="hover:text-brand-deep transition-colors">{t('landing.nav.features')}</a>
             <a href="#modules" className="hover:text-brand-deep transition-colors">{t('landing.nav.modules')}</a>
             <a href="#why-us" className="hover:text-brand-deep transition-colors">{t('landing.nav.whyUs')}</a>
