@@ -334,7 +334,7 @@ export default function TimetableGrid({
       {/* Grid */}
       <div className="overflow-x-auto timetable-grid-wrap">
         <table
-          className="w-full border-collapse text-left"
+          className={`w-full border-collapse ${isAr ? 'text-right' : 'text-left'}`}
           dir={isAr ? 'rtl' : 'ltr'}
           style={{ tableLayout: 'fixed' }}
         >
