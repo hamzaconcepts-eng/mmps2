@@ -187,7 +187,7 @@ export default async function EmbeddedTimetable({ mode, entityId, locale, academ
       mode={mode}
       labels={gridLabels}
       printTitle={printTitle}
-      schoolName="Mashaail Muscat Private School"
+      schoolName="School Management System"
       academicYear={academicYear}
     />
   );
