@@ -156,7 +156,8 @@ export default function TimetableGrid({
 }: Props) {
   const isAr = locale === 'ar';
   const DAYS = [0, 1, 2, 3, 4];
-  const dayIndices = isAr ? [4, 3, 2, 1, 0] : [0, 1, 2, 3, 4];
+  // dir="rtl" on the table already flips column order visually — no manual reversal needed
+  const dayIndices = [0, 1, 2, 3, 4];
 
   // Build fast lookup: day → period → slot
   const lookup: Record<number, Record<number, TimetableSlot>> = {};
@@ -320,7 +321,7 @@ export default function TimetableGrid({
             <img src="/logo.svg" alt="" width={44} height={44} />
             <div>
               <p className="text-[14px] font-extrabold text-black leading-tight">
-                {schoolName || 'Mashaail Muscat Private School'}
+                {schoolName || 'School Management System'}
               </p>
               <p className="text-[10px] text-gray-500 mt-0.5">
                 {printTitle}{academicYear ? ` · ${academicYear}` : ''}
