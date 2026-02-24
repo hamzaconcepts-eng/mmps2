@@ -140,32 +140,106 @@
       "title": "Mashaail School Management System",
       "subtitle": "Comprehensive school management solution for the digital age",
       "description": "A complete platform for managing students, teachers, academics, and finance in one unified system.",
-      "cta": "Get Started"
+      "cta": "Get Started",
+      "demo": "Request a Demo"
+    },
+    "nav": {
+      "features": "Features",
+      "modules": "Modules",
+      "whyUs": "Why Us",
+      "signIn": "Sign In"
+    },
+    "stats": {
+      "modules": "Integrated Modules",
+      "roles": "User Roles",
+      "languages": "Languages Supported",
+      "uptime": "Uptime Guarantee"
+    },
+    "featuresSection": {
+      "badge": "Everything You Need",
+      "title": "One Platform, Complete Control",
+      "subtitle": "Every tool your school needs — from enrollment to graduation — in a single, beautifully designed system."
     },
     "features": {
       "students": {
         "title": "Student Management",
-        "description": "Complete student records, enrollment tracking, and family connections"
+        "description": "Complete student records, enrollment tracking, guardian info, and family connections all in one place."
       },
       "teachers": {
         "title": "Teacher Portal",
-        "description": "Manage staff, assignments, and professional development"
+        "description": "Manage staff profiles, subject assignments, class supervision, and professional development."
       },
       "academics": {
-        "title": "Academic Excellence",
-        "description": "Grades, attendance, exams, and comprehensive reporting"
+        "title": "Academics & Grading",
+        "description": "Grades, attendance tracking, exam management, and comprehensive academic reporting."
       },
       "finance": {
-        "title": "Financial Management",
-        "description": "Invoices, payments, and complete financial tracking"
+        "title": "Finance & Invoicing",
+        "description": "Generate invoices, track payments, monitor collection rates, and full financial oversight."
+      },
+      "timetable": {
+        "title": "Smart Timetable",
+        "description": "Auto-generate conflict-free schedules with room assignments, teacher allocation, and print-ready output."
+      },
+      "transport": {
+        "title": "Transport Management",
+        "description": "Manage bus fleets, define transport zones, assign students to routes, and track capacity."
+      },
+      "rooms": {
+        "title": "Facilities & Rooms",
+        "description": "Track classrooms, labs, libraries, sports facilities — with capacity and assignment management."
+      },
+      "communication": {
+        "title": "Communication Hub",
+        "description": "Send announcements, message parents and staff, and generate detailed operational reports."
       }
+    },
+    "highlights": {
+      "badge": "Why School Owners Love Us",
+      "title": "Built for Schools That Demand the Best",
+      "subtitle": "We understand the challenges of running a school. That's why every feature is designed to save time, reduce errors, and give you full visibility.",
+      "items": {
+        "bilingual": {
+          "title": "Fully Bilingual (EN/AR)",
+          "description": "Seamless English & Arabic with full RTL support. Switch languages instantly — the entire interface adapts."
+        },
+        "roles": {
+          "title": "Role-Based Access",
+          "description": "7 user roles: Owner, Admin, Teacher, Supervisor, Student, Parent, Accountant — each sees only what they need."
+        },
+        "realtime": {
+          "title": "Real-Time Dashboard",
+          "description": "Live overview of students, finances, attendance, and activity — all on one beautiful command center."
+        },
+        "print": {
+          "title": "Print-Ready Reports",
+          "description": "Every list, timetable, and invoice is optimized for professional printing — no formatting headaches."
+        },
+        "secure": {
+          "title": "Enterprise Security",
+          "description": "Built on Supabase with row-level security, encrypted data, and full audit trail for every action."
+        },
+        "modern": {
+          "title": "Modern & Fast",
+          "description": "Built with Next.js 15 and React 19 — lightning-fast, responsive, and works on any device."
+        }
+      }
+    },
+    "cta": {
+      "title": "Ready to Transform Your School?",
+      "subtitle": "Join the schools already using Mashaail to streamline operations and focus on what matters — education.",
+      "button": "Get Started Today",
+      "demo": "Schedule a Demo"
     },
     "tech": {
       "title": "Built with Modern Technology",
       "stack": "Next.js 15 • React 19 • TypeScript • Supabase • Tailwind CSS"
     },
     "subtitle": "School Management System",
-    "footer": "Developed by latest web-design technologies - Hamza Al Naamani"
+    "footer": {
+      "copyright": "Mashaail School Management System. All rights reserved.",
+      "built": "Built with passion by Hamza Al Naamani"
+    }
   },
   "auth": {
     "signIn": "Sign In",
