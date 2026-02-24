@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "Mashaail School Management System",
+    "appName": "Madaris — School Management System",
     "schoolName": "Mashaail Muscat Private School",
     "welcome": "Welcome",
     "login": "Login",
@@ -137,7 +137,7 @@
   },
   "landing": {
     "hero": {
-      "title": "Mashaail School Management System",
+      "title": "Madaris — School Management System",
       "subtitle": "Comprehensive school management solution for the digital age",
       "description": "A complete platform for managing students, teachers, academics, and finance in one unified system.",
       "cta": "Get Started",
@@ -237,8 +237,8 @@
     },
     "subtitle": "School Management System",
     "footer": {
-      "copyright": "Mashaail School Management System. All rights reserved.",
-      "built": "Built with passion by Hamza Al Naamani"
+      "copyright": "Madaris School Management System. All rights reserved.",
+      "built": "Developed by Hamza Al Naamani"
     }
   },
   "auth": {
