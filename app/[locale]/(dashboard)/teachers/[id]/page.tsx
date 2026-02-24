@@ -124,7 +124,7 @@ export default async function TeacherDetailPage({
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+      <div className="student-detail-grid grid grid-cols-1 lg:grid-cols-2 gap-3">
         {/* Personal Info */}
         <Card>
           <Card.Header>
@@ -198,8 +198,8 @@ export default async function TeacherDetailPage({
           )}
         </Card>
 
-        {/* Teacher Timetable */}
-        <div className="lg:col-span-2">
+        {/* Teacher Timetable — hidden on print; printed separately via timetable page */}
+        <div className="lg:col-span-2 print:hidden">
           <Card>
             <Card.Header>
               <div className="flex items-center justify-between">

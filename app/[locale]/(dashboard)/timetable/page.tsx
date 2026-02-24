@@ -187,6 +187,10 @@ export default async function TimetablePage({
   return (
     <div className="max-w-[1300px]">
       {isPrint && <AutoPrint />}
+      {/* Landscape override — only injected on timetable print pages */}
+      {isPrint && (
+        <style>{`@media print { @page { size: A4 landscape; margin: 8mm 10mm; } }`}</style>
+      )}
 
       {/* ── Print header ─────────────────────────────────────────────────── */}
       <div className="print-header hidden print:flex items-center gap-3 pb-2 mb-3 border-b border-gray-300">
