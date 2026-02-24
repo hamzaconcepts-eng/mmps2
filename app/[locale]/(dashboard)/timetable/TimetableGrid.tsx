@@ -240,10 +240,11 @@ export default function TimetableGrid({
     overrides.textContent = [
       // Force landscape, let browser use its own default margins
       '@page { size: landscape; }',
-      '*, *::before, *::after { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; box-sizing: border-box; }',
+      // Enforce Roboto (the app font) on every element — prevents fallback to system/Nunito fonts
+      '*, *::before, *::after { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; box-sizing: border-box; font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important; }',
       // Center content on page using flexbox
       'html { height: 100%; margin: 0; padding: 0; background: white; }',
-      'body { margin: 0; padding: 0; min-height: 100%; display: flex; justify-content: center; align-items: center; background: white; font-family: "Roboto", -apple-system, BlinkMacSystemFont, sans-serif; }',
+      'body { margin: 0; padding: 0; min-height: 100%; display: flex; justify-content: center; align-items: center; background: white; }',
       // Content block — 230mm fits comfortably in any landscape paper (Letter or A4)
       '#tt-scaled { width: 230mm; max-width: 230mm; }',
       // Visibility
@@ -268,7 +269,7 @@ export default function TimetableGrid({
       '.timetable-grid-wrap td > div { height: auto !important; min-height: 24pt !important; padding: 2pt 3pt !important; overflow: visible !important; border-radius: 2pt !important; display: flex !important; flex-direction: column !important; justify-content: center !important; gap: 0.5pt !important; }',
       '.timetable-grid-wrap td > div > p { margin: 0 !important; overflow: visible !important; text-overflow: unset !important; white-space: normal !important; word-break: break-word !important; line-height: 1.2 !important; }',
       '.timetable-grid-wrap td > div > p:first-child  { font-size: 8pt !important; font-weight: 700 !important; }',
-      '.timetable-grid-wrap td > div > p:nth-child(2)  { font-size: 6.5pt !important; font-family: monospace !important; }',
+      '.timetable-grid-wrap td > div > p:nth-child(2)  { font-size: 6.5pt !important; }',
       '.timetable-grid-wrap td > div > p:nth-child(n+3){ font-size: 7pt !important; }',
       '.timetable-grid-wrap td > div > span { font-size: 6.5pt !important; }',
       '.timetable-grid-wrap td:first-child > div { text-align: center !important; background-color: #f9fafb !important; }',
