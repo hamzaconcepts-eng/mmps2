@@ -237,11 +237,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           <h2 className="text-3xl sm:text-4xl font-black text-white mb-4 leading-tight">
             {t('landing.cta.title')}
           </h2>
-          <p className="text-brand-teal-soft text-base sm:text-lg mb-10 max-w-xl mx-auto leading-relaxed">
-            {t('landing.cta.subtitle')}
-          </p>
-
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center mt-6">
             <Link
               href={`/${locale}/auth/login`}
               className="group flex items-center gap-2 px-8 py-3.5 rounded-full bg-gradient-to-r from-brand-orange to-accent-orange text-white font-bold text-base shadow-[0_8px_30px_rgba(240,144,33,0.4)] hover:shadow-[0_12px_40px_rgba(240,144,33,0.55)] hover:-translate-y-0.5 transition-all duration-300"
