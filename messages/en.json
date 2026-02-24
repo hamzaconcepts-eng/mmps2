@@ -205,7 +205,7 @@
         },
         "roles": {
           "title": "Role-Based Access",
-          "description": "7 user roles: Owner, Admin, Teacher, Supervisor, Student, Parent, Accountant — each sees only what they need."
+          "description": "5 user roles: Admin, Teacher, Student, Parent, Accountant — each sees only what they need."
         },
         "realtime": {
           "title": "Real-Time Dashboard",
